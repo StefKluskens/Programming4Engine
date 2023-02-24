@@ -30,6 +30,8 @@ namespace dae
 		template <typename T> T* GetComponent() const;
 		template <typename T> void RemoveComponent();
 
+		Transform GetTransform() const;
+
 	private:
 		Transform m_transform{};
 		// todo: mmm, every gameobject has a texture? Is that correct?

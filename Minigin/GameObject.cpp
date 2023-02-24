@@ -39,3 +39,8 @@ void dae::GameObject::AddComponent(Component* component)
 {
 	m_pComponents.emplace_back(component);
 }
+
+dae::Transform dae::GameObject::GetTransform() const
+{
+	return m_transform;
+}

@@ -9,7 +9,7 @@ public:
 	Component& operator=(const Component& other) = delete;
 	Component& operator=(Component&& other) = delete;
 
-	virtual void Draw() const = 0;
+	virtual void Render() const = 0;
 	virtual void Update(float deltaTime) = 0;
 	virtual void FixedUpdate([[maybe_unused]] float deltaTime) {};
 };

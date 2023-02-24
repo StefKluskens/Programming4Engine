@@ -10,7 +10,7 @@ dae::TextComponent::TextComponent(const std::string& text, std::shared_ptr<Font>
 {
 }
 
-void dae::TextComponent::Draw() const
+void dae::TextComponent::Render() const
 {
 	if (m_textTexture != nullptr)
 	{

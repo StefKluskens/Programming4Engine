@@ -54,6 +54,7 @@ namespace dae
 		return nullptr;
 	}
 
+	//TODO: Will remove the first component of the matching type, find a fix for this, maybe give the components a name and search for the name instead of the type
 	template<typename T>
 	inline void GameObject::RemoveComponent()
 	{

@@ -1,6 +1,6 @@
 #include "FPSComponent.h"
 
-dae::FPSComponent::FPSComponent(TextComponent& TextComponent)
+dae::FPSComponent::FPSComponent(std::shared_ptr<TextComponent> TextComponent)
 	: m_StartPoint(std::chrono::high_resolution_clock::now())
 	, m_pTextComponent(TextComponent)
 {
@@ -25,7 +25,7 @@ void dae::FPSComponent::Update([[maybe_unused]] float deltaTime)
 		//Calculate fps
 		m_Fps = m_FrameCount / static_cast<int>(m_TotalTime);
 
-		m_pTextComponent.SetText(std::to_string(m_Fps) + " FPS");
+		m_pTextComponent->SetText(std::to_string(m_Fps) + " FPS");
 
 		//Reset variables
 		m_FrameCount = 0;

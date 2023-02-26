@@ -10,7 +10,7 @@ namespace dae
 	class FPSComponent : public Component
 	{
 	public:
-		FPSComponent(TextComponent& pTextComponent);
+		FPSComponent(std::shared_ptr<TextComponent> pTextComponent);
 		virtual ~FPSComponent() = default;
 		FPSComponent(const FPSComponent& other) = delete;
 		FPSComponent(FPSComponent&& other) = delete;
@@ -27,6 +27,6 @@ namespace dae
 		double m_TotalTime{};
 		std::chrono::steady_clock::time_point m_StartPoint{};
 		int m_Fps{};
-		TextComponent& m_pTextComponent;
+		std::shared_ptr<TextComponent> m_pTextComponent;
 	};
 }

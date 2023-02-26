@@ -26,7 +26,7 @@ namespace dae
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
-		void AddComponent(Component* component);
+		void AddComponent(std::shared_ptr<Component> component);
 		template <typename T> T* GetComponent() const;
 		template <typename T> void RemoveComponent();
 
@@ -37,7 +37,7 @@ namespace dae
 		// todo: mmm, every gameobject has a texture? Is that correct?
 		//std::shared_ptr<Texture2D> m_texture{};
 
-		std::vector<Component*> m_pComponents{};
+		std::vector<std::shared_ptr<Component>> m_pComponents{};
 	};
 
 	template<typename T>

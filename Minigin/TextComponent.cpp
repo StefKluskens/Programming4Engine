@@ -50,3 +50,13 @@ void dae::TextComponent::SetPosition(float x, float y)
 {
 	m_transform.SetPosition(x, y, 0.0f);
 }
+
+std::string dae::TextComponent::GetText() const
+{
+	return m_text;
+}
+
+std::shared_ptr<dae::Font> dae::TextComponent::GetFont() const
+{
+	return m_font;
+}

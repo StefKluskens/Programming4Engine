@@ -20,12 +20,7 @@ namespace dae
 		void Render() const override;
 		void Update(float deltaTime) override;
 
-		std::string GetFPS() const;
-
 	private:
-		int m_FrameCount{};
-		double m_TotalTime{};
-		std::chrono::steady_clock::time_point m_StartPoint{};
 		int m_Fps{};
 		std::shared_ptr<TextComponent> m_pTextComponent;
 	};

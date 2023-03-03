@@ -2,12 +2,11 @@
 #include <memory>
 #include <vector>
 #include "Transform.h"
-#include "Component.h"
 #include <iostream>
 
 namespace dae
 {
-	class Texture2D;
+	class Component;
 
 	// todo: this should become final.
 	class GameObject final
@@ -16,7 +15,6 @@ namespace dae
 		virtual void Update(float deltaTime);
 		virtual void Render() const;
 
-		void SetTexture(const std::string& filename);
 		void SetPosition(float x, float y);
 
 		GameObject() = default;
@@ -37,6 +35,7 @@ namespace dae
 		// todo: mmm, every gameobject has a texture? Is that correct?
 		//std::shared_ptr<Texture2D> m_texture{};
 
+		//TODO: Unique ptr?
 		std::vector<std::shared_ptr<Component>> m_pComponents{};
 	};
 
@@ -47,7 +46,7 @@ namespace dae
 
 		for (size_t i = 0; i < m_pComponents.size(); ++i)
 		{
-			temp = dynamic_cast<T*>(m_pComponents[i]);
+			temp = dynamic_cast<T*>(m_pComponents[i].get());
 			if (temp)
 				return temp;
 		}
@@ -58,6 +57,14 @@ namespace dae
 	template<typename T>
 	inline void GameObject::RemoveComponent()
 	{
-		m_pComponents.erase(std::remove(m_pComponents.begin(), m_pComponents.end(), GetComponent<T>()), m_pComponents.end());
+		//m_pComponents.erase(std::remove(m_pComponents.begin(), m_pComponents.end(), GetComponent<T>()), m_pComponents.end());
+		for (auto it{ m_pComponents.begin() }; it != m_pComponents.end(); ++it)
+		{
+			if (dynamic_cast<T*>(it->get()))
+			{
+				m_pComponents.erase(it);
+				break;
+			}
+		}
 	}
 }

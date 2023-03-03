@@ -87,6 +87,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	// todo: this update loop could use some work.
 	bool doContinue = true;
 	auto lastTime = std::chrono::high_resolution_clock::now();
+	int frameTimeMs = 6;
 	//float lag = 0.0f;
 	while (doContinue)
 	{
@@ -98,5 +99,8 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		renderer.Render();
 
 		lastTime = currentTime;
+
+		const auto sleepTime = currentTime + std::chrono::milliseconds(frameTimeMs) - std::chrono::high_resolution_clock::now();
+		std::this_thread::sleep_for(sleepTime);
 	}
 }

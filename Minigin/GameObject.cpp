@@ -4,6 +4,13 @@
 #include "Renderer.h"
 #include <typeinfo>
 #include "Component.h"
+#include "TransformComponent.h"
+
+dae::GameObject::GameObject()
+{
+	m_pTransform = std::make_shared<TransformComponent>(this);
+	AddComponent(m_pTransform);
+}
 
 dae::GameObject::~GameObject() = default;
 

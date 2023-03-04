@@ -7,6 +7,7 @@
 namespace dae
 {
 	class Component;
+	class TransformComponent;
 
 	// todo: this should become final.
 	class GameObject final
@@ -17,7 +18,7 @@ namespace dae
 
 		void SetPosition(float x, float y);
 
-		GameObject() = default;
+		GameObject();
 		virtual ~GameObject();
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
@@ -44,6 +45,8 @@ namespace dae
 
 		GameObject* m_pParent{};
 		std::vector<GameObject*> m_pChildren{};
+
+		std::shared_ptr<TransformComponent> m_pTransform{};
 	};
 
 	template<typename T>

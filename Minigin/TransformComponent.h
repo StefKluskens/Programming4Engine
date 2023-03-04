@@ -15,5 +15,11 @@ namespace dae
 
 		void Render() const override;
 		void Update(float deltaTime) override;
+
+		const glm::vec3& GetPosition() const;
+		void SetPosition(float x, float y, float z);
+
+	private:
+		glm::vec3 m_position;
 	};
 }

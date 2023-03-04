@@ -29,14 +29,18 @@ namespace dae
 		template <typename T> T* GetComponent() const;
 		template <typename T> void RemoveComponent();
 
-		Transform GetTransform() const;
+		TransformComponent* GetTransform() const;
 
 		void SetParent(GameObject* pParent);
 		void AddChild(GameObject* pGameObject);
 		void RemoveChild(GameObject* pGameObject);
 
+		GameObject* GetParent() const;
+		std::vector<GameObject*> GetChildren() const;
+
 	private:
 		Transform m_transform{};
+		std::shared_ptr<TransformComponent> m_pTransform{};
 		// todo: mmm, every gameobject has a texture? Is that correct?
 		//std::shared_ptr<Texture2D> m_texture{};
 
@@ -45,8 +49,6 @@ namespace dae
 
 		GameObject* m_pParent{};
 		std::vector<GameObject*> m_pChildren{};
-
-		std::shared_ptr<TransformComponent> m_pTransform{};
 	};
 
 	template<typename T>

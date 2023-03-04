@@ -22,11 +22,11 @@ namespace dae
 		void Update(float deltaTime) override;
 
 		void SetTexture(const std::string& filename);
-		void SetPosition(float x, float y);
 
 	private:
 		//TODO: Check if this could this be a unique_ptr
 		std::shared_ptr<Texture2D> m_pTexture{};
-		glm::vec3 m_Position{};
+
+		TransformComponent* m_pTransform{};
 	};
 }

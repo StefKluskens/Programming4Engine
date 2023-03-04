@@ -32,7 +32,7 @@ void dae::GameObject::Render() const
 
 void dae::GameObject::SetPosition(float x, float y)
 {
-	m_transform.SetPosition(x, y, 0.0f);
+	m_pTransform->SetPosition(x, y, 0.0f);
 }
 
 void dae::GameObject::AddComponent(std::shared_ptr<Component> component)
@@ -40,9 +40,9 @@ void dae::GameObject::AddComponent(std::shared_ptr<Component> component)
 	m_pComponents.emplace_back(component);
 }
 
-dae::Transform dae::GameObject::GetTransform() const
+dae::TransformComponent* dae::GameObject::GetTransform() const
 {
-	return m_transform;
+	return m_pTransform.get();
 }
 
 void dae::GameObject::SetParent(GameObject* pParent)
@@ -65,4 +65,14 @@ void dae::GameObject::AddChild(GameObject* pGameObject)
 void dae::GameObject::RemoveChild([[maybe_unused]] GameObject* pGameObject)
 {
 	m_pChildren.erase(std::remove(m_pChildren.begin(), m_pChildren.end(), pGameObject), m_pChildren.end());
+}
+
+dae::GameObject* dae::GameObject::GetParent() const
+{
+	return m_pParent;
+}
+
+std::vector<dae::GameObject*> dae::GameObject::GetChildren() const
+{
+	return m_pChildren;
 }

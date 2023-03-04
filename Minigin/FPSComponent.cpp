@@ -1,8 +1,9 @@
 #include "FPSComponent.h"
 
-dae::FPSComponent::FPSComponent(std::shared_ptr<TextComponent> TextComponent)
-	: m_pTextComponent(TextComponent)
+dae::FPSComponent::FPSComponent(GameObject* pGameObject)
+	: Component(pGameObject)
 {
+	m_pTextComponent = GetGameObject()->GetComponent<TextComponent>();
 }
 
 void dae::FPSComponent::Render() const

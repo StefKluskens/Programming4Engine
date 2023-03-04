@@ -5,8 +5,9 @@
 #include "Font.h"
 #include "Texture2D.h"
 
-dae::TextComponent::TextComponent(const std::string& text, std::shared_ptr<Font> font)
-	: m_needsUpdate(true), m_text(text), m_font(std::move(font)), m_textTexture(nullptr)
+dae::TextComponent::TextComponent(GameObject* pGameObject)
+	: Component(pGameObject)
+	, m_needsUpdate(true)
 {
 }
 
@@ -49,6 +50,11 @@ void dae::TextComponent::SetText(const std::string& text)
 void dae::TextComponent::SetPosition(float x, float y)
 {
 	m_transform.SetPosition(x, y, 0.0f);
+}
+
+void dae::TextComponent::SetFont(std::shared_ptr<Font> font)
+{
+	m_font = font;
 }
 
 std::string dae::TextComponent::GetText() const

@@ -7,7 +7,7 @@ namespace dae
 	class Component
 	{
 	public:
-		Component() = default;
+		Component(GameObject* pGameObject) : m_pGameObject(pGameObject) {};
 		~Component() = default;
 		Component(const Component& other) = delete;
 		Component(Component&& other) = delete;
@@ -18,8 +18,7 @@ namespace dae
 		virtual void Update(float deltaTime) = 0;
 		//virtual void FixedUpdate([[maybe_unused]] float deltaTime) {};
 
-		void SetGameObject(GameObject* pGameobject) { m_pGameObject = pGameobject; }
-		GameObject& GetGameObject() const { return *m_pGameObject; }
+		GameObject* GetGameObject() const { return m_pGameObject; }
 
 	private:
 		GameObject* m_pGameObject{};

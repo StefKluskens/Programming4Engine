@@ -37,3 +37,25 @@ dae::Transform dae::GameObject::GetTransform() const
 {
 	return m_transform;
 }
+
+void dae::GameObject::SetParent(GameObject* pParent)
+{
+	if (m_pParent)
+	{
+		m_pParent->RemoveChild(this);
+	}
+
+	m_pParent = pParent;
+
+	m_pParent->AddChild(this);
+}
+
+void dae::GameObject::AddChild(GameObject* pGameObject)
+{
+	m_pChildren.emplace_back(pGameObject);
+}
+
+void dae::GameObject::RemoveChild([[maybe_unused]] GameObject* pGameObject)
+{
+	m_pChildren.erase(std::remove(m_pChildren.begin(), m_pChildren.end(), pGameObject), m_pChildren.end());
+}

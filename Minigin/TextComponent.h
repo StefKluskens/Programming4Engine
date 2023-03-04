@@ -12,7 +12,7 @@ namespace dae
 	class TextComponent : public Component
 	{
 	public:
-		TextComponent(const std::string& text, std::shared_ptr<Font> font);
+		TextComponent(GameObject* pGameObject);
 		virtual ~TextComponent() = default;
 		TextComponent(const TextComponent& other) = delete;
 		TextComponent(TextComponent&& other) = delete;
@@ -24,6 +24,7 @@ namespace dae
 
 		void SetText(const std::string& text);
 		void SetPosition(float x, float y);
+		void SetFont(std::shared_ptr<Font> font);
 
 		std::string GetText() const;
 		std::shared_ptr<Font> GetFont() const;

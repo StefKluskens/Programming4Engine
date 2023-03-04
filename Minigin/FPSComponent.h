@@ -10,7 +10,7 @@ namespace dae
 	class FPSComponent : public Component
 	{
 	public:
-		FPSComponent(std::shared_ptr<TextComponent> pTextComponent);
+		FPSComponent(GameObject* pGameObject);
 		virtual ~FPSComponent() = default;
 		FPSComponent(const FPSComponent& other) = delete;
 		FPSComponent(FPSComponent&& other) = delete;
@@ -22,6 +22,6 @@ namespace dae
 
 	private:
 		int m_Fps{};
-		std::shared_ptr<TextComponent> m_pTextComponent;
+		TextComponent* m_pTextComponent;
 	};
 }

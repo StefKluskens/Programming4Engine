@@ -30,6 +30,10 @@ namespace dae
 
 		Transform GetTransform() const;
 
+		void SetParent(GameObject* pParent);
+		void AddChild(GameObject* pGameObject);
+		void RemoveChild(GameObject* pGameObject);
+
 	private:
 		Transform m_transform{};
 		// todo: mmm, every gameobject has a texture? Is that correct?
@@ -37,6 +41,9 @@ namespace dae
 
 		//TODO: Unique ptr?
 		std::vector<std::shared_ptr<Component>> m_pComponents{};
+
+		GameObject* m_pParent{};
+		std::vector<GameObject*> m_pChildren{};
 	};
 
 	template<typename T>

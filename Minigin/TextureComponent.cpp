@@ -3,7 +3,8 @@
 #include "ResourceManager.h"
 #include "Renderer.h"
 
-dae::TextureComponent::TextureComponent()
+dae::TextureComponent::TextureComponent(GameObject* pGameObject)
+	: Component(pGameObject)
 {
 }
 

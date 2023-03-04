@@ -28,6 +28,13 @@ void dae::TransformComponent::SetPosition(const float x, const float y, const fl
 	SetPositionDirty();
 }
 
+void dae::TransformComponent::SetPosition(glm::vec3 pos)
+{
+	m_LocalPos = pos;
+
+	SetPositionDirty();
+}
+
 void dae::TransformComponent::AddPosition(glm::vec3 pos)
 {
 	m_LocalPos += pos;

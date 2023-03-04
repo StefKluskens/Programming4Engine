@@ -45,11 +45,31 @@ dae::TransformComponent* dae::GameObject::GetTransform() const
 	return m_pTransform.get();
 }
 
-void dae::GameObject::SetParent(GameObject* pParent)
+void dae::GameObject::SetParent(GameObject* pParent, bool keepPos)
 {
-	if (m_pParent)
+	if (pParent == nullptr)
 	{
-		m_pParent->RemoveChild(this);
+		m_pTransform->SetLocalPosition(m_pTransform->GetWorldPosition());
+	}
+	else
+	{
+		if (keepPos)
+		{
+			m_pTransform->SetLocalPosition(m_pTransform->GetPosition() - pParent->GetTransform()->GetWorldPosition());
+			m_pTransform->SetPositionDirty();
+		}
+
+		if (m_pParent)
+		{
+			m_pParent->RemoveChild(this);
+		}
+
+		m_pParent = pParent;
+
+		if (m_pParent)
+		{
+			m_pParent->AddChild(this);
+		}
 	}
 
 	m_pParent = pParent;

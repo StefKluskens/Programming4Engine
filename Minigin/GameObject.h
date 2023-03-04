@@ -31,7 +31,7 @@ namespace dae
 
 		TransformComponent* GetTransform() const;
 
-		void SetParent(GameObject* pParent);
+		void SetParent(GameObject* pParent, bool keepPos);
 		void AddChild(GameObject* pGameObject);
 		void RemoveChild(GameObject* pGameObject);
 
@@ -39,7 +39,7 @@ namespace dae
 		std::vector<GameObject*> GetChildren() const;
 
 	private:
-		Transform m_transform{};
+		//Transform m_transform{};
 		std::shared_ptr<TransformComponent> m_pTransform{};
 		// todo: mmm, every gameobject has a texture? Is that correct?
 		//std::shared_ptr<Texture2D> m_texture{};

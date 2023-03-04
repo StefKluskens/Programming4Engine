@@ -19,6 +19,7 @@ namespace dae
 
 		const glm::vec3& GetPosition() const;
 		void SetPosition(const float x, const float y, const float z);
+		void SetPosition(glm::vec3 pos);
 		void AddPosition(glm::vec3 pos);
 
 		const float GetRotation();

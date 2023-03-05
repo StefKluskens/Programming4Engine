@@ -35,6 +35,11 @@ void dae::GameObject::SetPosition(float x, float y)
 	m_pTransform->SetPosition(x, y, 0.0f);
 }
 
+void dae::GameObject::SetLocalPosition(float x, float y)
+{
+	m_pTransform->SetLocalPosition(glm::vec3{ x,y,0.0f });
+}
+
 void dae::GameObject::AddComponent(std::shared_ptr<Component> component)
 {
 	m_pComponents.emplace_back(component);
@@ -71,10 +76,6 @@ void dae::GameObject::SetParent(GameObject* pParent, bool keepPos)
 			m_pParent->AddChild(this);
 		}
 	}
-
-	m_pParent = pParent;
-
-	m_pParent->AddChild(this);
 }
 
 void dae::GameObject::AddChild(GameObject* pGameObject)

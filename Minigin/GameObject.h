@@ -17,6 +17,7 @@ namespace dae
 		virtual void Render() const;
 
 		void SetPosition(float x, float y);
+		void SetLocalPosition(float x, float y);
 
 		GameObject();
 		virtual ~GameObject();
@@ -32,17 +33,16 @@ namespace dae
 		TransformComponent* GetTransform() const;
 
 		void SetParent(GameObject* pParent, bool keepPos);
-		void AddChild(GameObject* pGameObject);
-		void RemoveChild(GameObject* pGameObject);
+		
 
 		GameObject* GetParent() const;
 		std::vector<GameObject*> GetChildren() const;
 
 	private:
-		//Transform m_transform{};
+		void AddChild(GameObject* pGameObject);
+		void RemoveChild(GameObject* pGameObject);
+
 		std::shared_ptr<TransformComponent> m_pTransform{};
-		// todo: mmm, every gameobject has a texture? Is that correct?
-		//std::shared_ptr<Texture2D> m_texture{};
 
 		//TODO: Unique ptr?
 		std::vector<std::shared_ptr<Component>> m_pComponents{};

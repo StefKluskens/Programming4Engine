@@ -21,7 +21,6 @@ void dae::Rotator::Update(float deltaTime)
 		//Rotate around parent gameobject
 		auto parentTransform = GetGameObject()->GetParent()->GetComponent<TransformComponent>();
 		pos = parentTransform->GetPosition();
-		
 	}
 
 	const float x = pos.x + m_Radius * cos(angle);

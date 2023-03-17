@@ -32,8 +32,8 @@ namespace dae
 		void UpdateWorldPosition();
 
 	private:
-		glm::vec3 m_LocalPos;
-		glm::vec3 m_WorldPos;
+		glm::vec3 m_LocalPos{};
+		glm::vec3 m_WorldPos{};
 
 		float m_Rotation{};
 

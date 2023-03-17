@@ -20,7 +20,7 @@ namespace dae
 
 		void SetRadiusSpeed(float radius, float speed);
 		void SetCenterPoint(const glm::vec3& center);
-		void SetRotateMode(bool rotateAroundParent);
+		void ShouldRotateAroundParent(bool rotateAroundParent);
 
 	private:
 		TransformComponent* m_pTransform{};

@@ -15,15 +15,10 @@ dae::GameObject::GameObject()
 dae::GameObject::~GameObject() = default;
 
 void dae::GameObject::Update(float deltaTime)
-{
+{ 
 	for (const auto component : m_pComponents)
 	{
 		component->Update(deltaTime);
-	}
-
-	for (const auto child : m_pChildren)
-	{
-		child->Update(deltaTime);
 	}
 }
 
@@ -32,11 +27,6 @@ void dae::GameObject::Render() const
 	for (const auto component : m_pComponents)
 	{
 		component->Render();
-	}
-
-	for (const auto child : m_pChildren)
-	{
-		child->Render();
 	}
 }
 
@@ -60,7 +50,7 @@ dae::TransformComponent* dae::GameObject::GetTransform() const
 	return m_pTransform.get();
 }
 
-void dae::GameObject::SetParent(GameObject* pParent, bool keepPos)
+void dae::GameObject::SetParent(std::shared_ptr<GameObject> pParent, bool keepPos)
 {
 	if (pParent == nullptr)
 	{
@@ -73,7 +63,6 @@ void dae::GameObject::SetParent(GameObject* pParent, bool keepPos)
 		if (keepPos)
 		{
 			m_pTransform->SetLocalPosition(m_pTransform->GetPosition() - pParent->GetTransform()->GetWorldPosition());
-			//m_pTransform->SetPositionDirty();
 		}
 
 		if (m_pParent)
@@ -100,12 +89,12 @@ void dae::GameObject::RemoveChild(GameObject* pGameObject)
 	m_pChildren.erase(std::remove(m_pChildren.begin(), m_pChildren.end(), pGameObject), m_pChildren.end());
 }
 
-dae::GameObject* dae::GameObject::GetParent() const
+std::shared_ptr<dae::GameObject> dae::GameObject::GetParent() const
 {
 	return m_pParent;
 }
 
-std::vector<dae::GameObject*> dae::GameObject::GetChildren() const
+std::vector<std::shared_ptr<dae::GameObject>> dae::GameObject::GetChildren() const
 {
 	return m_pChildren;
 }

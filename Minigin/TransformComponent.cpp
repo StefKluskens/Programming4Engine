@@ -3,7 +3,7 @@
 dae::TransformComponent::TransformComponent(GameObject* pGameObject)
 	: Component(pGameObject)
 {
-	m_pParent = pGameObject->GetParent();
+	m_pParent = pGameObject->GetParent().get();
 }
 
 void dae::TransformComponent::Render() const

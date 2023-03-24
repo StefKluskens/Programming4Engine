@@ -1,8 +1,11 @@
 #include <SDL.h>
 #include "InputManager.h"
 
-bool dae::InputManager::ProcessInput()
+bool dae::InputManager::ProcessInput([[maybe_unused]]float deltaTime)
 {
+	/*ZeroMemory(&m_CurrentState, sizeof(XINPUT_STATE));
+	XInputGetState(0, &m_CurrentState);*/
+
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
 		if (e.type == SDL_QUIT) {

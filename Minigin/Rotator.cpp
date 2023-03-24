@@ -15,13 +15,11 @@ void dae::Rotator::Update(float deltaTime)
 {
 	const float angle = m_pTransform->GetRotation() + m_Speed * deltaTime;
 	glm::vec3 pos{ m_CenterPoint };
-
-	auto pParent = GetGameObject()->GetParent();
 	
-	if (m_RotateAroundParent && pParent)
+	if (m_RotateAroundParent)
 	{
 		//Rotate around parent gameobject
-		auto parentTransform = pParent->GetComponent<TransformComponent>();
+		auto parentTransform = GetGameObject()->GetParent()->GetComponent<TransformComponent>();
 		pos = parentTransform->GetPosition();
 		
 	}
@@ -45,7 +43,7 @@ void dae::Rotator::SetCenterPoint(const glm::vec3& center)
 	m_CenterPoint = center;
 }
 
-void dae::Rotator::ShouldRotateAroundParent(bool rotateAroundParent)
+void dae::Rotator::SetRotateMode(bool rotateAroundParent)
 {
 	m_RotateAroundParent = rotateAroundParent;
 }

@@ -32,11 +32,11 @@ namespace dae
 
 		TransformComponent* GetTransform() const;
 
-		void SetParent(std::shared_ptr<GameObject> pParent, bool keepPos);
+		void SetParent(GameObject* pParent, bool keepPos);
 		
 
-		std::shared_ptr<GameObject> GetParent() const;
-		std::vector<std::shared_ptr<GameObject>> GetChildren() const;
+		GameObject* GetParent() const;
+		std::vector<GameObject*> GetChildren() const;
 
 	private:
 		void AddChild(GameObject* pGameObject);
@@ -47,8 +47,8 @@ namespace dae
 		//TODO: Unique ptr?
 		std::vector<std::shared_ptr<Component>> m_pComponents{};
 
-		std::shared_ptr<GameObject> m_pParent{};
-		std::vector<std::shared_ptr<GameObject>> m_pChildren{};
+		GameObject* m_pParent{};
+		std::vector<GameObject*> m_pChildren{};
 	};
 
 	template<typename T>

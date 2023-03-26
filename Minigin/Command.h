@@ -17,66 +17,25 @@ private:
 	GameObject* m_pActor;
 };
 
-#pragma region MoveCommands
 
 class MoveCommand : public Command
 {
 public:
-	MoveCommand(GameObject* pActor);
+	enum class MoveDirection
+	{
+		Up,
+		Down,
+		Left,
+		Right
+	};
+
+	MoveCommand(GameObject* pActor, MoveDirection direction, float moveSpeed);
 	void Execute(float deltaTime) override;
+	void SetSpeed(float newSpeed);
 
 private:
 	TransformComponent* m_pTransform{};
 	glm::vec2 m_Direction{ 0.f,-1.f };
+	MoveDirection m_MoveDirection{};
 	float speed = 50.f;
 };
-
-class MoveUp : public Command
-{
-public:
-	MoveUp(GameObject* pActor);
-	void Execute(float deltaTime) override;
-
-private:
-	TransformComponent* m_pTransform{};
-	glm::vec2 m_Direction{ 0.f,-1.f };
-	float speed = 50.f;
-};
-
-class MoveDown : public Command
-{
-public:
-	MoveDown(GameObject* pActor);
-	void Execute(float deltaTime) override;
-
-private:
-	TransformComponent* m_pTransform{};
-	glm::vec2 m_Direction{ 0.f,1.f };
-	float speed = 50.f;
-};
-
-class MoveLeft : public Command
-{
-public:
-	TransformComponent* m_pTransform{};
-	MoveLeft(GameObject* pActor);
-	void Execute(float deltaTime) override;
-
-private:
-	glm::vec2 m_Direction{ -1.f,0.f };
-	float speed = 50.f;
-};
-
-class MoveRight : public Command
-{
-public:
-	TransformComponent* m_pTransform{};
-	MoveRight(GameObject* pActor);
-	void Execute(float deltaTime) override;
-
-private:
-	glm::vec2 m_Direction{ 1.f,0.f };
-	float speed = 50.f;
-};
-
-#pragma endregion MoveCommands

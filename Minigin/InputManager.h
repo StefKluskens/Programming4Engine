@@ -4,8 +4,6 @@
 #include <map>
 #include "Command.h"
 
-
-//Include xinput.lib!!!!!!!!!!
 namespace dae
 {
 	class InputManager final : public Singleton<InputManager>

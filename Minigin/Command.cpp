@@ -10,70 +10,38 @@ Command::~Command()
 {
 }
 
-#pragma region MoveCommands
-
-MoveUp::MoveUp(GameObject* pActor)
+MoveCommand::MoveCommand(GameObject* pActor, MoveDirection direction, float moveSpeed)
 	: Command(pActor)
-{
-	m_pTransform = GetActor()->GetComponent<TransformComponent>();
-}
-
-void MoveUp::Execute(float deltaTime)
-{
-	std::cout << "Move up executed\n";
-	glm::vec3 direction = { m_Direction.x * speed, m_Direction.y * speed,0.f };
-	m_pTransform->SetLocalPosition(m_pTransform->GetPosition() + direction * deltaTime);
-}
-
-MoveDown::MoveDown(GameObject* pActor)
-	: Command(pActor)
-{
-	m_pTransform = GetActor()->GetComponent<TransformComponent>();
-}
-
-void MoveDown::Execute(float deltaTime)
-{
-	std::cout << "Move down executed\n";
-	glm::vec3 direction = { m_Direction.x * speed, m_Direction.y * speed,0.f };
-	m_pTransform->SetLocalPosition(m_pTransform->GetPosition() + direction * deltaTime);
-}
-
-MoveLeft::MoveLeft(GameObject* pActor)
-	: Command(pActor)
-{
-	m_pTransform = GetActor()->GetComponent<TransformComponent>();
-}
-
-void MoveLeft::Execute(float deltaTime)
-{
-	std::cout << "Move left executed\n";
-	glm::vec3 direction = { m_Direction.x * speed, m_Direction.y * speed,0.f };
-	m_pTransform->SetLocalPosition(m_pTransform->GetPosition() + direction * deltaTime);
-}
-
-MoveRight::MoveRight(GameObject* pActor)
-	: Command(pActor)
-{
-	m_pTransform = GetActor()->GetComponent<TransformComponent>();
-}
-
-void MoveRight::Execute(float deltaTime)
-{
-	std::cout << "Move right executed\n";
-	glm::vec3 direction = { m_Direction.x * speed, m_Direction.y * speed,0.f };
-	m_pTransform->SetLocalPosition(m_pTransform->GetPosition() + direction * deltaTime);
-}
-
-#pragma endregion MoveCommands
-
-MoveCommand::MoveCommand(GameObject* pActor)
-	: Command(pActor)
+	, m_MoveDirection(direction)
+	, speed(moveSpeed)
 {
 	m_pTransform = GetActor()->GetComponent<TransformComponent>();
 }
 
 void MoveCommand::Execute(float deltaTime)
 {
-	glm::vec3 direction = { m_Direction.x * speed, m_Direction.y * speed,0.f };
+	glm::vec3 direction = {};
+
+	switch (m_MoveDirection)
+	{
+	case MoveCommand::MoveDirection::Up:
+		direction = { 0.f, -1.f * speed, 0.f };
+		break;
+	case MoveCommand::MoveDirection::Down:
+		direction = { 0.f, 1.f * speed, 0.f };
+		break;
+	case MoveCommand::MoveDirection::Left:
+		direction = { -1.f * speed, 0.f, 0.f };
+		break;
+	case MoveCommand::MoveDirection::Right:
+		direction = { 1.f * speed, 0.f, 0.f };
+		break;
+	}
+
 	m_pTransform->SetLocalPosition(m_pTransform->GetPosition() + direction * deltaTime);
+}
+
+void MoveCommand::SetSpeed(float newSpeed)
+{
+	speed = newSpeed;
 }

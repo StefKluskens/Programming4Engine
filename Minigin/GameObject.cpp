@@ -3,97 +3,117 @@
 #include "ResourceManager.h"
 #include "Renderer.h"
 #include <typeinfo>
-#include "Component.h"
-#include "TransformComponent.h"
 
-dae::GameObject::GameObject()
+using namespace dae;
+
+dae::GameObject::GameObject(std::string name)
+	: m_Name(name)
 {
-	m_pTransform = std::make_shared<TransformComponent>(this);
-	AddComponent(m_pTransform);
+	m_Transform = std::make_unique<Transform>(this);
 }
 
-dae::GameObject::~GameObject() = default;
+GameObject::~GameObject() = default;
 
-void dae::GameObject::Update(float deltaTime)
+GameObject::GameObject(GameObject&& other) noexcept
+{
+	m_Transform = std::move(other.m_Transform);
+	m_pComponents = std::move(other.m_pComponents);
+	m_pChildren = std::move(other.m_pChildren);
+	m_Name = std::move(other.m_Name);
+	m_pParent = std::move(other.m_pParent);
+}
+
+void GameObject::Update(float deltaTime)
 { 
-	for (const auto component : m_pComponents)
+	for (auto& component : m_pComponents)
 	{
 		component->Update(deltaTime);
 	}
+
+	for (auto& child : m_pChildren)
+	{
+		child->Update(deltaTime);
+	}
 }
 
-void dae::GameObject::Render() const
+void GameObject::Render() const
 {
-	for (const auto component : m_pComponents)
+	for (const auto& component : m_pComponents)
 	{
 		component->Render();
 	}
+
+	for (auto& child : m_pChildren)
+	{
+		child->Render();
+	}
 }
 
-void dae::GameObject::SetPosition(float x, float y)
+void GameObject::SetPosition(float x, float y)
 {
-	m_pTransform->SetPosition(x, y, 0.0f);
+	m_Transform->SetLocalPosition(glm::vec3{ x,y,0.0f });
 }
 
-void dae::GameObject::SetLocalPosition(float x, float y)
+void dae::GameObject::SetPosition(glm::vec3 pos)
 {
-	m_pTransform->SetLocalPosition(glm::vec3{ x,y,0.0f });
+	m_Transform->SetLocalPosition(pos);
 }
 
-void dae::GameObject::AddComponent(std::shared_ptr<Component> component)
+void GameObject::AddComponent(std::unique_ptr<Component> component)
 {
-	m_pComponents.emplace_back(component);
+	m_pComponents.emplace_back(std::move(component));
 }
 
-dae::TransformComponent* dae::GameObject::GetTransform() const
+Transform* GameObject::GetTransform() const
 {
-	return m_pTransform.get();
+	return m_Transform.get();
 }
 
-void dae::GameObject::SetParent(GameObject* pParent, bool keepPos)
+void dae::GameObject::SetParent(GameObject* pParent, bool keepWorldPos)
 {
 	if (pParent == nullptr)
 	{
-		m_pTransform->SetLocalPosition(m_pTransform->GetWorldPosition());
+		m_Transform->SetLocalPosition(m_Transform->GetWorldPosition());
 	}
 	else
 	{
-		if (keepPos)
+		if (keepWorldPos)
 		{
-			m_pTransform->SetLocalPosition(m_pTransform->GetPosition() - pParent->GetTransform()->GetWorldPosition());
-			m_pTransform->SetPositionDirty();
+			auto parentTransform = pParent->GetTransform()->GetWorldPosition();
+			m_Transform->SetLocalPosition(m_Transform->GetLocalPosition() + parentTransform);
 		}
 
-		if (m_pParent)
-		{
-			m_pParent->RemoveChild(this);
-		}
+		m_Transform->SetPositionDirty();
+	}
 
-		m_pParent = pParent;
+	std::unique_ptr<GameObject> child;
 
-		if (m_pParent)
+	if (m_pParent != nullptr)
+	{
+		for (auto it = m_pParent->m_pChildren.begin(); it != m_pParent->m_pChildren.end(); ++it)
 		{
-			m_pParent->AddChild(this);
+			if (it->get() == this)
+			{
+				child = std::move(*it);
+				m_pParent->m_pChildren.erase(it);
+				break;
+			}
 		}
+	}
+
+	m_pParent = pParent;
+
+	if (m_pParent != nullptr)
+	{
+		if (child == nullptr)
+		{
+			child = std::unique_ptr<GameObject>(this);
+		}
+		m_pParent->m_pChildren.emplace_back(std::move(child));
 	}
 }
 
-void dae::GameObject::AddChild(GameObject* pGameObject)
-{
-	m_pChildren.emplace_back(pGameObject);
-}
-
-void dae::GameObject::RemoveChild(GameObject* pGameObject)
-{
-	m_pChildren.erase(std::remove(m_pChildren.begin(), m_pChildren.end(), pGameObject), m_pChildren.end());
-}
-
-dae::GameObject* dae::GameObject::GetParent() const
+GameObject* GameObject::GetParent() const
 {
 	return m_pParent;
-}
-
-std::vector<dae::GameObject*> dae::GameObject::GetChildren() const
-{
-	return m_pChildren;
 }

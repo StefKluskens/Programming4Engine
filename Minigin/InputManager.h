@@ -1,8 +1,8 @@
-#pragma once
 #include "Singleton.h"
 #include "XBoxController.h"
 #include <map>
 #include "Command.h"
+#include <unordered_map>
 
 namespace dae
 {
@@ -25,6 +25,8 @@ namespace dae
 
 		//Keyboard variables
 		std::map<SDL_Keycode, std::unique_ptr<Command>> m_KeyboardCommands;
+
+		std::unordered_map<SDL_Scancode, bool> m_PreviousKeyStates;
 	};
 
 }

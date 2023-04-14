@@ -1,12 +1,12 @@
 #pragma once
-//#include <memory>
+#include <memory>
 
 namespace dae
 {
 	class XBoxController final
 	{
 		class XBoxControllerImpl;
-		XBoxControllerImpl* m_pImpl{};
+		std::unique_ptr<XBoxControllerImpl> m_pImpl{};
 
 	public:
 		enum class ControllerButton

@@ -13,14 +13,32 @@ bool dae::InputManager::ProcessInput(float deltaTime)
 
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 
+	
 	for (const auto& command : m_KeyboardCommands)
 	{
 		//Get the scancode from the key in the map
 		SDL_Scancode scancode = SDL_GetScancodeFromKey(command.first);
-		if (currentKeyStates[scancode])
+
+		if (command.second->GetButtonState() == ButtonState::IsPressed)
 		{
-			//Execute paired command
-			command.second->Execute(deltaTime);
+			//IsPressed
+			if (currentKeyStates[scancode])
+			{
+				//Execute paired command
+				command.second->Execute(deltaTime);
+			}
+		}
+		else if (command.second->GetButtonState() == ButtonState::IsDown)
+		{
+			//IsDown
+			bool isKeyPressed = currentKeyStates[scancode];
+			if (isKeyPressed && !m_PreviousKeyStates[scancode])
+			{
+				//Execute paired command
+				command.second->Execute(deltaTime);
+			}
+
+			m_PreviousKeyStates[scancode] = isKeyPressed;
 		}
 	}
 
@@ -31,11 +49,21 @@ bool dae::InputManager::ProcessInput(float deltaTime)
 		auto button = command.first.second;
 		auto controllerIndex = command.first.first;
 
-		//Check if the button is down
-		if (m_pControllers[controllerIndex]->IsPressed(button))
+		if (command.second->GetButtonState() == ButtonState::IsDown)
 		{
-			//Execute paired command
-			command.second->Execute(deltaTime);
+			if (m_pControllers[controllerIndex]->IsDown(button))
+			{
+				//Execute paired command
+				command.second->Execute(deltaTime);
+			}
+		}
+		else if (command.second->GetButtonState() == ButtonState::IsPressed)
+		{
+			if (m_pControllers[controllerIndex]->IsPressed(button))
+			{
+				//Execute paired command
+				command.second->Execute(deltaTime);
+			}
 		}
 	}
 

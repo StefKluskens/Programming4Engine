@@ -5,9 +5,9 @@
 #include "Font.h"
 #include "Texture2D.h"
 
-dae::TextObject::TextObject(const std::string& text, std::shared_ptr<Font> font) 
-	: m_needsUpdate(true), m_text(text), m_font(std::move(font)), m_textTexture(nullptr)
-{ }
+//dae::TextObject::TextObject(const std::string& text, std::shared_ptr<Font> font) 
+//	: m_needsUpdate(true), m_text(text), m_font(std::move(font)), m_textTexture(nullptr)
+//{ }
 
 //void dae::TextObject::Update([[maybe_unused]] float deltaTime)
 //{
@@ -40,15 +40,15 @@ dae::TextObject::TextObject(const std::string& text, std::shared_ptr<Font> font)
 //}
 
 // This implementation uses the "dirty flag" pattern
-void dae::TextObject::SetText(const std::string& text)
-{
-	m_text = text;
-	m_needsUpdate = true;
-}
-
-void dae::TextObject::SetPosition(const float x, const float y)
-{
-	m_transform.SetPosition(x, y, 0.0f);
-}
+//void dae::TextObject::SetText(const std::string& text)
+//{
+//	m_text = text;
+//	m_needsUpdate = true;
+//}
+//
+//void dae::TextObject::SetPosition(const float x, const float y)
+//{
+//	m_transform.SetPosition(x, y, 0.0f);
+//}
 
 

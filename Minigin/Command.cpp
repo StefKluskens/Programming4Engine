@@ -1,47 +1,57 @@
 #include "Command.h"
-#include "TransformComponent.h"
+#include "Transform.h"
+#include "LivesComponent.h"
+#include "ScoreComponent.h"
 
-Command::Command(GameObject* pActor)
-	: m_pActor(pActor)
+dae::Command::Command()
 {
 }
 
-Command::~Command()
+dae::Command::~Command()
 {
 }
 
-MoveCommand::MoveCommand(GameObject* pActor, MoveDirection direction, float moveSpeed)
-	: Command(pActor)
+dae::MoveCommand::MoveCommand(dae::GameObject* pActor, glm::vec3 direction, float moveSpeed, ButtonState action)
+	: Command()
 	, m_MoveDirection(direction)
 	, speed(moveSpeed)
+	, m_Action(action)
 {
-	m_pTransform = GetActor()->GetComponent<TransformComponent>();
+	m_pTransform = pActor->GetTransform();
 }
 
-void MoveCommand::Execute(float deltaTime)
+void dae::MoveCommand::Execute(float deltaTime)
 {
-	glm::vec3 direction = {};
+	glm::vec3 direction = m_MoveDirection * speed;
 
-	switch (m_MoveDirection)
-	{
-	case MoveCommand::MoveDirection::Up:
-		direction = { 0.f, -1.f * speed, 0.f };
-		break;
-	case MoveCommand::MoveDirection::Down:
-		direction = { 0.f, 1.f * speed, 0.f };
-		break;
-	case MoveCommand::MoveDirection::Left:
-		direction = { -1.f * speed, 0.f, 0.f };
-		break;
-	case MoveCommand::MoveDirection::Right:
-		direction = { 1.f * speed, 0.f, 0.f };
-		break;
-	}
-
-	m_pTransform->SetLocalPosition(m_pTransform->GetPosition() + direction * deltaTime);
+	m_pTransform->SetLocalPosition(m_pTransform->GetLocalPosition() + (direction * deltaTime));
 }
 
-void MoveCommand::SetSpeed(float newSpeed)
+void dae::MoveCommand::SetSpeed(float newSpeed)
 {
 	speed = newSpeed;
+}
+
+dae::DieCommand::DieCommand(GameObject* pObject, ButtonState action)
+	: Command()
+	, m_pObject(pObject)
+	, m_Action(action)
+{
+}
+
+void dae::DieCommand::Execute([[maybe_unused]]float deltaTime)
+{
+	m_pObject->GetComponent<dae::LivesComponent>()->Die();
+}
+
+dae::ScoreCommand::ScoreCommand(GameObject* pObject, ButtonState action)
+	: Command()
+	, m_pObject(pObject)
+	, m_Action(action)
+{
+}
+
+void dae::ScoreCommand::Execute([[maybe_unused]] float deltaTime)
+{
+	m_pObject->GetComponent<dae::ScoreComponent>()->AddScore(100);
 }

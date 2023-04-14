@@ -11,6 +11,8 @@
 #include "ResourceManager.h"
 #include <chrono>
 
+#include <steam_api.h>
+
 SDL_Window* g_window{};
 
 void PrintSDLVersion()
@@ -84,13 +86,14 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
 
-	// todo: this update loop could use some work.
 	bool doContinue = true;
 	auto lastTime = std::chrono::high_resolution_clock::now();
 	int frameTimeMs = 6;
-	//float lag = 0.0f;
+
 	while (doContinue)
 	{
+		SteamAPI_RunCallbacks();
+
 		const auto currentTime = std::chrono::high_resolution_clock::now();
 		const float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
 

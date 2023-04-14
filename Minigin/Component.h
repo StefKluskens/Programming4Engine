@@ -1,26 +1,28 @@
 #pragma once
-#include "GameObject.h"
-#include <memory>
+#include <glm/glm.hpp>
 
 namespace dae
 {
+	class GameObject;
+
 	class Component
 	{
 	public:
-		Component(GameObject* pGameObject) : m_pGameObject(pGameObject) {};
-		~Component() = default;
+		Component(GameObject* pObject);
+		virtual ~Component() = default;
 		Component(const Component& other) = delete;
-		Component(Component&& other) = delete;
+		Component(Component&& other) noexcept = default;
 		Component& operator=(const Component& other) = delete;
 		Component& operator=(Component&& other) = delete;
 
 		virtual void Render() const = 0;
 		virtual void Update(float deltaTime) = 0;
 		//virtual void FixedUpdate([[maybe_unused]] float deltaTime) {};
+		GameObject* GetOwner() const { return m_pAttachedObject; };
 
-		GameObject* GetGameObject() const { return m_pGameObject; }
+	protected:
 
 	private:
-		GameObject* m_pGameObject{};
+		GameObject* m_pAttachedObject;
 	};
 }

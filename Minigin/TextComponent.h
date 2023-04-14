@@ -8,15 +8,14 @@ namespace dae
 {
 	class Font;
 	class Texture2D;
-	class TransformComponent;
 
 	class TextComponent : public Component
 	{
 	public:
-		TextComponent(GameObject* pGameObject);
+		TextComponent(GameObject* pObject, const std::string& text, std::shared_ptr<Font> font);
 		virtual ~TextComponent() = default;
 		TextComponent(const TextComponent& other) = delete;
-		TextComponent(TextComponent&& other) = delete;
+		TextComponent(TextComponent&& other) noexcept;
 		TextComponent& operator=(const TextComponent& other) = delete;
 		TextComponent& operator=(TextComponent&& other) = delete;
 
@@ -24,17 +23,16 @@ namespace dae
 		void Update(float deltaTime) override;
 
 		void SetText(const std::string& text);
-		void SetFont(std::shared_ptr<Font> font);
+		void SetPosition(float x, float y);
 
 		std::string GetText() const;
 		std::shared_ptr<Font> GetFont() const;
 
 	private:
-		bool m_needsUpdate;
-		std::string m_text;
-		std::shared_ptr<Font> m_font;
-		std::shared_ptr<Texture2D> m_textTexture;
-
-		TransformComponent* m_pTransform{};
+		std::string m_Text;
+		Transform* m_Transform{};
+		std::shared_ptr<Font> m_Font;
+		std::shared_ptr<Texture2D> m_TextTexture;
+		bool m_NeedsUpdate;
 	};
 }

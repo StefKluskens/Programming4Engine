@@ -68,16 +68,13 @@ public:
 	}
 };
 
-
 XBoxController::XBoxController(int controllerIndex)
 {
-	m_pImpl = new XBoxControllerImpl(controllerIndex);
+	m_pImpl = std::make_unique<XBoxControllerImpl>(controllerIndex);
 }
 
 XBoxController::~XBoxController()
 {
-	delete m_pImpl;
-	m_pImpl = nullptr;
 }
 
 void XBoxController::Update()

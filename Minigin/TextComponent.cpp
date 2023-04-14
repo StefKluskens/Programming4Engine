@@ -4,33 +4,43 @@
 #include "Renderer.h"
 #include "Font.h"
 #include "Texture2D.h"
-#include "TransformComponent.h"
+#include "GameObject.h"
 
-dae::TextComponent::TextComponent(GameObject* pGameObject)
-	: Component(pGameObject)
-	, m_needsUpdate(true)
+dae::TextComponent::TextComponent(GameObject* pObject, const std::string& text, std::shared_ptr<Font> font)
+	: Component(pObject)
+	, m_NeedsUpdate(true)
+	, m_Text(text)
+	, m_Font(std::move(font))
+	, m_TextTexture(nullptr)
 {
-	m_pTransform = GetGameObject()->GetComponent<TransformComponent>();
+	m_Transform = GetOwner()->GetTransform();
+}
+
+dae::TextComponent::TextComponent(TextComponent&& other) noexcept
+	: Component(std::move(other))
+{
+	m_Text = std::move(other.m_Text);
+	m_Transform = std::move(other.m_Transform);
+	m_Font = std::move(other.m_Font);
+	m_TextTexture = std::move(other.m_TextTexture);
+	m_NeedsUpdate = std::move(other.m_NeedsUpdate);
 }
 
 void dae::TextComponent::Render() const
 {
-	if (m_textTexture != nullptr)
+	if (m_TextTexture != nullptr)
 	{
-		if (m_pTransform)
-		{
-			auto pos = m_pTransform->GetPosition();
-			Renderer::GetInstance().RenderTexture(*m_textTexture, pos.x, pos.y);
-		}
+		const auto& pos = m_Transform->GetLocalPosition();
+		Renderer::GetInstance().RenderTexture(*m_TextTexture, pos.x, pos.y);
 	}
 }
 
-void dae::TextComponent::Update(float)
+void dae::TextComponent::Update([[maybe_unused]] float deltaTime)
 {
-	if (m_needsUpdate)
+	if (m_NeedsUpdate)
 	{
 		const SDL_Color color = { 255,255,255 }; // only white text is supported now
-		const auto surf = TTF_RenderText_Blended(m_font->GetFont(), m_text.c_str(), color);
+		const auto surf = TTF_RenderText_Blended(m_Font->GetFont(), m_Text.c_str(), color);
 		if (surf == nullptr)
 		{
 			throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
@@ -41,28 +51,28 @@ void dae::TextComponent::Update(float)
 			throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
 		}
 		SDL_FreeSurface(surf);
-		m_textTexture = std::make_shared<Texture2D>(texture);
-		m_needsUpdate = false;
+		m_TextTexture = std::make_shared<Texture2D>(texture);
+		m_NeedsUpdate = false;
 	}
 }
 
 void dae::TextComponent::SetText(const std::string& text)
 {
-	m_text = text;
-	m_needsUpdate = true;
+	m_Text = text;
+	m_NeedsUpdate = true;
 }
 
-void dae::TextComponent::SetFont(std::shared_ptr<Font> font)
+void dae::TextComponent::SetPosition(float x, float y)
 {
-	m_font = font;
+	m_Transform->SetLocalPosition(glm::vec3{ x,y,0.0f });
 }
 
 std::string dae::TextComponent::GetText() const
 {
-	return m_text;
+	return m_Text;
 }
 
 std::shared_ptr<dae::Font> dae::TextComponent::GetFont() const
 {
-	return m_font;
+	return m_Font;
 }

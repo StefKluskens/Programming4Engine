@@ -1,5 +1,11 @@
 #include "ScoreComponent.h"
 
+#pragma warning(push)
+#pragma warning(disable: 6340)
+#include "SteamAchievementsGlobals.h"
+#pragma warning(pop)
+
+
 dae::ScoreComponent::ScoreComponent(GameObject* pObject)
 	: Component(pObject)
 	, m_Score(0)
@@ -24,4 +30,12 @@ void dae::ScoreComponent::AddScore(int score)
 	m_Score += score;
 
 	m_pScoreSubject->Notify(Event::PickUpFound);
+
+	/*if (m_Score >= 500)
+	{
+		if (g_SteamAchievements)
+		{
+			g_SteamAchievements->SetAchievement("ACH_WIN_ONE_GAME");
+		}
+	}*/
 }

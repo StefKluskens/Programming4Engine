@@ -1,6 +1,10 @@
 #pragma once
 #include "Component.h"
 #include "Subject.h"
+//#pragma warning(push)
+//#pragma warning(disable: 6340)
+//#include "SteamAchievementsGlobals.h"
+//#pragma warning(pop)
 
 namespace dae
 {

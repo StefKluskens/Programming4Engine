@@ -11,7 +11,10 @@
 #include "ResourceManager.h"
 #include <chrono>
 
+#pragma warning(push)
+#pragma warning(disable: 6340)
 #include <steam_api.h>
+#pragma warning(pop)
 
 SDL_Window* g_window{};
 
@@ -41,6 +44,18 @@ void PrintSDLVersion()
 	version = *TTF_Linked_Version();
 	printf("We are linking against SDL_ttf version %u.%u.%u.\n",
 		version.major, version.minor, version.patch);
+}
+
+void PrintHowToPlay()
+{
+	printf("\nHow to play:\n");
+	printf("Desktop player movement: WASD\n");
+	printf("Desktop player score points: T\n");
+	printf("Desktop player die: R\n\n");
+	printf("Controller player movement: Dpad\n");
+	printf("Controller player score points: B-button\n");
+	printf("Controller player die: A-button\n\n");
+
 }
 
 dae::Minigin::Minigin(const std::string &dataPath)
@@ -81,6 +96,10 @@ dae::Minigin::~Minigin()
 void dae::Minigin::Run(const std::function<void()>& load)
 {
 	load();
+
+	PrintHowToPlay();
+
+	
 
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();

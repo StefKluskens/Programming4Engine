@@ -112,10 +112,15 @@
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>xcopy $(SolutionDir)3rdParty\steamworks\redistributable_bin\*.dll $(OutputPath) /Y</Command>
+      <Command>xcopy $(SolutionDir)3rdParty\SDL2\lib\x86\*.dll $(OutputPath) /Y
+xcopy $(SolutionDir)3rdParty\SDL2_image\lib\x86\*.dll $(OutputPath) /Y
+xcopy $(SolutionDir)3rdParty\SDL2_ttf\lib\x86\*.dll $(OutputPath) /Y
+xcopy $(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.dll $(OutputPath) /Y
+xcopy $(SolutionDir)Data\steam_appid.txt $(OutputPath) /Y</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>copy "$(SolutionDir)Data\steam_appid.txt" "$(TargetDir)"</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -137,10 +142,15 @@
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>xcopy $(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.dll $(OutputPath) /Y</Command>
+      <Command>xcopy $(SolutionDir)3rdParty\SDL2\lib\x64\*.dll $(OutputPath) /Y
+xcopy $(SolutionDir)3rdParty\SDL2_image\lib\x64\*.dll $(OutputPath) /Y
+xcopy $(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll $(OutputPath) /Y
+xcopy $(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.dll $(OutputPath) /Y
+xcopy $(SolutionDir)Data\steam_appid.txt $(OutputPath) /Y</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>copy "$(SolutionDir)Data\steam_appid.txt" "$(TargetDir)"</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -166,10 +176,15 @@
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>xcopy $(SolutionDir)3rdParty\steamworks\redistributable_bin\*.dll $(OutputPath) /Y</Command>
+      <Command>xcopy $(SolutionDir)3rdParty\SDL2\lib\x86\*.dll $(OutputPath) /Y
+xcopy $(SolutionDir)3rdParty\SDL2_image\lib\x86\*.dll $(OutputPath) /Y
+xcopy $(SolutionDir)3rdParty\SDL2_ttf\lib\x86\*.dll $(OutputPath) /Y
+xcopy $(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.dll $(OutputPath) /Y
+xcopy $(SolutionDir)Data\steam_appid.txt $(OutputPath) /Y</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>copy "$(SolutionDir)Data\steam_appid.txt" "$(TargetDir)"</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -196,10 +211,15 @@
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>xcopy $(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.dll $(OutputPath) /Y</Command>
+      <Command>xcopy $(SolutionDir)3rdParty\SDL2\lib\x64\*.dll $(OutputPath) /Y
+xcopy $(SolutionDir)3rdParty\SDL2_image\lib\x64\*.dll $(OutputPath) /Y
+xcopy $(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll $(OutputPath) /Y
+xcopy $(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.dll $(OutputPath) /Y
+xcopy $(SolutionDir)Data\steam_appid.txt $(OutputPath) /Y</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>copy "$(SolutionDir)Data\steam_appid.txt" "$(TargetDir)"</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

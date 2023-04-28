@@ -31,11 +31,12 @@ void dae::ScoreComponent::AddScore(int score)
 
 	m_pScoreSubject->Notify(Event::PickUpFound);
 
-	/*if (m_Score >= 500)
+	if (m_Score >= 500)
 	{
 		if (g_SteamAchievements)
 		{
 			g_SteamAchievements->SetAchievement("ACH_WIN_ONE_GAME");
+			SteamUserStats()->StoreStats();
 		}
-	}*/
+	}
 }

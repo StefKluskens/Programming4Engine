@@ -105,12 +105,6 @@
     <ClInclude Include="Achievement.h">
       <Filter>Observers</Filter>
     </ClInclude>
-    <ClInclude Include="CSteamAchievements.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SteamAchievementsGlobals.h">
-      <Filter>Observers</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -184,12 +178,6 @@
     </ClCompile>
     <ClCompile Include="ScoreDisplay.cpp">
       <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="CSteamAchievements.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SteamAchievementsGlobals.cpp">
-      <Filter>Observers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

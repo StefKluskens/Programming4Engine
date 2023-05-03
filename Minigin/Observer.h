@@ -7,8 +7,7 @@ namespace dae
 	{
 		PlayerDied,
 		EnemyDied,
-		PickUpFound,
-		ACH_WIN_ONE_GAME
+		PickUpFound
 	};
 
 	class Observer

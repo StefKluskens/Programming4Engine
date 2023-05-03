@@ -11,11 +11,6 @@
 #include "ResourceManager.h"
 #include <chrono>
 
-#pragma warning(push)
-#pragma warning(disable: 6340)
-#include <steam_api.h>
-#pragma warning(pop)
-
 SDL_Window* g_window{};
 
 void PrintSDLVersion()
@@ -99,8 +94,6 @@ void dae::Minigin::Run(const std::function<void()>& load)
 
 	PrintHowToPlay();
 
-	
-
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
@@ -111,8 +104,6 @@ void dae::Minigin::Run(const std::function<void()>& load)
 
 	while (doContinue)
 	{
-		SteamAPI_RunCallbacks();
-
 		const auto currentTime = std::chrono::high_resolution_clock::now();
 		const float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
 

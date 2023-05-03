@@ -18,6 +18,7 @@ namespace dae
 		void Update([[maybe_unused]]float deltaTime) override {};
 
 		void AddObserver(Observer* pObserver);
+		void RemoveObserver(Observer* pObserver);
 
 		void AddScore(int score);
 		int GetScore() const { return m_Score; };

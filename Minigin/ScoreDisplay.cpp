@@ -12,13 +12,6 @@ dae::ScoreDisplay::ScoreDisplay(GameObject* pObject, ScoreComponent* pScoreCompo
 	m_pTextComponent->SetText(text);
 }
 
-dae::ScoreDisplay::ScoreDisplay(ScoreDisplay&& other) noexcept
-	: Component(std::move(other))
-{
-	m_pScoreComponent = std::move(other.m_pScoreComponent);
-	m_pTextComponent = std::move(other.m_pTextComponent);
-}
-
 void dae::ScoreDisplay::Render() const
 {
 }

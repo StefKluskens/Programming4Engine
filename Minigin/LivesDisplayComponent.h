@@ -13,7 +13,7 @@ namespace dae
 		LivesDisplayComponent(GameObject* pObject, LivesComponent* pLivesComponent);
 		virtual ~LivesDisplayComponent() = default;
 		LivesDisplayComponent(const LivesDisplayComponent& other) = delete;
-		LivesDisplayComponent(LivesDisplayComponent&& other) noexcept;
+		LivesDisplayComponent(LivesDisplayComponent&& other) noexcept = delete;
 		LivesDisplayComponent& operator=(const LivesDisplayComponent& other) = delete;
 		LivesDisplayComponent& operator=(LivesDisplayComponent&& other) = delete;
 

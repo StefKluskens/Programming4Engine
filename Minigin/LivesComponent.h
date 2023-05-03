@@ -20,6 +20,7 @@ namespace dae
 		void Update([[maybe_unused]]float deltaTime) override {};
 
 		void AddObserver(Observer* pObserver);
+		void RemoveObserver(Observer* pObserver);
 
 		int GetLives() const { return m_Lives; };
 

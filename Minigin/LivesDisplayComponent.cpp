@@ -11,13 +11,6 @@ dae::LivesDisplayComponent::LivesDisplayComponent(GameObject* pObject, LivesComp
 	m_pTextComponent->SetText(text);
 }
 
-dae::LivesDisplayComponent::LivesDisplayComponent(LivesDisplayComponent&& other) noexcept
-	: Component(std::move(other))
-{
-	m_pTextComponent = std::move(other.m_pTextComponent);
-	m_pLivesComponent = std::move(other.m_pLivesComponent);
-}
-
 void dae::LivesDisplayComponent::Render() const
 {
 }

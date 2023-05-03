@@ -20,6 +20,11 @@ void dae::LivesComponent::AddObserver(Observer* pObserver)
 	m_pLivesSubject->AddObserver(pObserver);
 }
 
+void dae::LivesComponent::RemoveObserver(Observer* pObserver)
+{
+	m_pLivesSubject->RemoveObserver(pObserver);
+}
+
 void dae::LivesComponent::Die()
 {
 	if (m_Lives <= 0)

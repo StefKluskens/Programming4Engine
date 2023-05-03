@@ -13,7 +13,7 @@ namespace dae
 		ScoreDisplay(GameObject* pObject, ScoreComponent* pScoreComponent);
 		virtual ~ScoreDisplay() = default;
 		ScoreDisplay(const ScoreDisplay& other) = delete;
-		ScoreDisplay(ScoreDisplay&& other) noexcept;
+		ScoreDisplay(ScoreDisplay&& other) noexcept = delete;
 		ScoreDisplay& operator=(const ScoreDisplay& other) = delete;
 		ScoreDisplay& operator=(ScoreDisplay&& other) = delete;
 

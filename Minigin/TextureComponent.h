@@ -24,6 +24,8 @@ namespace dae
 		void SetTexture(const std::string& filename);
 		void SetPosition(float x, float y);
 
+		glm::vec2 GetSize() const;
+
 	private:
 		//TODO: Check if this could this be a unique_ptr
 		std::shared_ptr<Texture2D> m_pTexture{};

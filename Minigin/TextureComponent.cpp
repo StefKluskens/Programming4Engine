@@ -40,3 +40,11 @@ void dae::TextureComponent::SetPosition(float x, float y)
 	m_Position.x = x;
 	m_Position.y = y;
 }
+
+glm::vec2 dae::TextureComponent::GetSize() const
+{
+	float x = static_cast<float>(m_pTexture->GetSize().x);
+	float y = static_cast<float>(m_pTexture->GetSize().y);
+
+	return glm::vec2(x, y);
+}

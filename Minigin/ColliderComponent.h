@@ -5,10 +5,14 @@
 namespace dae
 {
 	class Transform;
-	class ColliderComponent : public Component
+}
+
+namespace Game
+{
+	class ColliderComponent : public dae::Component
 	{
 	public:
-		ColliderComponent(GameObject* pObject, SDL_Rect rect);
+		ColliderComponent(dae::GameObject* pObject, SDL_Rect rect);
 		virtual ~ColliderComponent() = default;
 		ColliderComponent(const ColliderComponent& other) = delete;
 		ColliderComponent(ColliderComponent&& other) noexcept;
@@ -23,6 +27,6 @@ namespace dae
 
 	private:
 		SDL_Rect m_Rect;
-		Transform* m_pObjectTransform;
+		dae::Transform* m_pObjectTransform;
 	};
 }

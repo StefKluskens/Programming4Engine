@@ -1,24 +1,25 @@
 #include "FPSComponent.h"
 #include <iostream>
 #include "GameObject.h"
+#include "TextComponent.h"
 
-dae::FPSComponent::FPSComponent(GameObject* pObject)
+Game::FPSComponent::FPSComponent(dae::GameObject* pObject)
 	: Component(pObject)
-	, m_pTextComponent(pObject->GetComponent<TextComponent>())
+	, m_pTextComponent(pObject->GetComponent<dae::TextComponent>())
 {
 }
 
-dae::FPSComponent::FPSComponent(FPSComponent&& other) noexcept
+Game::FPSComponent::FPSComponent(FPSComponent&& other) noexcept
 	: Component(std::move(other))
 {
 	m_pTextComponent = std::move(other.m_pTextComponent);
 }
 
-void dae::FPSComponent::Render() const
+void Game::FPSComponent::Render() const
 {
 }
 
-void dae::FPSComponent::Update(float deltaTime)
+void Game::FPSComponent::Update(float deltaTime)
 {
 	if (m_pTextComponent != nullptr)
 	{

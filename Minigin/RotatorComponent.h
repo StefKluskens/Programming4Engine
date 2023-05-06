@@ -4,11 +4,14 @@
 namespace dae 
 {
 	class GameObject;
+}
 
-	class RotatorComponent : public Component
+namespace Game
+{
+	class RotatorComponent : public dae::Component
 	{
 	public:
-		RotatorComponent(GameObject* pObject, float radius, float rotSpeedRad);
+		RotatorComponent(dae::GameObject* pObject, float radius, float rotSpeedRad);
 		virtual ~RotatorComponent() = default;
 		RotatorComponent(const RotatorComponent& other) = delete;
 		RotatorComponent(RotatorComponent&& other) noexcept;
@@ -24,6 +27,6 @@ namespace dae
 		float m_CurrentRadians{};
 		glm::vec3 m_Center{};
 
-		GameObject* m_pOwner{};
+		dae::GameObject* m_pOwner{};
 	};
 }

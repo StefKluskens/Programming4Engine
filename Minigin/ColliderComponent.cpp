@@ -4,27 +4,27 @@
 #include "Transform.h"
 #include "GameObject.h"
 
-dae::ColliderComponent::ColliderComponent(GameObject* pObject, SDL_Rect rect)
+Game::ColliderComponent::ColliderComponent(dae::GameObject* pObject, SDL_Rect rect)
 	: Component(pObject)
 	, m_Rect{rect}
 {
 	m_pObjectTransform = pObject->GetTransform();
 }
 
-dae::ColliderComponent::ColliderComponent(ColliderComponent&& other) noexcept
+Game::ColliderComponent::ColliderComponent(ColliderComponent&& other) noexcept
 	: Component(std::move(other))
 {
 	m_Rect = std::move(other.m_Rect);
 	m_pObjectTransform = std::move(other.m_pObjectTransform);
 }
 
-void dae::ColliderComponent::Render() const
+void Game::ColliderComponent::Render() const
 {
-	SDL_SetRenderDrawColor(Renderer::GetInstance().GetSDLRenderer(), 255, 0, 0, 255);
-	SDL_RenderDrawRect(Renderer::GetInstance().GetSDLRenderer(), &m_Rect);
+	SDL_SetRenderDrawColor(dae::Renderer::GetInstance().GetSDLRenderer(), 255, 0, 0, 255);
+	SDL_RenderDrawRect(dae::Renderer::GetInstance().GetSDLRenderer(), &m_Rect);
 }
 
-void dae::ColliderComponent::Update(float /*deltaTime*/)
+void Game::ColliderComponent::Update(float /*deltaTime*/)
 {
 	//Move collider with owner
 	m_Rect.x = static_cast<int>(m_pObjectTransform->GetWorldPosition().x);
@@ -33,7 +33,7 @@ void dae::ColliderComponent::Update(float /*deltaTime*/)
 	
 }
 
-bool dae::ColliderComponent::CollisionCheck()
+bool Game::ColliderComponent::CollisionCheck()
 {
 	return false;
 }

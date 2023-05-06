@@ -1,32 +1,33 @@
 #include "ScoreComponent.h"
+#include "Subject.h"
 
-dae::ScoreComponent::ScoreComponent(GameObject* pObject)
+Game::ScoreComponent::ScoreComponent(dae::GameObject* pObject)
 	: Component(pObject)
 	, m_Score(0)
 {
-	m_pScoreSubject = std::make_unique<Subject>();
+	m_pScoreSubject = std::make_unique<dae::Subject>();
 }
 
-dae::ScoreComponent::ScoreComponent(ScoreComponent&& other) noexcept
+Game::ScoreComponent::ScoreComponent(ScoreComponent&& other) noexcept
 	: Component(std::move(other))
 {
 	m_pScoreSubject = std::move(other.m_pScoreSubject);
 	m_Score = std::move(other.m_Score);
 }
 
-void dae::ScoreComponent::AddObserver(Observer* pObserver)
+void Game::ScoreComponent::AddObserver(dae::Observer* pObserver)
 {
 	m_pScoreSubject->AddObserver(pObserver);
 }
 
-void dae::ScoreComponent::RemoveObserver(Observer* pObserver)
+void Game::ScoreComponent::RemoveObserver(dae::Observer* pObserver)
 {
 	m_pScoreSubject->RemoveObserver(pObserver);
 }
 
-void dae::ScoreComponent::AddScore(int score)
+void Game::ScoreComponent::AddScore(int score)
 {
 	m_Score += score;
 
-	m_pScoreSubject->Notify(Event::PickUpFound);
+	m_pScoreSubject->Notify(dae::Event::PickUpFound);
 }

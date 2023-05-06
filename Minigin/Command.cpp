@@ -41,7 +41,7 @@ dae::DieCommand::DieCommand(GameObject* pObject, ButtonState action)
 
 void dae::DieCommand::Execute([[maybe_unused]]float deltaTime)
 {
-	m_pObject->GetComponent<dae::LivesComponent>()->Die();
+	m_pObject->GetComponent<Game::LivesComponent>()->Die();
 }
 
 dae::ScoreCommand::ScoreCommand(GameObject* pObject, ButtonState action)
@@ -53,5 +53,5 @@ dae::ScoreCommand::ScoreCommand(GameObject* pObject, ButtonState action)
 
 void dae::ScoreCommand::Execute([[maybe_unused]] float deltaTime)
 {
-	m_pObject->GetComponent<dae::ScoreComponent>()->AddScore(100);
+	m_pObject->GetComponent<Game::ScoreComponent>()->AddScore(100);
 }

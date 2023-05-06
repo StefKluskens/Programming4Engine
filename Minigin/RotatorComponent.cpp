@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include <memory>
 
-dae::RotatorComponent::RotatorComponent(GameObject* pObject, float radius, float rotSpeedRad)
+Game::RotatorComponent::RotatorComponent(dae::GameObject* pObject, float radius, float rotSpeedRad)
 	: Component(pObject)
 	, m_Radius(radius)
 	, m_RotSpeed(rotSpeedRad)
@@ -11,7 +11,7 @@ dae::RotatorComponent::RotatorComponent(GameObject* pObject, float radius, float
 	m_Center = m_pOwner->GetParent()->GetTransform()->GetLocalPosition();
 }
 
-dae::RotatorComponent::RotatorComponent(RotatorComponent&& other) noexcept
+Game::RotatorComponent::RotatorComponent(RotatorComponent&& other) noexcept
 	: Component(std::move(other))
 {
 	m_Radius = std::move(other.m_Radius);
@@ -20,11 +20,11 @@ dae::RotatorComponent::RotatorComponent(RotatorComponent&& other) noexcept
 	m_pOwner = std::move(other.m_pOwner);
 }
 
-void dae::RotatorComponent::Render() const
+void Game::RotatorComponent::Render() const
 {
 }
 
-void dae::RotatorComponent::Update(float deltaTime)
+void Game::RotatorComponent::Update(float deltaTime)
 {
 	m_CurrentRadians += m_RotSpeed * deltaTime;
 

@@ -1,13 +1,19 @@
 #pragma once
 #include "Component.h"
-#include "Subject.h"
+#include <memory>
 
 namespace dae
 {
-	class ScoreComponent : public Component
+	class Subject;
+	class Observer;
+}
+
+namespace Game
+{
+	class ScoreComponent : public dae::Component
 	{
 	public:
-		ScoreComponent(GameObject* pObject);
+		ScoreComponent(dae::GameObject* pObject);
 		virtual ~ScoreComponent() = default;
 		ScoreComponent(const ScoreComponent& other) = delete;
 		ScoreComponent(ScoreComponent&& other) noexcept;
@@ -15,17 +21,17 @@ namespace dae
 		ScoreComponent& operator=(ScoreComponent&& other) = delete;
 
 		void Render() const override {};
-		void Update([[maybe_unused]]float deltaTime) override {};
+		void Update([[maybe_unused]] float deltaTime) override {};
 		void FixedUpdate([[maybe_unused]] float deltaTime) override {};
 
-		void AddObserver(Observer* pObserver);
-		void RemoveObserver(Observer* pObserver);
+		void AddObserver(dae::Observer* pObserver);
+		void RemoveObserver(dae::Observer* pObserver);
 
 		void AddScore(int score);
 		int GetScore() const { return m_Score; };
 
 	private:
-		std::unique_ptr<Subject> m_pScoreSubject;
+		std::unique_ptr<dae::Subject> m_pScoreSubject;
 		int m_Score;
 	};
 }

@@ -5,12 +5,16 @@
 namespace dae
 {
 	class TextComponent;
+}
+
+namespace Game
+{
 	class LivesComponent;
 
-	class LivesDisplayComponent : public Component, public Observer
+	class LivesDisplayComponent : public dae::Component, public dae::Observer
 	{
 	public:
-		LivesDisplayComponent(GameObject* pObject, LivesComponent* pLivesComponent);
+		LivesDisplayComponent(dae::GameObject* pObject, LivesComponent* pLivesComponent);
 		virtual ~LivesDisplayComponent() = default;
 		LivesDisplayComponent(const LivesDisplayComponent& other) = delete;
 		LivesDisplayComponent(LivesDisplayComponent&& other) noexcept = delete;
@@ -21,10 +25,10 @@ namespace dae
 		void Update(float deltaTime) override;
 		void FixedUpdate([[maybe_unused]] float deltaTime) override {};
 
-		void Notify(Event event) override;
+		void Notify(dae::Event event) override;
 
 	private:
-		TextComponent* m_pTextComponent;
+		dae::TextComponent* m_pTextComponent;
 		LivesComponent* m_pLivesComponent;
 	};
 }

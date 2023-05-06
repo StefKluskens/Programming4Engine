@@ -2,15 +2,19 @@
 #include "Component.h"
 #include <string>
 #include <chrono>
-#include "TextComponent.h"
 #include <memory>
 
 namespace dae
 {
-	class FPSComponent : public Component
+	class TextComponent;
+}
+
+namespace Game
+{
+	class FPSComponent : public dae::Component
 	{
 	public:
-		FPSComponent(GameObject* pObject);
+		FPSComponent(dae::GameObject* pObject);
 		virtual ~FPSComponent() = default;
 		FPSComponent(const FPSComponent& other) = delete;
 		FPSComponent(FPSComponent&& other) noexcept;
@@ -22,6 +26,6 @@ namespace dae
 		void FixedUpdate([[maybe_unused]] float deltaTime) override {};
 
 	private:
-		TextComponent* m_pTextComponent;
+		dae::TextComponent* m_pTextComponent;
 	};
 }

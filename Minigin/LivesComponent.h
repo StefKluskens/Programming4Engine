@@ -1,15 +1,21 @@
 #pragma once
 #include "Component.h"
-#include "Subject.h"
+#include <memory>
 
 namespace dae
 {
+	class Subject;
+	class Observer;
+}
+
+namespace Game
+{
 	class LivesDisplayComponent;
 
-	class LivesComponent : public Component
+	class LivesComponent : public dae::Component
 	{
 	public:
-		LivesComponent(GameObject* pObject, int lives);
+		LivesComponent(dae::GameObject* pObject, int lives);
 		virtual ~LivesComponent() = default;
 		LivesComponent(const LivesComponent& other) = delete;
 		LivesComponent(LivesComponent&& other) noexcept;
@@ -20,8 +26,8 @@ namespace dae
 		void Update([[maybe_unused]]float deltaTime) override {};
 		void FixedUpdate([[maybe_unused]] float deltaTime) override {};
 
-		void AddObserver(Observer* pObserver);
-		void RemoveObserver(Observer* pObserver);
+		void AddObserver(dae::Observer* pObserver);
+		void RemoveObserver(dae::Observer* pObserver);
 
 		int GetLives() const { return m_Lives; };
 
@@ -30,7 +36,7 @@ namespace dae
 	private:
 		int m_Lives;
 
-		std::unique_ptr<Subject> m_pLivesSubject;
+		std::unique_ptr<dae::Subject> m_pLivesSubject;
 	};
 }
 

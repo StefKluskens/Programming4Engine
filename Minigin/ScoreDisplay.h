@@ -4,13 +4,17 @@
 
 namespace dae
 {
-	class ScoreComponent;
 	class TextComponent;
+}
 
-	class ScoreDisplay : public Component, public Observer
+namespace Game
+{
+	class ScoreComponent;
+
+	class ScoreDisplay : public dae::Component, public dae::Observer
 	{
 	public:
-		ScoreDisplay(GameObject* pObject, ScoreComponent* pScoreComponent);
+		ScoreDisplay(dae::GameObject* pObject, ScoreComponent* pScoreComponent);
 		virtual ~ScoreDisplay() = default;
 		ScoreDisplay(const ScoreDisplay& other) = delete;
 		ScoreDisplay(ScoreDisplay&& other) noexcept = delete;
@@ -21,10 +25,10 @@ namespace dae
 		void Update(float deltaTime) override;
 		void FixedUpdate([[maybe_unused]] float deltaTime) override {};
 
-		void Notify(Event event) override;
+		void Notify(dae::Event event) override;
 
 	private:
 		ScoreComponent* m_pScoreComponent;
-		TextComponent* m_pTextComponent;
+		dae::TextComponent* m_pTextComponent;
 	};
 }

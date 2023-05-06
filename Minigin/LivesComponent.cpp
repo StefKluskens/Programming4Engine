@@ -1,31 +1,32 @@
 #include "LivesComponent.h"
 #include "LivesDisplayComponent.h"
+#include "Subject.h"
 
-dae::LivesComponent::LivesComponent(GameObject* pObject, int lives)
+Game::LivesComponent::LivesComponent(dae::GameObject* pObject, int lives)
 	: Component(pObject)
 	, m_Lives(lives)
 {
-	m_pLivesSubject = std::make_unique<Subject>();
+	m_pLivesSubject = std::make_unique<dae::Subject>();
 }
 
-dae::LivesComponent::LivesComponent(LivesComponent&& other) noexcept
+Game::LivesComponent::LivesComponent(LivesComponent&& other) noexcept
 	: Component(std::move(other))
 {
 	m_Lives = std::move(other.m_Lives);
 	m_pLivesSubject = std::move(other.m_pLivesSubject);
 }
 
-void dae::LivesComponent::AddObserver(Observer* pObserver)
+void Game::LivesComponent::AddObserver(dae::Observer* pObserver)
 {
 	m_pLivesSubject->AddObserver(pObserver);
 }
 
-void dae::LivesComponent::RemoveObserver(Observer* pObserver)
+void Game::LivesComponent::RemoveObserver(dae::Observer* pObserver)
 {
 	m_pLivesSubject->RemoveObserver(pObserver);
 }
 
-void dae::LivesComponent::Die()
+void Game::LivesComponent::Die()
 {
 	if (m_Lives <= 0)
 	{
@@ -34,5 +35,5 @@ void dae::LivesComponent::Die()
 	--m_Lives;
 
 	//Notify LivesDisplay to update text
-	m_pLivesSubject->Notify(Event::PlayerDied);
+	m_pLivesSubject->Notify(dae::Event::PlayerDied);
 }

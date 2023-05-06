@@ -2,24 +2,24 @@
 #include "TextComponent.h"
 #include "LivesComponent.h"
 
-dae::LivesDisplayComponent::LivesDisplayComponent(GameObject* pObject, LivesComponent* pLivesComponent)
+Game::LivesDisplayComponent::LivesDisplayComponent(dae::GameObject* pObject, LivesComponent* pLivesComponent)
 	: Component (pObject)
-	, m_pTextComponent(pObject->GetComponent<TextComponent>())
+	, m_pTextComponent(pObject->GetComponent<dae::TextComponent>())
 	, m_pLivesComponent(pLivesComponent)
 {
 	std::string text = std::to_string(m_pLivesComponent->GetLives()) + " lives";
 	m_pTextComponent->SetText(text);
 }
 
-void dae::LivesDisplayComponent::Render() const
+void Game::LivesDisplayComponent::Render() const
 {
 }
 
-void dae::LivesDisplayComponent::Update([[maybe_unused]] float deltaTime)
+void Game::LivesDisplayComponent::Update([[maybe_unused]] float deltaTime)
 {
 }
 
-void dae::LivesDisplayComponent::Notify(Event event)
+void Game::LivesDisplayComponent::Notify(dae::Event event)
 {
 	switch (event)
 	{

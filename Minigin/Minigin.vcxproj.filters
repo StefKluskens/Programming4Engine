@@ -102,9 +102,6 @@
     <ClInclude Include="ScoreDisplay.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="Achievement.h">
-      <Filter>Observers</Filter>
-    </ClInclude>
     <ClInclude Include="ColliderComponent.h">
       <Filter>Components</Filter>
     </ClInclude>

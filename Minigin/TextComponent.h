@@ -21,6 +21,7 @@ namespace dae
 
 		void Render() const override;
 		void Update(float deltaTime) override;
+		void FixedUpdate([[maybe_unused]] float deltaTime) override {};
 
 		void SetText(const std::string& text);
 		void SetPosition(float x, float y);

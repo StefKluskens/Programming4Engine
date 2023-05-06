@@ -20,6 +20,7 @@ namespace dae
 
 		void Render() const override;
 		void Update(float deltaTime) override;
+		void FixedUpdate([[maybe_unused]] float deltaTime) override {};
 
 		void SetTexture(const std::string& filename);
 		void SetPosition(float x, float y);

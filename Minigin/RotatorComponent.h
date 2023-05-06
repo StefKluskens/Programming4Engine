@@ -17,6 +17,7 @@ namespace dae
 
 		virtual void Render() const override;
 		virtual void Update(float deltaTime) override;
+		void FixedUpdate([[maybe_unused]] float deltaTime) override {};
 	private:
 		float m_Radius{};
 		float m_RotSpeed{};

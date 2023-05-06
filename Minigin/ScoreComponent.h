@@ -16,6 +16,7 @@ namespace dae
 
 		void Render() const override {};
 		void Update([[maybe_unused]]float deltaTime) override {};
+		void FixedUpdate([[maybe_unused]] float deltaTime) override {};
 
 		void AddObserver(Observer* pObserver);
 		void RemoveObserver(Observer* pObserver);

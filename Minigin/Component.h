@@ -17,7 +17,7 @@ namespace dae
 
 		virtual void Render() const = 0;
 		virtual void Update(float deltaTime) = 0;
-		//virtual void FixedUpdate([[maybe_unused]] float deltaTime) {};
+		virtual void FixedUpdate(float deltaTime) = 0;
 		GameObject* GetOwner() const { return m_pAttachedObject; };
 
 	protected:

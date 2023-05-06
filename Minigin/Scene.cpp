@@ -40,6 +40,11 @@ void Scene::Update(float deltaTime)
 	m_pRoot->Update(deltaTime);
 }
 
+void dae::Scene::FixedUpdate(float deltaTime)
+{
+	m_pRoot->FixedUpdate(deltaTime);
+}
+
 void Scene::Render() const
 {
 	/*for (const auto& object : m_objects)

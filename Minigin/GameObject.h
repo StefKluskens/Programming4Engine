@@ -16,6 +16,7 @@ namespace dae
 	{
 	public:
 		virtual void Update(float deltaTime);
+		virtual void FixedUpdate(float deltaTime);
 		virtual void Render() const;
 
 		void SetPosition(float x, float y);

@@ -17,9 +17,9 @@ bool dae::InputManager::ProcessInput(float deltaTime)
 	for (const auto& command : m_KeyboardCommands)
 	{
 		//Get the scancode from the key in the map
-		SDL_Scancode scancode = SDL_GetScancodeFromKey(command.first);
+		SDL_Scancode scancode = command.first;
 
-		if (command.second->GetButtonState() == ButtonState::IsPressed)
+		if (command.second->GetButtonState() == Command::ButtonState::IsPressed)
 		{
 			//IsPressed
 			if (currentKeyStates[scancode])
@@ -28,7 +28,7 @@ bool dae::InputManager::ProcessInput(float deltaTime)
 				command.second->Execute(deltaTime);
 			}
 		}
-		else if (command.second->GetButtonState() == ButtonState::IsDown)
+		else if (command.second->GetButtonState() == Command::ButtonState::IsDown)
 		{
 			//IsDown
 			bool isKeyPressed = currentKeyStates[scancode];
@@ -49,7 +49,7 @@ bool dae::InputManager::ProcessInput(float deltaTime)
 		auto button = command.first.second;
 		auto controllerIndex = command.first.first;
 
-		if (command.second->GetButtonState() == ButtonState::IsDown)
+		if (command.second->GetButtonState() == Command::ButtonState::IsDown)
 		{
 			if (m_pControllers[controllerIndex]->IsDown(button))
 			{
@@ -57,7 +57,7 @@ bool dae::InputManager::ProcessInput(float deltaTime)
 				command.second->Execute(deltaTime);
 			}
 		}
-		else if (command.second->GetButtonState() == ButtonState::IsPressed)
+		else if (command.second->GetButtonState() == Command::ButtonState::IsPressed)
 		{
 			if (m_pControllers[controllerIndex]->IsPressed(button))
 			{
@@ -100,7 +100,7 @@ void dae::InputManager::AddCommand(XBoxController::ControllerButton button, std:
 	m_ConsoleCommands.insert(std::make_pair(key, std::move(command)));
 }
 
-void dae::InputManager::AddCommand(SDL_Keycode key, std::unique_ptr<Command> pCommand)
+void dae::InputManager::AddCommand(SDL_Scancode key, std::unique_ptr<Command> pCommand)
 {
 	m_KeyboardCommands.insert(std::make_pair(key, std::move(pCommand)));
 }

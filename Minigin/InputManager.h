@@ -3,6 +3,7 @@
 #include <map>
 #include "Command.h"
 #include <unordered_map>
+#include <SDL_keycode.h>
 
 namespace dae
 {
@@ -14,7 +15,7 @@ namespace dae
 
 		int AddXBoxController();
 		void AddCommand(XBoxController::ControllerButton button, std::unique_ptr<Command> command, int controllerIndex);
-		void AddCommand(SDL_Keycode key, std::unique_ptr<Command> pCommand);
+		void AddCommand(SDL_Scancode key, std::unique_ptr<Command> pCommand);
 
 	private:
 		//Controller variables
@@ -24,7 +25,7 @@ namespace dae
 		std::vector<std::unique_ptr<XBoxController>> m_pControllers;
 
 		//Keyboard variables
-		std::map<SDL_Keycode, std::unique_ptr<Command>> m_KeyboardCommands;
+		std::map<SDL_Scancode, std::unique_ptr<Command>> m_KeyboardCommands;
 
 		std::unordered_map<SDL_Scancode, bool> m_PreviousKeyStates;
 	};

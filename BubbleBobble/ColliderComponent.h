@@ -20,13 +20,14 @@ namespace Game
 		ColliderComponent& operator=(ColliderComponent&& other) = delete;
 
 		void Render() const override;
-		void Update(float deltaTime) override;
-		void FixedUpdate([[maybe_unused]] float deltaTime) override {};
-
-		bool CollisionCheck();
+		void Update([[maybe_unused]] float deltaTime) override {};
+		void FixedUpdate(float deltaTime) override;
 
 	private:
+		bool HandleCollision(ColliderComponent* other);
+
 		SDL_Rect m_Rect;
 		dae::Transform* m_pObjectTransform;
+		bool m_Enabled = true;
 	};
 }

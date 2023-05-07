@@ -13,13 +13,15 @@
 #include "ScoreComponent.h"
 #include "ScoreDisplay.h"
 #include "ColliderComponent.h"
-#include "Commands.h"
+//#include "Commands.h"
 #include "RigidBody.h"
+#include "PlayerComponent.h"
 #include <glm/glm.hpp>
 
 void BubbleBobble::Load()
 {
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
+	dae::SceneManager::GetInstance().SetActiveScene(scene.GetName());
 
 	//Background texture object
 	auto bgGo = new dae::GameObject("Background object");
@@ -75,11 +77,14 @@ void BubbleBobble::Load()
 	bobRect.y = static_cast<int>(bobPos.y);
 	bobRect.h = static_cast<int>(bobTexSize.y);
 	bobRect.w = static_cast<int>(bobTexSize.x);
-	auto bobCollider = std::make_unique<Game::ColliderComponent>(bobGo, bobRect);
+	auto bobCollider = std::make_unique<dae::ColliderComponent>(bobGo, bobRect);
 	bobGo->AddComponent(std::move(bobCollider));
 
-	auto bobRB = std::make_unique<Game::RigidBody>(bobGo);
+	auto bobRB = std::make_unique<dae::RigidBody>(bobGo);
 	bobGo->AddComponent(std::move(bobRB));
+
+	auto playerBehaviour = std::make_unique<Game::PlayerComponent>(bobGo, true);
+	bobGo->AddComponent(std::move(playerBehaviour));
 
 	scene.Add(bobGo);
 
@@ -114,7 +119,7 @@ void BubbleBobble::Load()
 	bobGo->GetComponent<Game::ScoreComponent>()->AddObserver(scoreDisplayGo->GetComponent<Game::ScoreDisplay>());
 
 	//Move commands WASD
-	auto moveCommand = std::make_unique<Game::MoveCommand>(bobGo, glm::vec3{ 0.0f, -1.0f, 0.0f }, 50.f, dae::Command::ButtonState::IsPressed);
+	/*auto moveCommand = std::make_unique<Game::MoveCommand>(bobGo, glm::vec3{ 0.0f, -1.0f, 0.0f }, 50.f, dae::Command::ButtonState::IsPressed);
 	dae::InputManager::GetInstance().AddCommand(SDL_SCANCODE_W, std::move(moveCommand));
 
 	moveCommand = std::make_unique<Game::MoveCommand>(bobGo, glm::vec3{ 0.0f, 1.0f, 0.0f }, 50.f, dae::Command::ButtonState::IsPressed);
@@ -124,15 +129,30 @@ void BubbleBobble::Load()
 	dae::InputManager::GetInstance().AddCommand(SDL_SCANCODE_A, std::move(moveCommand));
 
 	moveCommand = std::make_unique<Game::MoveCommand>(bobGo, glm::vec3{ 1.0f, 0.0f, 0.0f }, 50.f, dae::Command::ButtonState::IsPressed);
-	dae::InputManager::GetInstance().AddCommand(SDL_SCANCODE_D, std::move(moveCommand));
+	dae::InputManager::GetInstance().AddCommand(SDL_SCANCODE_D, std::move(moveCommand));*/
 
-	//Die command
-	auto dieCommand = std::make_unique<Game::DieCommand>(bobGo, dae::Command::ButtonState::IsDown);
-	dae::InputManager::GetInstance().AddCommand(SDL_SCANCODE_R, std::move(dieCommand));
+	////Die command
+	//auto dieCommand = std::make_unique<Game::DieCommand>(bobGo, dae::Command::ButtonState::IsDown);
+	//dae::InputManager::GetInstance().AddCommand(SDL_SCANCODE_R, std::move(dieCommand));
 
-	//Score command
-	auto scoreCommand = std::make_unique<Game::ScoreCommand>(bobGo, dae::Command::ButtonState::IsDown);
-	dae::InputManager::GetInstance().AddCommand(SDL_SCANCODE_T, std::move(scoreCommand));
+	////Score command
+	//auto scoreCommand = std::make_unique<Game::ScoreCommand>(bobGo, dae::Command::ButtonState::IsDown);
+	//dae::InputManager::GetInstance().AddCommand(SDL_SCANCODE_T, std::move(scoreCommand));
+
+	auto floorGo = new dae::GameObject("Floor1");
+	floorGo->SetPosition(300.0f, 400.0f);
+
+	auto floorPos = floorGo->GetTransform()->GetWorldPosition();
+	SDL_Rect floorRect;
+	floorRect.x = static_cast<int>(floorPos.x);
+	floorRect.y = static_cast<int>(floorPos.y);
+	floorRect.h = 10;
+	floorRect.w = 200;
+	auto floorCollider = std::make_unique<dae::ColliderComponent>(floorGo, floorRect);
+	floorCollider->SetMoveable(false);
+	floorCollider->SetNeedsCollision(false);
+	floorGo->AddComponent(std::move(floorCollider));
+	scene.Add(floorGo);
 
 
 

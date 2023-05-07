@@ -1,11 +1,22 @@
 #include "Scene.h"
 #include "GameObject.h"
+#include "ColliderComponent.h"
 
 using namespace dae;
 
 unsigned int Scene::m_idCounter = 0;
 
-Scene::Scene(const std::string& name) 
+std::vector<ColliderComponent*> dae::Scene::GetColliders() const
+{
+	return m_pColliders;
+}
+
+std::string dae::Scene::GetName() const
+{
+	return m_name;
+}
+
+Scene::Scene(const std::string& name)
 	: m_name(name)
 	, m_pRoot(std::make_unique<GameObject>("Root Object"))
 {
@@ -18,6 +29,12 @@ void Scene::Add(GameObject* object)
 	//m_objects.emplace_back(std::move(object));
 
 	object->SetParent(m_pRoot.get(), true);
+
+	auto pCollider = object->GetComponent<ColliderComponent>();
+	if (pCollider)
+	{
+		m_pColliders.push_back(pCollider);
+	}
 }
 
 void Scene::Remove([[maybe_unused]]std::shared_ptr<GameObject> object)

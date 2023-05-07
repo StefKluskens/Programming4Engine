@@ -38,6 +38,8 @@ namespace dae
 		void SetParent(GameObject* pParent, bool keepWorldPos);
 		GameObject* GetParent() const;
 
+		std::string GetName() const;
+
 		//unique_ptr because I want the game object to have ownership of its children, seems the most logical to me
 		std::vector<std::unique_ptr<GameObject>> m_pChildren{};
 

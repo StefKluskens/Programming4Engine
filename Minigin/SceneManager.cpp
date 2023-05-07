@@ -25,6 +25,24 @@ void dae::SceneManager::Render()
 	}
 }
 
+dae::Scene* dae::SceneManager::GetActiveScene() const
+{
+	return m_pActiveScene;
+}
+
+void dae::SceneManager::SetActiveScene(const std::string& name)
+{
+	auto it = std::find_if(m_scenes.begin(), m_scenes.end(), [name](const std::shared_ptr<Scene>& pScene)
+		{
+			return pScene->GetName() == name;
+		});
+
+	if (it != m_scenes.end())
+	{
+		m_pActiveScene = it->get();
+	}
+}
+
 dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
 {
 	const auto& scene = std::shared_ptr<Scene>(new Scene(name));

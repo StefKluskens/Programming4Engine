@@ -130,3 +130,8 @@ GameObject* GameObject::GetParent() const
 {
 	return m_pParent;
 }
+
+std::string dae::GameObject::GetName() const
+{
+	return m_Name;
+}

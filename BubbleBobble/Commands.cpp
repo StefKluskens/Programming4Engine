@@ -13,7 +13,7 @@ Game::MoveCommand::MoveCommand(dae::GameObject* pActor, glm::vec3 direction, flo
 	, m_Action(action)
 {
 	m_pTransform = pActor->GetTransform();
-	m_pRigidbody = pActor->GetComponent<Game::RigidBody>();
+	m_pRigidbody = pActor->GetComponent<dae::RigidBody>();
 }
 
 void Game::MoveCommand::Execute(float /*deltaTime*/)

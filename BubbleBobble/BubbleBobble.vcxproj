@@ -153,24 +153,22 @@
   <ItemGroup>
     <ClCompile Include="BubbleBobble.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="ColliderComponent.cpp" />
     <ClCompile Include="Commands.cpp" />
     <ClCompile Include="FPSComponent.cpp" />
     <ClCompile Include="LivesComponent.cpp" />
     <ClCompile Include="LivesDisplayComponent.cpp" />
-    <ClCompile Include="RigidBody.cpp" />
+    <ClCompile Include="PlayerComponent.cpp" />
     <ClCompile Include="RotatorComponent.cpp" />
     <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="ScoreDisplay.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BubbleBobble.h" />
-    <ClInclude Include="ColliderComponent.h" />
     <ClInclude Include="Commands.h" />
     <ClInclude Include="FPSComponent.h" />
     <ClInclude Include="LivesComponent.h" />
     <ClInclude Include="LivesDisplayComponent.h" />
-    <ClInclude Include="RigidBody.h" />
+    <ClInclude Include="PlayerComponent.h" />
     <ClInclude Include="RotatorComponent.h" />
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="ScoreDisplay.h" />

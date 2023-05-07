@@ -6,12 +6,11 @@ namespace dae
 {
 	class Transform;
 	class GameObject;
+	class RigidBody;
 }
 
 namespace Game
 {
-	class RigidBody;
-
 	class MoveCommand : public dae::Command
 	{
 	public:
@@ -25,7 +24,7 @@ namespace Game
 		glm::vec3 m_MoveDirection{};
 		float speed = 50.f;
 		dae::Command::ButtonState m_Action;
-		RigidBody* m_pRigidbody;
+		dae::RigidBody* m_pRigidbody;
 	};
 
 	class DieCommand : public dae::Command

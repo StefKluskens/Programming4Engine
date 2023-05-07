@@ -4,14 +4,11 @@
 namespace dae
 {
 	class Transform;
-}
 
-namespace Game
-{
-	class RigidBody : public dae::Component
+	class RigidBody : public Component
 	{
 	public:
-		RigidBody(dae::GameObject* pObject);
+		RigidBody(GameObject* pObject);
 		virtual ~RigidBody() = default;
 		RigidBody(const RigidBody& other) = delete;
 		RigidBody(RigidBody&& other) noexcept;
@@ -26,8 +23,11 @@ namespace Game
 
 	private:
 		glm::vec3 m_Direction{};
-		dae::Transform* m_pTransform{};
+		glm::vec3 m_Velocity{};
+		Transform* m_pTransform{};
 
-		float m_Gravity{ 1200.0f };
+		bool m_Grounded = false;
+
+		float m_Gravity{ 10.0f };
 	};
 }

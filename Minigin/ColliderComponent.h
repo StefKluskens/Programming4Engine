@@ -5,14 +5,11 @@
 namespace dae
 {
 	class Transform;
-}
 
-namespace Game
-{
-	class ColliderComponent : public dae::Component
+	class ColliderComponent : public Component
 	{
 	public:
-		ColliderComponent(dae::GameObject* pObject, SDL_Rect rect);
+		ColliderComponent(GameObject* pObject, SDL_Rect rect);
 		virtual ~ColliderComponent() = default;
 		ColliderComponent(const ColliderComponent& other) = delete;
 		ColliderComponent(ColliderComponent&& other) noexcept;
@@ -23,11 +20,18 @@ namespace Game
 		void Update([[maybe_unused]] float deltaTime) override {};
 		void FixedUpdate(float deltaTime) override;
 
+		void CollisionCheck();
+
+		void SetMoveable(bool isMoveable);
+		void SetNeedsCollision(bool needsCollisionCheck);
+
 	private:
 		bool HandleCollision(ColliderComponent* other);
 
 		SDL_Rect m_Rect;
-		dae::Transform* m_pObjectTransform;
+		Transform* m_pObjectTransform;
 		bool m_Enabled = true;
+		bool m_NeedsToCheckCollision = true;
+		bool m_IsMoveable = true;
 	};
 }

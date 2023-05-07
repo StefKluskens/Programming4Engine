@@ -4,6 +4,8 @@
 namespace dae
 {
 	class GameObject;
+	class ColliderComponent;
+
 	class Scene final
 	{
 		friend Scene& SceneManager::CreateScene(const std::string& name);
@@ -22,13 +24,17 @@ namespace dae
 		Scene& operator=(const Scene& other) = delete;
 		Scene& operator=(Scene&& other) = delete;
 
+		std::vector<ColliderComponent*> GetColliders() const;
+		std::string GetName() const;
+
 
 	private: 
 		explicit Scene(const std::string& name);
 
 		std::string m_name;
 		std::unique_ptr<GameObject> m_pRoot;
-		std::vector <std::unique_ptr<GameObject>> m_objects;
+		std::vector<std::unique_ptr<GameObject>> m_objects;
+		std::vector<ColliderComponent*> m_pColliders;
 
 		static unsigned int m_idCounter; 
 	};

@@ -118,19 +118,6 @@ void BubbleBobble::Load()
 
 	bobGo->GetComponent<Game::ScoreComponent>()->AddObserver(scoreDisplayGo->GetComponent<Game::ScoreDisplay>());
 
-	//Move commands WASD
-	/*auto moveCommand = std::make_unique<Game::MoveCommand>(bobGo, glm::vec3{ 0.0f, -1.0f, 0.0f }, 50.f, dae::Command::ButtonState::IsPressed);
-	dae::InputManager::GetInstance().AddCommand(SDL_SCANCODE_W, std::move(moveCommand));
-
-	moveCommand = std::make_unique<Game::MoveCommand>(bobGo, glm::vec3{ 0.0f, 1.0f, 0.0f }, 50.f, dae::Command::ButtonState::IsPressed);
-	dae::InputManager::GetInstance().AddCommand(SDL_SCANCODE_S, std::move(moveCommand));
-
-	moveCommand = std::make_unique<Game::MoveCommand>(bobGo, glm::vec3{ -1.0f, 0.0f, 0.0f }, 50.f, dae::Command::ButtonState::IsPressed);
-	dae::InputManager::GetInstance().AddCommand(SDL_SCANCODE_A, std::move(moveCommand));
-
-	moveCommand = std::make_unique<Game::MoveCommand>(bobGo, glm::vec3{ 1.0f, 0.0f, 0.0f }, 50.f, dae::Command::ButtonState::IsPressed);
-	dae::InputManager::GetInstance().AddCommand(SDL_SCANCODE_D, std::move(moveCommand));*/
-
 	////Die command
 	//auto dieCommand = std::make_unique<Game::DieCommand>(bobGo, dae::Command::ButtonState::IsDown);
 	//dae::InputManager::GetInstance().AddCommand(SDL_SCANCODE_R, std::move(dieCommand));

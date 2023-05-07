@@ -3,25 +3,40 @@
 
 void dae::SceneManager::Update(float deltaTime)
 {
-	for(auto& scene : m_scenes)
+	/*for(auto& scene : m_scenes)
 	{
 		scene->Update(deltaTime);
+	}*/
+
+	if(m_pActiveScene)
+	{
+		m_pActiveScene->Update(deltaTime);
 	}
 }
 
 void dae::SceneManager::FixedUpdate(float deltaTime)
 {
-	for (auto& scene : m_scenes)
+	/*for (auto& scene : m_scenes)
 	{
 		scene->FixedUpdate(deltaTime);
+	}*/
+
+	if (m_pActiveScene)
+	{
+		m_pActiveScene->FixedUpdate(deltaTime);
 	}
 }
 
 void dae::SceneManager::Render()
 {
-	for (const auto& scene : m_scenes)
+	/*for (const auto& scene : m_scenes)
 	{
 		scene->Render();
+	}*/
+
+	if (m_pActiveScene)
+	{
+		m_pActiveScene->Render();
 	}
 }
 

@@ -15,14 +15,14 @@ dae::RigidBody::RigidBody(RigidBody&& other) noexcept
 
 void dae::RigidBody::FixedUpdate(float deltaTime)
 {
-	auto pos = m_pTransform->GetLocalPosition() + (m_Direction * deltaTime);
+	m_Velocity = m_pTransform->GetLocalPosition() + (m_Direction * deltaTime);
 
 	if (!m_Grounded)
 	{
-		//pos.y += m_Gravity * deltaTime;
+		//m_Velocity.y += m_Gravity * deltaTime;
 	}
 
-	m_pTransform->SetLocalPosition(pos);
+	m_pTransform->SetLocalPosition(m_Velocity);
 
 	//Find better place for this
 	m_Direction = glm::vec3{ 0.f,0.f,0.f };
@@ -31,4 +31,19 @@ void dae::RigidBody::FixedUpdate(float deltaTime)
 void dae::RigidBody::SetDirection(glm::vec3 direction)
 {
 	m_Direction = direction;
+}
+
+void dae::RigidBody::SetIsGrounded(bool isGrounded)
+{
+	m_Grounded = isGrounded;
+}
+
+bool dae::RigidBody::IsGrounded() const
+{
+	return m_Grounded;
+}
+
+float dae::RigidBody::GetYVelocity() const
+{
+	return m_Velocity.y;
 }

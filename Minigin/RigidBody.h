@@ -21,6 +21,11 @@ namespace dae
 
 		void SetDirection(glm::vec3 direction);
 
+		void SetIsGrounded(bool isGrounded);
+		bool IsGrounded() const;
+
+		float GetYVelocity() const;
+
 	private:
 		glm::vec3 m_Direction{};
 		glm::vec3 m_Velocity{};

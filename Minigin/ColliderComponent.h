@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "SDL_rect.h"
+#include <vector>
 
 namespace dae
 {
@@ -22,13 +23,15 @@ namespace dae
 		void Update([[maybe_unused]] float deltaTime) override {};
 		void FixedUpdate(float deltaTime) override;
 
-		GameObject* CollisionCheck();
+		std::vector<GameObject*> CollisionCheck();
 		void DoGroundCheck();
 
 		void SetMoveable(bool isMoveable);
 		void SetNeedsCollision(bool needsCollisionCheck);
 
 		SDL_Rect GetRect() const;
+
+		void SetRigidbody(dae::RigidBody* pRigidbody);
 
 	private:
 		bool HandleCollision(ColliderComponent* other);
@@ -41,6 +44,6 @@ namespace dae
 
 		RigidBody* m_pRigidBody;
 
-		GameObject* m_HitObject{};
+		std::vector<GameObject*> m_HitObjects{};
 	};
 }

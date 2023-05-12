@@ -19,7 +19,10 @@ Game::MoveCommand::MoveCommand(dae::GameObject* pActor, glm::vec3 direction, flo
 void Game::MoveCommand::Execute(float /*deltaTime*/)
 {
 	glm::vec3 direction = m_MoveDirection * speed;
-	m_pRigidbody->SetDirection(direction);
+	if (m_pRigidbody)
+	{
+		m_pRigidbody->SetDirection(direction);
+	}
 }
 
 void Game::MoveCommand::SetSpeed(float newSpeed)

@@ -1,0 +1,2 @@
+Player 400 350 true true true
+Player 350 350 false true true

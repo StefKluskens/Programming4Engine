@@ -26,6 +26,8 @@ namespace dae
 
 		float GetYVelocity() const;
 
+		void SetGravity(bool useGravity);
+
 	private:
 		glm::vec3 m_Direction{};
 		glm::vec3 m_Velocity{};
@@ -33,6 +35,12 @@ namespace dae
 
 		bool m_Grounded = false;
 
-		float m_Gravity{ 10.0f };
+		float m_Gravity{ 100.0f };
+		bool m_ApplyGravity{ true };
+
+		bool m_SideCollision{ false };
+
+		bool m_RightCollision{ false };
+		bool m_LeftCollision{ false };
 	};
 }

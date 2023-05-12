@@ -1,10 +1,13 @@
 #pragma once
 #include "Component.h"
+#include <string>
 
 namespace dae
 {
-	class ColliderComponent;
 	class Command;
+	class ColliderComponent;
+	class RigidBody;
+	class TextureComponent;
 }
 
 namespace Game
@@ -12,7 +15,7 @@ namespace Game
 	class PlayerComponent : public dae::Component
 	{
 	public:
-		PlayerComponent(dae::GameObject* pObject, bool isPLayer1);
+		PlayerComponent(dae::GameObject* pObject, bool isPLayer1, bool hasCollider, bool hasRB);
 		virtual ~PlayerComponent() = default;
 		PlayerComponent(const PlayerComponent& other) = delete;
 		PlayerComponent(PlayerComponent&& other) noexcept = delete;
@@ -25,6 +28,8 @@ namespace Game
 
 	private:
 		dae::ColliderComponent* m_pCollider{};
+		dae::RigidBody* m_pRigidbody{};
+		dae::TextureComponent* m_pTexture{};
 
 		bool m_isPlayer1{ true };
 

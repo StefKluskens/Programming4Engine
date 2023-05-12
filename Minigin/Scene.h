@@ -25,6 +25,7 @@ namespace dae
 		Scene& operator=(Scene&& other) = delete;
 
 		std::vector<ColliderComponent*> GetColliders() const;
+
 		std::string GetName() const;
 
 

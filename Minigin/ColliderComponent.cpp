@@ -11,22 +11,12 @@ dae::ColliderComponent::ColliderComponent(GameObject* pObject, SDL_Rect rect)
 	, m_Rect{rect}
 {
 	m_pObjectTransform = pObject->GetTransform();
-	m_pRigidBody = pObject->GetComponent<RigidBody>();
 }
 
 void dae::ColliderComponent::Render() const
 {
 	SDL_SetRenderDrawColor(Renderer::GetInstance().GetSDLRenderer(), 255, 0, 0, 255);
 	SDL_RenderDrawRect(Renderer::GetInstance().GetSDLRenderer(), &m_Rect);
-
-	//Point 1 (centre of object)
-	int x1 = (m_Rect.x + m_Rect.w) / 2;
-	int y1 = (m_Rect.y + m_Rect.h) / 2;
-
-	//Point 2 (1 px below object)
-	int x2 = x1;
-	int y2 = m_Rect.y - 1;
-	SDL_RenderDrawLine(Renderer::GetInstance().GetSDLRenderer(), x1, y1, x2, y2);
 }
 
 void dae::ColliderComponent::FixedUpdate(float /*deltaTime*/)
@@ -40,13 +30,15 @@ void dae::ColliderComponent::FixedUpdate(float /*deltaTime*/)
 	}
 }
 
-dae::GameObject* dae::ColliderComponent::CollisionCheck()
+std::vector<dae::GameObject*> dae::ColliderComponent::CollisionCheck()
 {
 	//Check if this collider needs to check for collisions
 	if (m_NeedsToCheckCollision)
 	{
 		//Get all colliders from the scene
 		auto colliders = SceneManager::GetInstance().GetActiveScene()->GetColliders();
+
+		m_HitObjects.clear();
 
 		for (auto collider : colliders)
 		{
@@ -62,53 +54,58 @@ dae::GameObject* dae::ColliderComponent::CollisionCheck()
 				//Check for collision
 				if (HandleCollision(collider))
 				{
-					//Collided
-					std::cout << GetOwner()->GetName() << " collided with " << collider->GetOwner()->GetName() << '\n';
-					m_HitObject = collider->GetOwner();
-
-					return m_HitObject;
+					m_HitObjects.push_back(collider->GetOwner());
 				}
 			}
 		}
 	}
 
-	return nullptr;
+	return m_HitObjects;
 }
 
 void dae::ColliderComponent::DoGroundCheck()
 {
-	//Draw line from center of object towards 1 px beneath object
-	//If line intersects with floor, set grounded from RB to true
-
-	//Point 1 (centre of object)
-	int x1 = (m_Rect.x + m_Rect.w) / 2;
-	int y1 = (m_Rect.y + m_Rect.h) / 2;
-
-	//Point 2 (1 px below object)
-	int x2 = x1;
-	int y2 = m_Rect.y - 1;
-
-	//Get all colliders from the scene
-	auto colliders = SceneManager::GetInstance().GetActiveScene()->GetColliders();
-
-	for (auto collider : colliders)
+	if (m_pRigidBody)
 	{
-		//Avoid self collision
-		if (collider == this)
-		{
-			continue;
-		}
+		//Draw line from center of object towards 1 px beneath object
+		//If line intersects with floor, set grounded from RB to true
 
-		//Check if collider is enabled
-		if (collider->m_Enabled)
-		{
-			SDL_Rect rect = collider->GetRect();
+		m_pRigidBody->SetIsGrounded(false);
 
-			if (SDL_IntersectRectAndLine(&rect, &x1, &y1, &x2, &y2))
+		//Point 1 (centre of object)
+		int x1 = m_Rect.x + (m_Rect.w / 2);
+		int y1 = m_Rect.y + (m_Rect.h / 2);
+
+		//Point 2 (1 px below object)
+		int x2 = x1;
+		int y2 = m_Rect.y + m_Rect.h + 3;
+
+		//Get all colliders from the scene
+		auto colliders = SceneManager::GetInstance().GetActiveScene()->GetColliders();
+
+		for (auto collider : colliders)
+		{
+			//Avoid self collision
+			if (collider == this)
 			{
-				std::cout << "Bottom collision with " << collider->GetOwner()->GetName() << '\n';
+				continue;
+			}
+
+			//Check if collider is enabled
+			if (collider->m_Enabled)
+			{
+				SDL_Rect rect = collider->GetRect();
+
+				if (SDL_IntersectRectAndLine(&rect, &x1, &y1, &x2, &y2))
+				{
+					m_pRigidBody->SetIsGrounded(true);
+				}
 			}
 		}
+	}
+	else
+	{
+		std::cout << "No rigidbody attached to " << GetOwner()->GetName() << '\n';
 	}
 }
 
@@ -125,6 +122,11 @@ void dae::ColliderComponent::SetNeedsCollision(bool needsCollisionCheck)
 SDL_Rect dae::ColliderComponent::GetRect() const
 {
 	return m_Rect;
+}
+
+void dae::ColliderComponent::SetRigidbody(dae::RigidBody* pRigidbody)
+{
+	m_pRigidBody = pRigidbody;
 }
 
 bool dae::ColliderComponent::HandleCollision(ColliderComponent* other)

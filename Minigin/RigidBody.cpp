@@ -17,9 +17,9 @@ void dae::RigidBody::FixedUpdate(float deltaTime)
 {
 	m_Velocity = m_pTransform->GetLocalPosition() + (m_Direction * deltaTime);
 
-	if (!m_Grounded)
+	if (m_ApplyGravity && !m_Grounded)
 	{
-		//m_Velocity.y += m_Gravity * deltaTime;
+		m_Velocity.y += m_Gravity * deltaTime;
 	}
 
 	m_pTransform->SetLocalPosition(m_Velocity);
@@ -46,4 +46,9 @@ bool dae::RigidBody::IsGrounded() const
 float dae::RigidBody::GetYVelocity() const
 {
 	return m_Velocity.y;
+}
+
+void dae::RigidBody::SetGravity(bool useGravity)
+{
+	m_ApplyGravity = useGravity;
 }

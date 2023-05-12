@@ -5,6 +5,7 @@
 #include "GameObject.h"
 #include "Scene.h"
 #include "RigidBody.h"
+#include "TextureComponent.h"
 
 dae::ColliderComponent::ColliderComponent(GameObject* pObject, SDL_Rect rect)
 	: Component(pObject)
@@ -98,6 +99,17 @@ void dae::ColliderComponent::DoGroundCheck()
 
 				if (SDL_IntersectRectAndLine(&rect, &x1, &y1, &x2, &y2))
 				{
+					//Set yPos to top of floor
+					auto owner = GetOwner();
+					auto ownerTexture = owner->GetComponent<TextureComponent>();
+					auto xPos = owner->GetTransform()->GetLocalPosition().x;
+
+					auto floor = collider->GetOwner();
+					auto floorYPos = floor->GetTransform()->GetLocalPosition().y;
+
+					owner->SetPosition(xPos, floorYPos - ownerTexture->GetSize().y);
+
+					//Set isGrounded
 					m_pRigidBody->SetIsGrounded(true);
 				}
 			}
@@ -117,6 +129,21 @@ void dae::ColliderComponent::SetMoveable(bool isMoveable)
 void dae::ColliderComponent::SetNeedsCollision(bool needsCollisionCheck)
 {
 	m_NeedsToCheckCollision = needsCollisionCheck;
+}
+
+bool dae::ColliderComponent::NeedsToCheckCollision() const
+{
+	return m_NeedsToCheckCollision;
+}
+
+void dae::ColliderComponent::SetNeedsGroundCheck(bool needsGroundCheck)
+{
+	m_NeedsToDoGroundCheck = needsGroundCheck;
+}
+
+bool dae::ColliderComponent::NeedsToCheckGroundCollision() const
+{
+	return m_NeedsToDoGroundCheck;
 }
 
 SDL_Rect dae::ColliderComponent::GetRect() const

@@ -71,6 +71,7 @@ void BubbleBobble::Load()
 	auto floorCollider = std::make_unique<dae::ColliderComponent>(floorGo, floorRect);
 	floorCollider->SetMoveable(false);
 	floorCollider->SetNeedsCollision(false);
+	floorCollider->SetNeedsGroundCheck(false);
 	floorGo->AddComponent(std::move(floorCollider));
 	scene.Add(floorGo);
 }

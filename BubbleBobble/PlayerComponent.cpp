@@ -109,6 +109,6 @@ void Game::PlayerComponent::Update(float /*deltaTime*/)
 
 void Game::PlayerComponent::FixedUpdate(float /*deltaTime*/)
 {
-	m_pCollider->CollisionCheck();
-	m_pCollider->DoGroundCheck();
+	//m_pCollider->CollisionCheck();
+	//m_pCollider->DoGroundCheck();
 }

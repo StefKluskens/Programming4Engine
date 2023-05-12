@@ -28,6 +28,9 @@ namespace dae
 
 		void SetMoveable(bool isMoveable);
 		void SetNeedsCollision(bool needsCollisionCheck);
+		bool NeedsToCheckCollision() const;
+		void SetNeedsGroundCheck(bool needsGroundCheck);
+		bool NeedsToCheckGroundCollision() const;
 
 		SDL_Rect GetRect() const;
 
@@ -41,6 +44,7 @@ namespace dae
 		bool m_Enabled = true;
 		bool m_NeedsToCheckCollision = true;
 		bool m_IsMoveable = true;
+		bool m_NeedsToDoGroundCheck = true;
 
 		RigidBody* m_pRigidBody;
 

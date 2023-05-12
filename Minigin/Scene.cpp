@@ -60,6 +60,19 @@ void Scene::Update(float deltaTime)
 void dae::Scene::FixedUpdate(float deltaTime)
 {
 	m_pRoot->FixedUpdate(deltaTime);
+
+	for (int i{}; i < m_pColliders.size(); ++i)
+	{
+		if (m_pColliders[i]->NeedsToCheckCollision())
+		{
+			m_pColliders[i]->CollisionCheck();
+		}
+
+		if (m_pColliders[i]->NeedsToCheckGroundCollision())
+		{
+			m_pColliders[i]->DoGroundCheck();
+		}
+	}
 }
 
 void Scene::Render() const

@@ -5,6 +5,9 @@
 #include "Commands.h"
 #include "RigidBody.h"
 #include "TextureComponent.h"
+#include "ServiceLocator.h"
+#include "SDLSoundSystem.h"
+#include "ResourceManager.h"
 #include <memory>
 
 Game::PlayerComponent::PlayerComponent(dae::GameObject* pObject, bool isPLayer1, bool hasCollider, bool hasRB)
@@ -40,7 +43,7 @@ Game::PlayerComponent::PlayerComponent(dae::GameObject* pObject, bool isPLayer1,
 
 	if (hasRB)
 	{
-		auto rb = std::make_unique<dae::RigidBody>(GetOwner());
+		auto rb = std::make_unique<dae::RigidBody>(GetOwner(), m_pCollider);
 		GetOwner()->AddComponent(std::move(rb));
 
 		m_pRigidbody = GetOwner()->GetComponent<dae::RigidBody>();
@@ -50,51 +53,55 @@ Game::PlayerComponent::PlayerComponent(dae::GameObject* pObject, bool isPLayer1,
 		}
 	}
 
+	//test sounds
+	m_pSoundSytem = &dae::ServiceLocator::GetSoundSystem();
+	m_pSoundSytem->AddSound(dae::ResourceManager::GetInstance().GetAudioPath("Audio/Jump.wav"));
+
 	auto& input = dae::InputManager::GetInstance();
 	int controllerIndex = dae::InputManager::GetInstance().AddXBoxController();
 
 	if (m_isPlayer1)
 	{
 		//Keyboard commands
-		auto pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, glm::vec3{ 0.0f, -1.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsPressed);
+		auto pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, this, glm::vec3{ 0.0f, -1.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsDown);
 		input.AddCommand(SDL_SCANCODE_W, std::move(pMoveCommand));
 
-		pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, glm::vec3{ -1.0f, 0.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsPressed);
+		pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, this, glm::vec3{ -1.0f, 0.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsPressed);
 		input.AddCommand(SDL_SCANCODE_A, std::move(pMoveCommand));
 
-		pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, glm::vec3{ 1.0f, 0.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsPressed);
+		pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, this, glm::vec3{ 1.0f, 0.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsPressed);
 		input.AddCommand(SDL_SCANCODE_D, std::move(pMoveCommand));
 
 		//Controller commands
-		pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, glm::vec3{ 0.0f, -1.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsPressed);
+		pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, this, glm::vec3{ 0.0f, -1.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsDown);
 		dae::InputManager::GetInstance().AddCommand(dae::XBoxController::ControllerButton::DPadUp, std::move(pMoveCommand), controllerIndex);
 
-		pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, glm::vec3{ -1.0f, 0.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsPressed);
+		pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, this, glm::vec3{ -1.0f, 0.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsPressed);
 		dae::InputManager::GetInstance().AddCommand(dae::XBoxController::ControllerButton::DPadLeft, std::move(pMoveCommand), controllerIndex);
 
-		pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, glm::vec3{ 1.0f, 0.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsPressed);
+		pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, this, glm::vec3{ 1.0f, 0.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsPressed);
 		dae::InputManager::GetInstance().AddCommand(dae::XBoxController::ControllerButton::DPadRight, std::move(pMoveCommand), controllerIndex);
 	}
 	else
 	{
 		//Keyboard commands
-		auto pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, glm::vec3{ 0.0f, -1.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsPressed);
+		auto pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, this, glm::vec3{ 0.0f, -1.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsDown);
 		input.AddCommand(SDL_SCANCODE_UP, std::move(pMoveCommand));
 
-		pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, glm::vec3{ -1.0f, 0.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsPressed);
+		pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, this, glm::vec3{ -1.0f, 0.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsPressed);
 		input.AddCommand(SDL_SCANCODE_LEFT, std::move(pMoveCommand));
 
-		pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, glm::vec3{ 1.0f, 0.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsPressed);
+		pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, this, glm::vec3{ 1.0f, 0.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsPressed);
 		input.AddCommand(SDL_SCANCODE_RIGHT, std::move(pMoveCommand));
 
 		//Controller commands
-		pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, glm::vec3{ 0.0f, -1.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsPressed);
+		pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, this, glm::vec3{ 0.0f, -1.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsDown);
 		dae::InputManager::GetInstance().AddCommand(dae::XBoxController::ControllerButton::DPadUp, std::move(pMoveCommand), controllerIndex);
 
-		pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, glm::vec3{ -1.0f, 0.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsPressed);
+		pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, this, glm::vec3{ -1.0f, 0.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsPressed);
 		dae::InputManager::GetInstance().AddCommand(dae::XBoxController::ControllerButton::DPadLeft, std::move(pMoveCommand), controllerIndex);
 
-		pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, glm::vec3{ 1.0f, 0.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsPressed);
+		pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, this, glm::vec3{ 1.0f, 0.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsPressed);
 		dae::InputManager::GetInstance().AddCommand(dae::XBoxController::ControllerButton::DPadRight, std::move(pMoveCommand), controllerIndex);
 	}
 }
@@ -103,12 +110,32 @@ void Game::PlayerComponent::Render() const
 {
 }
 
-void Game::PlayerComponent::Update(float /*deltaTime*/)
+void Game::PlayerComponent::Update(float deltaTime)
 {
+	HandleMovement(deltaTime);
 }
 
 void Game::PlayerComponent::FixedUpdate(float /*deltaTime*/)
 {
-	//m_pCollider->CollisionCheck();
-	//m_pCollider->DoGroundCheck();
+}
+
+void Game::PlayerComponent::SetInputDirection(glm::vec3 direction)
+{
+	m_InputDir = direction;
+}
+
+void Game::PlayerComponent::HandleMovement(float deltaTime)
+{
+	glm::vec3 velocity = glm::vec3{ m_InputDir.x * m_MoveSpeed * deltaTime, m_pRigidbody->GetVelocity().y, 0.f };
+	m_pRigidbody->SetVelocity(velocity);
+
+	if (m_pRigidbody->IsGrounded() && m_InputDir.y != 0.f)
+	{
+		m_pSoundSytem->Play(0, 1.0f);
+
+		velocity = glm::vec3{ m_pRigidbody->GetVelocity().x, m_InputDir.y * m_JumpForce * deltaTime, 0.f };
+		m_pRigidbody->SetVelocity(velocity);
+	}
+
+	m_InputDir = glm::vec3{ 0.f,0.f,0.f };
 }

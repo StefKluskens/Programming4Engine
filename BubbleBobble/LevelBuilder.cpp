@@ -43,7 +43,7 @@ void Game::LevelBuilder::BuildPlayer(dae::Scene* pScene, std::string line)
 	{
 		name = "Player 2";
 	}
-	auto playerGo = new dae::GameObject(name);
+	auto playerGo = new dae::GameObject(name, pScene);
 
 	playerGo->SetPosition(xPos, yPos);
 

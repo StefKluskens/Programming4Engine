@@ -18,7 +18,7 @@ std::string dae::Scene::GetName() const
 
 Scene::Scene(const std::string& name)
 	: m_name(name)
-	, m_pRoot(std::make_unique<GameObject>("Root Object"))
+	, m_pRoot(std::make_unique<GameObject>("Root Object", this))
 {
 }
 
@@ -61,7 +61,7 @@ void dae::Scene::FixedUpdate(float deltaTime)
 {
 	m_pRoot->FixedUpdate(deltaTime);
 
-	for (int i{}; i < m_pColliders.size(); ++i)
+	/*for (int i{}; i < m_pColliders.size(); ++i)
 	{
 		if (m_pColliders[i]->NeedsToCheckCollision())
 		{
@@ -72,7 +72,7 @@ void dae::Scene::FixedUpdate(float deltaTime)
 		{
 			m_pColliders[i]->DoGroundCheck();
 		}
-	}
+	}*/
 }
 
 void Scene::Render() const

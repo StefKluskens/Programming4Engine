@@ -8,6 +8,7 @@ namespace dae
 	class ColliderComponent;
 	class RigidBody;
 	class TextureComponent;
+	class sound_system;
 }
 
 namespace Game
@@ -26,13 +27,21 @@ namespace Game
 		void Update(float deltaTime) override;
 		void FixedUpdate(float deltaTime) override;
 
+		void SetInputDirection(glm::vec3 direction);
+
 	private:
+		void HandleMovement(float deltaTime);
+
 		dae::ColliderComponent* m_pCollider{};
 		dae::RigidBody* m_pRigidbody{};
 		dae::TextureComponent* m_pTexture{};
+		dae::sound_system* m_pSoundSytem;
 
 		bool m_isPlayer1{ true };
 
-		float m_MoveSpeed{ 50.0f };
+		float m_MoveSpeed{ 100.0f };
+		float m_JumpForce{ 400.f };
+
+		glm::vec3 m_InputDir{};
 	};
 }

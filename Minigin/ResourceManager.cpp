@@ -36,3 +36,8 @@ std::unique_ptr<std::ifstream> dae::ResourceManager::LoadTextFile(const std::str
 {
 	return std::make_unique<std::ifstream>(m_dataPath + file);
 }
+
+std::string dae::ResourceManager::GetAudioPath(const std::string& audioFile) const
+{
+	return m_dataPath + audioFile;
+}

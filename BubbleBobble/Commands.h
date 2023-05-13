@@ -11,10 +11,12 @@ namespace dae
 
 namespace Game
 {
+	class PlayerComponent;
+
 	class MoveCommand : public dae::Command
 	{
 	public:
-		MoveCommand(dae::GameObject* pActor, glm::vec3 direction, float moveSpeed, dae::Command::ButtonState action);
+		MoveCommand(dae::GameObject* pActor, PlayerComponent* pPlayerComponent, glm::vec3 direction, float moveSpeed, dae::Command::ButtonState action);
 		void Execute(float deltaTime) override;
 		dae::Command::ButtonState GetButtonState() override { return m_Action; };
 		void SetSpeed(float newSpeed);
@@ -25,6 +27,7 @@ namespace Game
 		float speed = 50.f;
 		dae::Command::ButtonState m_Action;
 		dae::RigidBody* m_pRigidbody;
+		PlayerComponent* m_pPlayer;
 	};
 
 	class DieCommand : public dae::Command

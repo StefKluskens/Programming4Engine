@@ -31,6 +31,11 @@ void dae::ColliderComponent::FixedUpdate(float /*deltaTime*/)
 	}
 }
 
+SDL_Rect dae::ColliderComponent::GetRect() const
+{
+	return m_Rect;
+}
+
 std::vector<dae::GameObject*> dae::ColliderComponent::CollisionCheck()
 {
 	//Check if this collider needs to check for collisions
@@ -144,11 +149,6 @@ void dae::ColliderComponent::SetNeedsGroundCheck(bool needsGroundCheck)
 bool dae::ColliderComponent::NeedsToCheckGroundCollision() const
 {
 	return m_NeedsToDoGroundCheck;
-}
-
-SDL_Rect dae::ColliderComponent::GetRect() const
-{
-	return m_Rect;
 }
 
 void dae::ColliderComponent::SetRigidbody(dae::RigidBody* pRigidbody)

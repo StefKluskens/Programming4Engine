@@ -6,22 +6,14 @@
 
 using namespace dae;
 
-dae::GameObject::GameObject(std::string name)
+dae::GameObject::GameObject(std::string name, Scene* pScene)
 	: m_Name(name)
+	, m_pScene(pScene)
 {
 	m_Transform = std::make_unique<Transform>(this);
 }
 
 GameObject::~GameObject() = default;
-
-GameObject::GameObject(GameObject&& other) noexcept
-{
-	m_Transform = std::move(other.m_Transform);
-	m_pComponents = std::move(other.m_pComponents);
-	m_pChildren = std::move(other.m_pChildren);
-	m_Name = std::move(other.m_Name);
-	m_pParent = std::move(other.m_pParent);
-}
 
 void GameObject::Update(float deltaTime)
 { 
@@ -134,4 +126,9 @@ GameObject* GameObject::GetParent() const
 std::string dae::GameObject::GetName() const
 {
 	return m_Name;
+}
+
+Scene* dae::GameObject::GetScene() const
+{
+	return m_pScene;
 }

@@ -9,7 +9,7 @@
 namespace dae
 {
 	class Texture2D;
-	//class Component;
+	class Scene;
 
 	// todo: this should become final.
 	class GameObject final
@@ -22,10 +22,10 @@ namespace dae
 		void SetPosition(float x, float y);
 		void SetPosition(glm::vec3 pos);
 
-		GameObject(std::string name);
+		GameObject(std::string name, Scene* pScene);
 		virtual ~GameObject();
 		GameObject(const GameObject& other) = delete;
-		GameObject(GameObject&& other) noexcept;
+		GameObject(GameObject&& other) noexcept = delete;
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
@@ -43,6 +43,8 @@ namespace dae
 		//unique_ptr because I want the game object to have ownership of its children, seems the most logical to me
 		std::vector<std::unique_ptr<GameObject>> m_pChildren{};
 
+		Scene* GetScene() const;
+
 	private:
 		std::unique_ptr<Transform> m_Transform{};
 
@@ -52,6 +54,8 @@ namespace dae
 		std::string m_Name{ "GameObject" };
 
 		GameObject* m_pParent{ nullptr };
+
+		Scene* m_pScene;
 	};
 
 	template<typename T>

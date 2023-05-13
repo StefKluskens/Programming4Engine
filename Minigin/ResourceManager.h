@@ -15,6 +15,7 @@ namespace dae
 		std::shared_ptr<Texture2D> LoadTexture(const std::string& file) const;
 		std::shared_ptr<Font> LoadFont(const std::string& file, unsigned int size) const;
 		std::unique_ptr<std::ifstream> LoadTextFile(const std::string& file) const;
+		std::string GetAudioPath(const std::string& audioFile) const;
 	private:
 		friend class Singleton<ResourceManager>;
 		ResourceManager() = default;

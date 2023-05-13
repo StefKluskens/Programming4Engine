@@ -5,12 +5,14 @@
 #include "LivesComponent.h"
 #include "ScoreComponent.h"
 #include "RigidBody.h"
+#include "PlayerComponent.h"
 
-Game::MoveCommand::MoveCommand(dae::GameObject* pActor, glm::vec3 direction, float moveSpeed, dae::Command::ButtonState action)
+Game::MoveCommand::MoveCommand(dae::GameObject* pActor, PlayerComponent* pPlayerComponent, glm::vec3 direction, float moveSpeed, dae::Command::ButtonState action)
 	: dae::Command()
 	, m_MoveDirection(direction)
 	, speed(moveSpeed)
 	, m_Action(action)
+	, m_pPlayer(pPlayerComponent)
 {
 	m_pTransform = pActor->GetTransform();
 	m_pRigidbody = pActor->GetComponent<dae::RigidBody>();
@@ -19,10 +21,7 @@ Game::MoveCommand::MoveCommand(dae::GameObject* pActor, glm::vec3 direction, flo
 void Game::MoveCommand::Execute(float /*deltaTime*/)
 {
 	glm::vec3 direction = m_MoveDirection * speed;
-	if (m_pRigidbody)
-	{
-		m_pRigidbody->SetDirection(direction);
-	}
+	m_pPlayer->SetInputDirection(direction);
 }
 
 void Game::MoveCommand::SetSpeed(float newSpeed)

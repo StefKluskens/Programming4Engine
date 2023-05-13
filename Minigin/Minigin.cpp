@@ -9,6 +9,8 @@
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
+#include "ServiceLocator.h"
+#include "SDLSoundSystem.h"
 #include <chrono>
 
 SDL_Window* g_window{};
@@ -44,12 +46,10 @@ void PrintSDLVersion()
 void PrintHowToPlay()
 {
 	printf("\nHow to play:\n");
-	printf("Desktop player movement: WASD\n");
-	printf("Desktop player score points: T\n");
-	printf("Desktop player die: R\n\n");
-	printf("Controller player movement: Dpad\n");
-	printf("Controller player score points: B-button\n");
-	printf("Controller player die: A-button\n\n");
+	printf("Player 1 keyboard movement: A/D\n");
+	printf("Player 1 keyboard jumping: W\n");
+	printf("Player 1 controller movement: Dpad left/right\n");
+	printf("Player 1 controller jumping: Dpad up\n");
 
 }
 
@@ -78,6 +78,8 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	Renderer::GetInstance().Init(g_window);
 
 	ResourceManager::GetInstance().Init(dataPath);
+
+	dae::ServiceLocator::RegisterSoundSystem(std::make_unique<dae::SDLSoundSystem>());
 }
 
 dae::Minigin::~Minigin()

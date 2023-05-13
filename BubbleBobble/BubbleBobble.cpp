@@ -1,5 +1,4 @@
 #include "BubbleBobble.h"
-
 #include "SceneManager.h"
 #include "ResourceManager.h"
 #include "Scene.h"
@@ -19,20 +18,22 @@
 #include "LevelBuilder.h"
 #include <glm/glm.hpp>
 
+
+
 void BubbleBobble::Load()
 {
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("Level1");
 	dae::SceneManager::GetInstance().SetActiveScene(scene.GetName());
 
 	//Background texture object
-	auto bgGo = new dae::GameObject("Background object");
+	auto bgGo = new dae::GameObject("Background object", &scene);
 	auto bgTexture = std::make_unique<dae::TextureComponent>(bgGo);
 	bgTexture->SetTexture("background.tga");
 	bgGo->AddComponent(std::move(bgTexture));
 	scene.Add(bgGo);
 
 	//Logo texture object
-	auto logoGo = new dae::GameObject("Logo object");
+	auto logoGo = new dae::GameObject("Logo object", &scene);
 	logoGo->SetPosition(216.0f, 180.0f);
 	auto logoTexture = std::make_unique<dae::TextureComponent>(logoGo);
 	logoTexture->SetTexture("logo.tga");
@@ -40,7 +41,7 @@ void BubbleBobble::Load()
 	scene.Add(logoGo);
 
 	//Text object
-	auto textGo = new dae::GameObject("Programming text object");
+	auto textGo = new dae::GameObject("Programming text object", &scene);
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	auto text = std::make_unique<dae::TextComponent>(textGo, "Programming 4 Assignment", font);
 	text->SetPosition(80, 20);
@@ -48,7 +49,7 @@ void BubbleBobble::Load()
 	scene.Add(textGo);
 
 	//FPS object
-	auto fpsGo = new dae::GameObject("FPS object");
+	auto fpsGo = new dae::GameObject("FPS object", &scene);
 	auto fpsFont = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 18);
 	auto fpsText = std::make_unique<dae::TextComponent>(fpsGo, "FPS", fpsFont);
 	fpsGo->AddComponent(std::move(fpsText));
@@ -59,7 +60,7 @@ void BubbleBobble::Load()
 
 	Game::LevelBuilder::GetInstance().BuildLevel(&scene, "Resources/Levels/Level1.txt");
 
-	auto floorGo = new dae::GameObject("Floor1");
+	auto floorGo = new dae::GameObject("Floor1", &scene);
 	floorGo->SetPosition(300.0f, 400.0f);
 
 	auto floorPos = floorGo->GetTransform()->GetWorldPosition();

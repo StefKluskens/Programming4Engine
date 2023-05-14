@@ -8,6 +8,7 @@
 #include "ServiceLocator.h"
 #include "SDLSoundSystem.h"
 #include "ResourceManager.h"
+#include "ShootComponent.h"
 #include <memory>
 
 Game::PlayerComponent::PlayerComponent(dae::GameObject* pObject, bool isPLayer1, bool hasCollider, bool hasRB)
@@ -53,7 +54,12 @@ Game::PlayerComponent::PlayerComponent(dae::GameObject* pObject, bool isPLayer1,
 		}
 	}
 
-	//test sounds
+	/*auto pShootComponent = std::make_unique<ShootComponent>(pObject);
+	GetOwner()->AddComponent(std::move(pShootComponent));
+
+	auto shootComponent = GetOwner()->GetComponent<ShootComponent>();*/
+	
+
 	m_pSoundSytem = &dae::ServiceLocator::GetSoundSystem();
 	m_pSoundSytem->AddSound(dae::ResourceManager::GetInstance().GetAudioPath("Audio/Jump.wav"));
 
@@ -72,15 +78,22 @@ Game::PlayerComponent::PlayerComponent(dae::GameObject* pObject, bool isPLayer1,
 		pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, this, glm::vec3{ 1.0f, 0.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsPressed);
 		input.AddCommand(SDL_SCANCODE_D, std::move(pMoveCommand));
 
+		/*auto pShootCommand = std::make_unique<Game::ShootCommand>(pObject, shootComponent, dae::Command::ButtonState::IsDown);
+		input.AddCommand(SDL_SCANCODE_J, std::move(pShootCommand));*/
+
 		//Controller commands
 		pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, this, glm::vec3{ 0.0f, -1.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsDown);
-		dae::InputManager::GetInstance().AddCommand(dae::XBoxController::ControllerButton::DPadUp, std::move(pMoveCommand), controllerIndex);
+		input.AddCommand(dae::XBoxController::ControllerButton::DPadUp, std::move(pMoveCommand), controllerIndex);
 
 		pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, this, glm::vec3{ -1.0f, 0.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsPressed);
-		dae::InputManager::GetInstance().AddCommand(dae::XBoxController::ControllerButton::DPadLeft, std::move(pMoveCommand), controllerIndex);
+		input.AddCommand(dae::XBoxController::ControllerButton::DPadLeft, std::move(pMoveCommand), controllerIndex);
 
 		pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, this, glm::vec3{ 1.0f, 0.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsPressed);
-		dae::InputManager::GetInstance().AddCommand(dae::XBoxController::ControllerButton::DPadRight, std::move(pMoveCommand), controllerIndex);
+		input.AddCommand(dae::XBoxController::ControllerButton::DPadRight, std::move(pMoveCommand), controllerIndex);
+
+		/*pShootCommand = std::make_unique<Game::ShootCommand>(pObject, shootComponent, dae::Command::ButtonState::IsDown);
+		input.AddCommand(dae::XBoxController::ControllerButton::ButtonB, std::move(pShootCommand), controllerIndex);*/
+
 	}
 	else
 	{
@@ -94,15 +107,21 @@ Game::PlayerComponent::PlayerComponent(dae::GameObject* pObject, bool isPLayer1,
 		pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, this, glm::vec3{ 1.0f, 0.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsPressed);
 		input.AddCommand(SDL_SCANCODE_RIGHT, std::move(pMoveCommand));
 
+		/*auto pShootCommand = std::make_unique<Game::ShootCommand>(pObject, shootComponent, dae::Command::ButtonState::IsDown);
+		input.AddCommand(SDL_SCANCODE_KP_0, std::move(pShootCommand));*/
+
 		//Controller commands
 		pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, this, glm::vec3{ 0.0f, -1.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsDown);
-		dae::InputManager::GetInstance().AddCommand(dae::XBoxController::ControllerButton::DPadUp, std::move(pMoveCommand), controllerIndex);
+		input.AddCommand(dae::XBoxController::ControllerButton::DPadUp, std::move(pMoveCommand), controllerIndex);
 
 		pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, this, glm::vec3{ -1.0f, 0.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsPressed);
-		dae::InputManager::GetInstance().AddCommand(dae::XBoxController::ControllerButton::DPadLeft, std::move(pMoveCommand), controllerIndex);
+		input.AddCommand(dae::XBoxController::ControllerButton::DPadLeft, std::move(pMoveCommand), controllerIndex);
 
 		pMoveCommand = std::make_unique<Game::MoveCommand>(pObject, this, glm::vec3{ 1.0f, 0.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsPressed);
-		dae::InputManager::GetInstance().AddCommand(dae::XBoxController::ControllerButton::DPadRight, std::move(pMoveCommand), controllerIndex);
+		input.AddCommand(dae::XBoxController::ControllerButton::DPadRight, std::move(pMoveCommand), controllerIndex);
+
+		/*pShootCommand = std::make_unique<Game::ShootCommand>(pObject, shootComponent, dae::Command::ButtonState::IsDown);
+		input.AddCommand(dae::XBoxController::ControllerButton::ButtonB, std::move(pShootCommand), controllerIndex);*/
 	}
 }
 

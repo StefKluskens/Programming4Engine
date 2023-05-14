@@ -48,13 +48,17 @@ void PrintHowToPlay()
 	printf("\nHow to play:\n\n");
 	printf("Player 1 keyboard movement: A/D\n");
 	printf("Player 1 keyboard jumping: W\n");
+	//printf("Player 1 keyboard shooting: J\n");
 	printf("Player 1 controller movement: Dpad left/right\n");
-	printf("Player 1 controller jumping: Dpad up\n\n");
+	printf("Player 1 controller jumping: Dpad up\n");
+	//printf("Player 1 controller shooting: B-button\n\n");
 
 	printf("Player 2 keyboard movement: left/right arrow\n");
 	printf("Player 2 keyboard jumping: up arrow\n");
+	//printf("Player 2 keyboard shooting: 0\n");
 	printf("Player 2 controller movement: Dpad left/right\n");
-	printf("Player 2 controller jumping: Dpad up\n\n");
+	printf("Player 2 controller jumping: Dpad up\n");
+	//printf("Player 2 controller shooting: B-button\n\n");
 }
 
 dae::Minigin::Minigin(const std::string &dataPath)

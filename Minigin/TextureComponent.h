@@ -25,6 +25,8 @@ namespace dae
 		void SetTexture(const std::string& filename);
 		void SetPosition(float x, float y);
 
+		bool IsTextureSet();
+
 		glm::vec2 GetSize() const;
 
 	private:

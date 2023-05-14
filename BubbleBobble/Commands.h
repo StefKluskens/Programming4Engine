@@ -12,6 +12,7 @@ namespace dae
 namespace Game
 {
 	class PlayerComponent;
+	class ShootComponent;
 
 	class MoveCommand : public dae::Command
 	{
@@ -52,5 +53,18 @@ namespace Game
 	private:
 		dae::GameObject* m_pObject;
 		dae::Command::ButtonState m_Action;
+	};
+
+	class ShootCommand : public dae::Command
+	{
+	public:
+		ShootCommand(dae::GameObject* pObject, ShootComponent* pShootComponent, dae::Command::ButtonState action);
+		void Execute(float deltaTime) override;
+		dae::Command::ButtonState GetButtonState() override { return m_Action; };
+
+	private:
+		dae::GameObject* m_pObject;
+		dae::Command::ButtonState m_Action;
+		ShootComponent* m_pShootComponent;
 	};
 }

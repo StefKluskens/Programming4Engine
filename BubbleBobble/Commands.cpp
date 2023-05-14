@@ -6,6 +6,7 @@
 #include "ScoreComponent.h"
 #include "RigidBody.h"
 #include "PlayerComponent.h"
+#include "ShootComponent.h"
 
 Game::MoveCommand::MoveCommand(dae::GameObject* pActor, PlayerComponent* pPlayerComponent, glm::vec3 direction, float moveSpeed, dae::Command::ButtonState action)
 	: dae::Command()
@@ -51,4 +52,18 @@ Game::ScoreCommand::ScoreCommand(dae::GameObject* pObject, dae::Command::ButtonS
 void Game::ScoreCommand::Execute([[maybe_unused]] float deltaTime)
 {
 	m_pObject->GetComponent<Game::ScoreComponent>()->AddScore(100);
+}
+
+Game::ShootCommand::ShootCommand(dae::GameObject* pObject, ShootComponent* pShootComponent, dae::Command::ButtonState action)
+	: dae::Command()
+	, m_pObject(pObject)
+	, m_Action(action)
+	, m_pShootComponent(pShootComponent)
+{
+}
+
+void Game::ShootCommand::Execute(float /*deltaTime*/)
+{
+	std::cout << "Shoot\n";
+	m_pShootComponent->Shoot();
 }

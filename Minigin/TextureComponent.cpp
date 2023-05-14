@@ -48,3 +48,13 @@ glm::vec2 dae::TextureComponent::GetSize() const
 
 	return glm::vec2(x, y);
 }
+
+bool dae::TextureComponent::IsTextureSet()
+{
+	if (m_pTexture.get())
+	{
+		return true;
+	}
+
+	return false;
+}

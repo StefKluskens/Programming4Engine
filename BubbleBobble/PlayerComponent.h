@@ -40,7 +40,7 @@ namespace Game
 		bool m_isPlayer1{ true };
 
 		float m_MoveSpeed{ 100.0f };
-		float m_JumpForce{ 400.f };
+		float m_JumpForce{ 200.f };
 
 		glm::vec3 m_InputDir{};
 	};

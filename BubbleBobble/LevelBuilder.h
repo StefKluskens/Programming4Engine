@@ -20,7 +20,9 @@ namespace Game
 
 	private:
 		void BuildPlayer(dae::Scene* pScene, std::string line);
+		void BuildTile(dae::Scene* pScene, std::string line, bool isSmallTile, int tileNr);
 
 		std::unique_ptr< std::ifstream> m_pFile{};
+		int m_NrTile{};
 	};
 }

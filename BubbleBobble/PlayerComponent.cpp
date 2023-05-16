@@ -9,6 +9,7 @@
 #include "SDLSoundSystem.h"
 #include "ResourceManager.h"
 #include "ShootComponent.h"
+#include "AnimatorComponent.h"
 #include <memory>
 
 Game::PlayerComponent::PlayerComponent(dae::GameObject* pObject, bool isPLayer1, bool hasCollider, bool hasRB)
@@ -18,7 +19,7 @@ Game::PlayerComponent::PlayerComponent(dae::GameObject* pObject, bool isPLayer1,
 	auto texture = std::make_unique<dae::TextureComponent>(pObject);
 	if (isPLayer1)
 	{
-		texture->SetTexture("Resources/Bob.png");
+		texture->SetTexture("Resources/Player/Idle_Anim.png");
 	}
 	else
 	{
@@ -27,6 +28,10 @@ Game::PlayerComponent::PlayerComponent(dae::GameObject* pObject, bool isPLayer1,
 	GetOwner()->AddComponent(std::move(texture));
 
 	m_pTexture = GetOwner()->GetComponent<dae::TextureComponent>();
+	m_pTexture->SetIsAnimation(true);
+
+	auto pAnimator = std::make_unique<dae::AnimatorComponent>(pObject, m_pTexture, 48, 48, 2, 0.5f);
+	GetOwner()->AddComponent(std::move(pAnimator));
 
 	if (hasCollider)
 	{

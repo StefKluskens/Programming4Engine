@@ -1,2 +1,5 @@
 Player 400 350 true true true
-Player 350 350 false true true
+//Player 350 350 false true true
+
+SmallTile 0 0
+BigTile 0 24

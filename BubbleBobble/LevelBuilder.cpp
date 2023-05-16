@@ -3,6 +3,7 @@
 #include "ResourceManager.h"
 #include "GameObject.h"
 #include "PlayerComponent.h"
+#include "TileComponent.h"
 #include <sstream>
 #include <memory>
 
@@ -20,6 +21,16 @@ void Game::LevelBuilder::BuildLevel(dae::Scene* pScene, std::string levelFile)
 			if (line.rfind("Player ", 0) == 0)
 			{
 				BuildPlayer(pScene, line);
+			}
+			else if (line.rfind("SmallTile ", 0) == 0)
+			{
+				BuildTile(pScene, line, true, m_NrTile);
+				++m_NrTile;
+			}
+			else if (line.rfind("BigTile ", 0) == 0)
+			{
+				BuildTile(pScene, line, false, m_NrTile);
+				++m_NrTile;
 			}
 		}
 	}
@@ -51,4 +62,26 @@ void Game::LevelBuilder::BuildPlayer(dae::Scene* pScene, std::string line)
 	playerGo->AddComponent(std::move(playerComp));
 
 	pScene->Add(playerGo);
+}
+
+void Game::LevelBuilder::BuildTile(dae::Scene* pScene, std::string line, bool isSmallTile, int tileNr)
+{
+	//Tile line will be formatted as:
+	//Tile xPos yPos
+	std::stringstream ss(line);
+
+	std::string tile;
+	float xPos, yPos;
+
+	ss >> tile >> xPos >> yPos;
+
+	std::string name = "Tile " + tileNr;
+
+	auto tileGo = new dae::GameObject(name, pScene);
+
+	tileGo->SetPosition(xPos, yPos);
+
+	auto pTile = std::make_unique<TileComponent>(tileGo, isSmallTile);
+
+	pScene->Add(tileGo);
 }

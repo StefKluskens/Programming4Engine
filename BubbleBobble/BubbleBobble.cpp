@@ -75,6 +75,14 @@ void BubbleBobble::Load()
 	floorCollider->SetNeedsGroundCheck(false);
 	floorGo->AddComponent(std::move(floorCollider));
 	scene.Add(floorGo);
+
+	/*auto levelGo = new dae::GameObject("Level", &scene);
+	auto pTileTexture = std::make_unique<dae::TextureComponent>(levelGo);
+	pTileTexture->SetTexture("Resources/Tiles/Big.png");
+	pTileTexture->SetPosition(0, 0);
+
+	levelGo->AddComponent(std::move(pTileTexture));
+	scene.Add(levelGo);*/
 }
 
 BubbleBobble::GameMode BubbleBobble::GetGameMode() const

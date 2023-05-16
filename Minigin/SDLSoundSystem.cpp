@@ -59,14 +59,20 @@ public:
 				break;
 			}
 
-			while (!m_SoundsQueue.empty())
+			/*while (!m_SoundsQueue.empty())
 			{
 				const Sound& sound = m_SoundsQueue.front();
 				PlaySound(sound.SoundId, sound.Volume);
 				m_SoundsQueue.pop();
-			}
-
+			}*/
+			//lock.unlock();
+			
+			const Sound& sound = m_SoundsQueue.front();
+			m_SoundsQueue.pop();
 			lock.unlock();
+
+			PlaySound(sound.SoundId, sound.Volume);			
+			
 		}
 	}
 

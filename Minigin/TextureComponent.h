@@ -3,6 +3,7 @@
 #include <memory>
 #include <string>
 #include <glm/glm.hpp>
+#include "SDL_rect.h"
 
 namespace dae
 {
@@ -20,8 +21,8 @@ namespace dae
 		TextureComponent& operator=(TextureComponent&& other) = delete;
 
 		void Render() const override;
-		void Update(float deltaTime) override;
-		void FixedUpdate([[maybe_unused]] float deltaTime) override {};
+		void Update(float /*deltaTime*/) override {};
+		void FixedUpdate(float /*deltaTime*/) override {};
 
 		void SetTexture(const std::string& filename);
 		//void SetPosition(float x, float y);
@@ -34,6 +35,10 @@ namespace dae
 
 		void SetIsAnimation(bool isAnim);
 
+		void SetTextureVisibility(bool isVisible);
+
+		void SetSourceRect(SDL_Rect srcRect);
+
 	private:
 		//TODO: Check if this could this be a unique_ptr
 		std::shared_ptr<Texture2D> m_pTexture{};
@@ -41,5 +46,8 @@ namespace dae
 		Transform* m_pTransform{};
 
 		bool m_IsAnimation{};
+		bool m_IsVisible{};
+
+		SDL_Rect m_SrcRect{};
 	};
 }

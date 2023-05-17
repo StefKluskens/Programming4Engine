@@ -7,6 +7,7 @@
 
 dae::TextureComponent::TextureComponent(GameObject* pObject)
 	: Component(pObject)
+	, m_IsVisible(true)
 {
 	m_pTransform = pObject->GetTransform();
 }
@@ -20,15 +21,22 @@ dae::TextureComponent::TextureComponent(TextureComponent&& other) noexcept
 
 void dae::TextureComponent::Render() const
 {
-	if (!m_IsAnimation && m_pTexture)
+	if (m_IsVisible && m_pTexture)
 	{
-		auto pos = GetOwner()->GetTransform()->GetLocalPosition();
-		Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y);
-	}
-}
+		if (!m_IsAnimation)
+		{
+			auto pos = GetOwner()->GetTransform()->GetLocalPosition();
+			Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y);
+		}
+		else
+		{
+			const glm::vec2& position = GetOwner()->GetTransform()->GetLocalPosition();
+			const float width = static_cast<float>(m_SrcRect.w);
+			const float height = static_cast<float>(m_SrcRect.h);
 
-void dae::TextureComponent::Update([[maybe_unused]] float deltaTime)
-{
+			Renderer::GetInstance().RenderTexture(*m_pTexture, position.x, position.y, width, height, m_SrcRect);
+		}
+	}
 }
 
 void dae::TextureComponent::SetTexture(const std::string& filename)
@@ -62,4 +70,14 @@ bool dae::TextureComponent::IsTextureSet()
 void dae::TextureComponent::SetIsAnimation(bool isAnim)
 {
 	m_IsAnimation = isAnim;
+}
+
+void dae::TextureComponent::SetTextureVisibility(bool isVisible)
+{
+	m_IsVisible = isVisible;
+}
+
+void dae::TextureComponent::SetSourceRect(SDL_Rect srcRect)
+{
+	m_SrcRect = srcRect;
 }

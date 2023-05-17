@@ -31,6 +31,7 @@ namespace dae
 
 		void AddComponent(std::unique_ptr<Component> component);
 		template <typename T> T* GetComponent() const;
+		template <typename T> T* GetComponent(std::string tag) const;
 		template <typename T> void RemoveComponent();
 
 		Transform* GetTransform() const;
@@ -70,6 +71,24 @@ namespace dae
 			temp = dynamic_cast<T*>(m_pComponents[i].get());
 			if (temp)
 				return temp;
+		}
+		return nullptr;
+	}
+
+	template<typename T>
+	inline T* GameObject::GetComponent(std::string tag) const
+	{
+		static_assert(std::is_base_of<Component, T>::value, "T must be derived from Component");
+
+		T* temp{};
+
+		for (size_t i = 0; i < m_pComponents.size(); ++i)
+		{
+			temp = dynamic_cast<T*>(m_pComponents[i].get());
+			if (temp && temp->GetTag() == tag)
+			{
+				return temp;
+			}	
 		}
 		return nullptr;
 	}

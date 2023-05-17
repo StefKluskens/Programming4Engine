@@ -6,15 +6,15 @@ namespace dae
 	struct Animation
 	{
 		Animation(std::string name, int frameWidth, int frameHeight, int nrOfFrames, float frameTime)
+			: Name(name)
+			, FrameWidth(frameWidth)
+			, FrameHeight(frameHeight)
+			, NumberOfFrames(nrOfFrames)
+			, FrameTime(frameTime)
 		{
-			Name = name;
-			FrameWidth = frameWidth;
-			FrameHeight = frameHeight;
-			NumberOfFrames = nrOfFrames;
-			FrameTime = frameTime;
 		}
 
-		Animation(Animation anim)
+		Animation(const dae::Animation& anim)
 		{
 			Name = anim.Name;
 			FrameWidth = anim.FrameWidth;

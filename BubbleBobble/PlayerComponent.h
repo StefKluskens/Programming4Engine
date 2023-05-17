@@ -26,8 +26,8 @@ namespace Game
 		PlayerComponent& operator=(const PlayerComponent& other) = delete;
 		PlayerComponent& operator=(PlayerComponent&& other) = delete;
 
-		void Render() const override;
-		void Update(float deltaTime) override;
+		void Render() const override {};
+		void Update(float /*deltaTime*/) override {};
 		void FixedUpdate(float deltaTime) override;
 
 		void SetInputDirection(glm::vec3 direction);
@@ -37,7 +37,7 @@ namespace Game
 
 		dae::ColliderComponent* m_pCollider{};
 		dae::RigidBody* m_pRigidbody{};
-		dae::TextureComponent* m_pTexture{};
+		dae::TextureComponent* m_pCurrentTexture{};
 		dae::sound_system* m_pSoundSytem;
 
 		std::vector<std::unique_ptr<dae::Animation>> m_pAnimations{};

@@ -1,5 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
+#include <string>
 
 namespace dae
 {
@@ -20,9 +21,13 @@ namespace dae
 		virtual void FixedUpdate(float deltaTime) = 0;
 		GameObject* GetOwner() const { return m_pAttachedObject; };
 
+		void SetTag(const std::string tag) { m_Tag = tag; }
+		std::string GetTag() const { return m_Tag; };
+
 	protected:
 
 	private:
 		GameObject* m_pAttachedObject;
+		std::string m_Tag;
 	};
 }

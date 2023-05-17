@@ -3,5 +3,6 @@
 
 dae::Component::Component(GameObject* pObject)
 	: m_pAttachedObject(pObject)
+	, m_Tag("")
 {
 }

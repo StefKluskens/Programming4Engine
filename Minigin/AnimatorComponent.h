@@ -11,14 +11,14 @@ namespace dae
 	class AnimatorComponent : public Component
 	{
 	public:
-		AnimatorComponent(dae::GameObject* pObject, TextureComponent* pTexture);
+		AnimatorComponent(GameObject* pObject, TextureComponent* pTexture);
 		virtual ~AnimatorComponent() = default;
 		AnimatorComponent(const AnimatorComponent& other) = delete;
 		AnimatorComponent(AnimatorComponent&& other) noexcept = delete;
 		AnimatorComponent& operator=(const AnimatorComponent& other) = delete;
 		AnimatorComponent& operator=(AnimatorComponent&& other) = delete;
 
-		void Render() const override;
+		void Render() const override {};
 		void Update(float deltaTime) override;
 		void FixedUpdate(float /*deltaTime*/) override {};
 

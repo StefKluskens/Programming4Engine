@@ -16,28 +16,39 @@ Game::PlayerComponent::PlayerComponent(dae::GameObject* pObject, bool isPLayer1,
 	: Component(pObject)
 	, m_isPlayer1(isPLayer1)
 {
-	auto texture = std::make_unique<dae::TextureComponent>(pObject);
+	auto idleTexture = std::make_unique<dae::TextureComponent>(pObject);
+	idleTexture->SetTag("IdleTexture");
+	auto runTexture = std::make_unique<dae::TextureComponent>(pObject);
+	runTexture->SetTag("RunTexture");
 	if (isPLayer1)
 	{
-		texture->SetTexture("Resources/Player/Idle_AnimBob.png");
+		idleTexture->SetTexture("Resources/Player/Idle_AnimBob.png");
+		runTexture->SetTexture("Resources/Player/Run_AnimBob.png");
+
+		idleTexture->SetTextureVisibility(false);
 	}
 	else
 	{
-		texture->SetTexture("Resources/Player/Idle_AnimBub.png");
+		idleTexture->SetTexture("Resources/Player/Idle_AnimBub.png");
+		runTexture->SetTexture("Resources/Player/Run_AnimBub.png");
+		idleTexture->SetTextureVisibility(false);
 	}
-	GetOwner()->AddComponent(std::move(texture));
 
-	m_pTexture = GetOwner()->GetComponent<dae::TextureComponent>();
-	m_pTexture->SetIsAnimation(true);
+	GetOwner()->AddComponent(std::move(idleTexture));
+	GetOwner()->AddComponent(std::move(runTexture));
+
+	m_pCurrentTexture = GetOwner()->GetComponent<dae::TextureComponent>("RunTexture");
+	m_pCurrentTexture->SetIsAnimation(true);
 
 	const int frameWidth = 48;
 	const int frameHeight = 48;
-	const int nrOfFrames = 2;
-	float frameTime = 0.5f;
+	const int nrOfFrames = 4;
+	float frameTime = 0.25f;
 
-	auto pAnimator = std::make_unique<dae::AnimatorComponent>(pObject, m_pTexture);
-	auto anim = std::make_unique<dae::Animation>(pAnimator->CreateAnimation("Idle", frameWidth, frameHeight, nrOfFrames, frameTime));
-	m_pAnimations.push_back(anim);
+	auto pAnimator = std::make_unique<dae::AnimatorComponent>(pObject, m_pCurrentTexture);
+	//auto anim = std::make_unique<dae::Animation>("Idle", frameWidth, frameHeight, nrOfFrames, frameTime);
+	auto anim = std::make_unique<dae::Animation>("Run", frameWidth, frameHeight, nrOfFrames, frameTime);
+	m_pAnimations.push_back(std::move(anim));
 	pAnimator->SetAnimation(m_pAnimations[0].get());
 	GetOwner()->AddComponent(std::move(pAnimator));
 
@@ -136,15 +147,6 @@ Game::PlayerComponent::PlayerComponent(dae::GameObject* pObject, bool isPLayer1,
 		/*pShootCommand = std::make_unique<Game::ShootCommand>(pObject, shootComponent, dae::Command::ButtonState::IsDown);
 		input.AddCommand(dae::XBoxController::ControllerButton::ButtonB, std::move(pShootCommand), controllerIndex);*/
 	}
-}
-
-void Game::PlayerComponent::Render() const
-{
-}
-
-void Game::PlayerComponent::Update(float /*deltaTime*/)
-{
-	
 }
 
 void Game::PlayerComponent::FixedUpdate(float deltaTime)

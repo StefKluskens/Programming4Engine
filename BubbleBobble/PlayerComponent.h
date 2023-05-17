@@ -1,6 +1,9 @@
 #pragma once
 #include "Component.h"
+#include "Animation.h"
 #include <string>
+#include <vector>
+#include <memory>
 
 namespace dae
 {
@@ -36,6 +39,8 @@ namespace Game
 		dae::RigidBody* m_pRigidbody{};
 		dae::TextureComponent* m_pTexture{};
 		dae::sound_system* m_pSoundSytem;
+
+		std::vector<std::unique_ptr<dae::Animation>> m_pAnimations{};
 
 		bool m_isPlayer1{ true };
 

@@ -99,6 +99,9 @@
     <ClInclude Include="RigidBody.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -163,6 +166,9 @@
     </ClCompile>
     <ClCompile Include="RigidBody.cpp">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

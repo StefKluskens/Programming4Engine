@@ -19,18 +19,26 @@ Game::PlayerComponent::PlayerComponent(dae::GameObject* pObject, bool isPLayer1,
 	auto texture = std::make_unique<dae::TextureComponent>(pObject);
 	if (isPLayer1)
 	{
-		texture->SetTexture("Resources/Player/Idle_Anim.png");
+		texture->SetTexture("Resources/Player/Idle_AnimBob.png");
 	}
 	else
 	{
-		texture->SetTexture("Resources/Bub.png");
+		texture->SetTexture("Resources/Player/Idle_AnimBub.png");
 	}
 	GetOwner()->AddComponent(std::move(texture));
 
 	m_pTexture = GetOwner()->GetComponent<dae::TextureComponent>();
 	m_pTexture->SetIsAnimation(true);
 
-	auto pAnimator = std::make_unique<dae::AnimatorComponent>(pObject, m_pTexture, 48, 48, 2, 0.5f);
+	const int frameWidth = 48;
+	const int frameHeight = 48;
+	const int nrOfFrames = 2;
+	float frameTime = 0.5f;
+
+	auto pAnimator = std::make_unique<dae::AnimatorComponent>(pObject, m_pTexture);
+	auto anim = std::make_unique<dae::Animation>(pAnimator->CreateAnimation("Idle", frameWidth, frameHeight, nrOfFrames, frameTime));
+	m_pAnimations.push_back(anim);
+	pAnimator->SetAnimation(m_pAnimations[0].get());
 	GetOwner()->AddComponent(std::move(pAnimator));
 
 	if (hasCollider)
@@ -39,8 +47,8 @@ Game::PlayerComponent::PlayerComponent(dae::GameObject* pObject, bool isPLayer1,
 		SDL_Rect rect;
 		rect.x = static_cast<int>(pos.x);
 		rect.y = static_cast<int>(pos.y);
-		rect.h = static_cast<int>(m_pTexture->GetSize().y);
-		rect.w = static_cast<int>(m_pTexture->GetSize().x);
+		rect.h = static_cast<int>(frameHeight);
+		rect.w = static_cast<int>(frameWidth);
 		auto collider = std::make_unique<dae::ColliderComponent>(pObject, rect);
 		GetOwner()->AddComponent(std::move(collider));
 
@@ -134,13 +142,14 @@ void Game::PlayerComponent::Render() const
 {
 }
 
-void Game::PlayerComponent::Update(float deltaTime)
+void Game::PlayerComponent::Update(float /*deltaTime*/)
 {
-	HandleMovement(deltaTime);
+	
 }
 
-void Game::PlayerComponent::FixedUpdate(float /*deltaTime*/)
+void Game::PlayerComponent::FixedUpdate(float deltaTime)
 {
+	HandleMovement(deltaTime);
 }
 
 void Game::PlayerComponent::SetInputDirection(glm::vec3 direction)

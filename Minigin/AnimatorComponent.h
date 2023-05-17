@@ -1,6 +1,8 @@
 #pragma once
 #include "Component.h"
+#include "Animation.h"
 #include <SDL_rect.h>
+#include <vector>
 
 namespace dae
 {
@@ -9,7 +11,7 @@ namespace dae
 	class AnimatorComponent : public Component
 	{
 	public:
-		AnimatorComponent(dae::GameObject* pObject, TextureComponent* pTexture, int frameWidth, int frameHeight, int numFrames, float frameTime);
+		AnimatorComponent(dae::GameObject* pObject, TextureComponent* pTexture);
 		virtual ~AnimatorComponent() = default;
 		AnimatorComponent(const AnimatorComponent& other) = delete;
 		AnimatorComponent(AnimatorComponent&& other) noexcept = delete;
@@ -20,12 +22,12 @@ namespace dae
 		void Update(float deltaTime) override;
 		void FixedUpdate(float /*deltaTime*/) override {};
 
+		Animation* CreateAnimation(std::string animName, int frameWidth, int frameHeight, int numFrames, float frameTime);
+		void SetAnimation(Animation* pAnimation);
+
 	private:
-		TextureComponent* m_pSpriteSheet;
-		int m_FrameWidth;
-		int m_FrameHeight;
-		int m_NumFrames;
-		float m_FrameTime;
+		TextureComponent* m_pSpriteSheet{};
+		Animation* m_pCurrentAnimation{};
 		int m_CurrentFrame;
 		float m_Timer;
 		SDL_Rect m_SrcRect;

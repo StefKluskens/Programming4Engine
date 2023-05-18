@@ -15,7 +15,7 @@ void Game::LivesDisplayComponent::Render() const
 {
 }
 
-void Game::LivesDisplayComponent::Update([[maybe_unused]] float deltaTime)
+void Game::LivesDisplayComponent::Update(float /*deltaTime*/)
 {
 }
 

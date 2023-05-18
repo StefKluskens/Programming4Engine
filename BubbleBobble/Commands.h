@@ -7,6 +7,7 @@ namespace dae
 	class Transform;
 	class GameObject;
 	class RigidBody;
+	class Scene;
 }
 
 namespace Game
@@ -17,7 +18,7 @@ namespace Game
 	class MoveCommand : public dae::Command
 	{
 	public:
-		MoveCommand(dae::GameObject* pActor, PlayerComponent* pPlayerComponent, glm::vec3 direction, float moveSpeed, dae::Command::ButtonState action);
+		MoveCommand(dae::Scene* pScene, dae::GameObject* pActor, PlayerComponent* pPlayerComponent, glm::vec3 direction, float moveSpeed, dae::Command::ButtonState action);
 		void Execute(float deltaTime) override;
 		dae::Command::ButtonState GetButtonState() override { return m_Action; };
 		void SetSpeed(float newSpeed);
@@ -34,7 +35,7 @@ namespace Game
 	class DieCommand : public dae::Command
 	{
 	public:
-		DieCommand(dae::GameObject* pObject, dae::Command::ButtonState action);
+		DieCommand(dae::Scene* pScene, dae::GameObject* pObject, dae::Command::ButtonState action);
 		void Execute(float deltaTime) override;
 		dae::Command::ButtonState GetButtonState() override { return m_Action; };
 
@@ -46,7 +47,7 @@ namespace Game
 	class ScoreCommand : public dae::Command
 	{
 	public:
-		ScoreCommand(dae::GameObject* pObject, dae::Command::ButtonState action);
+		ScoreCommand(dae::Scene* pScene, dae::GameObject* pObject, dae::Command::ButtonState action);
 		void Execute(float deltaTime) override;
 		dae::Command::ButtonState GetButtonState() override { return m_Action; };
 
@@ -58,7 +59,7 @@ namespace Game
 	class ShootCommand : public dae::Command
 	{
 	public:
-		ShootCommand(dae::GameObject* pObject, ShootComponent* pShootComponent, dae::Command::ButtonState action);
+		ShootCommand(dae::Scene* pScene, dae::GameObject* pObject, ShootComponent* pShootComponent, dae::Command::ButtonState action);
 		void Execute(float deltaTime) override;
 		dae::Command::ButtonState GetButtonState() override { return m_Action; };
 

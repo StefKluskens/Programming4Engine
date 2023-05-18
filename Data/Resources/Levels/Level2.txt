@@ -1,0 +1,40 @@
+//Window size x:768 y:672
+
+Player 52 576 true true true
+Player 350 350 false true true
+
+BigCol 0 48 13
+BigCol 720 48 13
+
+//Floor
+SmallRow 48 648 7
+SmallRow 312 648 6
+SmallRow 552 648 7
+
+//Floor + 1
+SmallRow 48 526 5
+SmallRow 216 526 3
+SmallRow 480 526 3
+SmallRow 600 526 5
+
+//Floor + 2
+SmallRow 120 406 9
+SmallRow 408 406 9
+
+//Floor + 3
+SmallRow 120 286 8
+SmallRow 432 286 8
+
+//Floor + 4
+SmallRow 120 166 7
+SmallRow 456 166 7
+
+//Col Left
+SmallCol 96 166 11
+SmallCol 624 166 11
+
+//Top
+SmallRow 48 48 7
+SmallRow 312 48 6
+SmallRow 552 48 7
+

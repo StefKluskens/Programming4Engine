@@ -16,8 +16,9 @@ dae::ColliderComponent::ColliderComponent(GameObject* pObject, SDL_Rect rect)
 
 void dae::ColliderComponent::Render() const
 {
-	SDL_SetRenderDrawColor(Renderer::GetInstance().GetSDLRenderer(), 255, 0, 0, 255);
-	SDL_RenderDrawRect(Renderer::GetInstance().GetSDLRenderer(), &m_Rect);
+	//TODO: Remove drawing
+	/*SDL_SetRenderDrawColor(Renderer::GetInstance().GetSDLRenderer(), 255, 0, 0, 255);
+	SDL_RenderDrawRect(Renderer::GetInstance().GetSDLRenderer(), &m_Rect);*/
 }
 
 void dae::ColliderComponent::FixedUpdate(float /*deltaTime*/)
@@ -34,6 +35,11 @@ void dae::ColliderComponent::FixedUpdate(float /*deltaTime*/)
 SDL_Rect dae::ColliderComponent::GetRect() const
 {
 	return m_Rect;
+}
+
+void dae::ColliderComponent::SetRect(SDL_Rect rect)
+{
+	m_Rect = rect;
 }
 
 std::vector<dae::GameObject*> dae::ColliderComponent::CollisionCheck()

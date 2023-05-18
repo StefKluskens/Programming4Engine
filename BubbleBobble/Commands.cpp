@@ -8,8 +8,8 @@
 #include "PlayerComponent.h"
 #include "ShootComponent.h"
 
-Game::MoveCommand::MoveCommand(dae::GameObject* pActor, PlayerComponent* pPlayerComponent, glm::vec3 direction, float moveSpeed, dae::Command::ButtonState action)
-	: dae::Command()
+Game::MoveCommand::MoveCommand(dae::Scene* pScene, dae::GameObject* pActor, PlayerComponent* pPlayerComponent, glm::vec3 direction, float moveSpeed, dae::Command::ButtonState action)
+	: dae::Command(pScene)
 	, m_MoveDirection(direction)
 	, speed(moveSpeed)
 	, m_Action(action)
@@ -30,32 +30,32 @@ void Game::MoveCommand::SetSpeed(float newSpeed)
 	speed = newSpeed;
 }
 
-Game::DieCommand::DieCommand(dae::GameObject* pObject, dae::Command::ButtonState action)
-	: dae::Command()
+Game::DieCommand::DieCommand(dae::Scene* pScene, dae::GameObject* pObject, dae::Command::ButtonState action)
+	: dae::Command(pScene)
 	, m_pObject(pObject)
 	, m_Action(action)
 {
 }
 
-void Game::DieCommand::Execute([[maybe_unused]] float deltaTime)
+void Game::DieCommand::Execute(float /*deltaTime*/)
 {
 	m_pObject->GetComponent<Game::LivesComponent>()->Die();
 }
 
-Game::ScoreCommand::ScoreCommand(dae::GameObject* pObject, dae::Command::ButtonState action)
-	: dae::Command()
+Game::ScoreCommand::ScoreCommand(dae::Scene* pScene, dae::GameObject* pObject, dae::Command::ButtonState action)
+	: dae::Command(pScene)
 	, m_pObject(pObject)
 	, m_Action(action)
 {
 }
 
-void Game::ScoreCommand::Execute([[maybe_unused]] float deltaTime)
+void Game::ScoreCommand::Execute(float /*deltaTime*/)
 {
 	m_pObject->GetComponent<Game::ScoreComponent>()->AddScore(100);
 }
 
-Game::ShootCommand::ShootCommand(dae::GameObject* pObject, ShootComponent* pShootComponent, dae::Command::ButtonState action)
-	: dae::Command()
+Game::ShootCommand::ShootCommand(dae::Scene* pScene, dae::GameObject* pObject, ShootComponent* pShootComponent, dae::Command::ButtonState action)
+	: dae::Command(pScene)
 	, m_pObject(pObject)
 	, m_Action(action)
 	, m_pShootComponent(pShootComponent)

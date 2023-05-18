@@ -35,7 +35,7 @@ void dae::TextComponent::Render() const
 	}
 }
 
-void dae::TextComponent::Update([[maybe_unused]] float deltaTime)
+void dae::TextComponent::Update(float /*deltaTime*/)
 {
 	if (m_NeedsUpdate)
 	{

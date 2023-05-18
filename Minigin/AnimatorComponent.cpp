@@ -27,19 +27,30 @@ void dae::AnimatorComponent::Update(float deltaTime)
 		m_SrcRect.x = m_CurrentFrame * m_pCurrentAnimation->FrameWidth;
 	}
 
-	m_pSpriteSheet->SetSourceRect(m_SrcRect);
+	m_pCurrentAnimation->Texture->SetSourceRect(m_SrcRect);
 }
 
-dae::Animation* dae::AnimatorComponent::CreateAnimation(std::string animName, int frameWidth, int frameHeight, int numFrames, float frameTime)
+dae::Animation* dae::AnimatorComponent::CreateAnimation(std::string animName, TextureComponent* pTexture, int frameWidth, int frameHeight, int numFrames, float frameTime)
 {
-	Animation* anim = new Animation(animName, frameWidth, frameHeight, numFrames, frameTime);
-	return anim;
+	return new Animation(animName, pTexture, frameWidth, frameHeight, numFrames, frameTime);
 }
 
 void dae::AnimatorComponent::SetAnimation(Animation* pAnimation)
 {
+	if (m_pCurrentAnimation == pAnimation)
+	{
+		return;
+	}
+
+	if (m_pCurrentAnimation)
+	{
+		m_pCurrentAnimation->Texture->SetTextureVisibility(false);
+	}
+
 	m_pCurrentAnimation = pAnimation;
 
 	m_SrcRect = { 0, 0, pAnimation->FrameWidth, pAnimation->FrameHeight };
 	m_DestRect = { 0, 0, pAnimation->FrameWidth, pAnimation->FrameHeight };
+
+	m_pCurrentAnimation->Texture->SetTextureVisibility(true);
 }

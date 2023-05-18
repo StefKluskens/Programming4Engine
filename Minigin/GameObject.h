@@ -11,7 +11,6 @@ namespace dae
 	class Texture2D;
 	class Scene;
 
-	// todo: this should become final.
 	class GameObject final
 	{
 	public:
@@ -47,12 +46,12 @@ namespace dae
 		Scene* GetScene() const;
 
 	private:
+		std::string m_Name{ "GameObject" };
 		std::unique_ptr<Transform> m_Transform{};
 
 		//unique_ptr because the gameobject should own its components. No need for shared ownership
 		std::vector<std::unique_ptr<Component>> m_pComponents{};
 
-		std::string m_Name{ "GameObject" };
 
 		GameObject* m_pParent{ nullptr };
 
@@ -96,10 +95,22 @@ namespace dae
 	template<typename T>
 	inline void GameObject::RemoveComponent()
 	{
-		auto it = std::remove_if(m_pComponents.begin(), m_pComponents.end(), [](const std::unique_ptr<Component>& pComponent)
+		/*auto it = std::remove_if(m_pComponents.begin(), m_pComponents.end(), [](const std::unique_ptr<Component>& pComponent)
 			{
 				return dynamic_cast<T*>(pComponent.get()) != nullptr;
 			});
-		m_pComponents.erase(it, m_pComponents.end());
+		m_pComponents.erase(it, m_pComponents.end());*/
+
+		m_pComponents.erase(
+			std::remove_if(
+				m_pComponents.begin(),
+				m_pComponents.end(),
+				[](const std::unique_ptr<Component>& pComponent)
+				{
+					return dynamic_cast<T*>(pComponent.get()) != nullptr;
+				}
+			),
+			m_pComponents.end()
+					);
 	}
 }

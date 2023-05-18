@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <map>
 
 namespace dae
 {
@@ -12,6 +13,8 @@ namespace dae
 	class RigidBody;
 	class TextureComponent;
 	class sound_system;
+	class AnimatorComponent;
+	class Scene;
 }
 
 namespace Game
@@ -19,7 +22,7 @@ namespace Game
 	class PlayerComponent : public dae::Component
 	{
 	public:
-		PlayerComponent(dae::GameObject* pObject, bool isPLayer1, bool hasCollider, bool hasRB);
+		PlayerComponent(dae::Scene* pScene, dae::GameObject* pObject, bool isPLayer1, bool hasCollider, bool hasRB, int controllerIndex1, int controllerIndex2);
 		virtual ~PlayerComponent() = default;
 		PlayerComponent(const PlayerComponent& other) = delete;
 		PlayerComponent(PlayerComponent&& other) noexcept = delete;
@@ -41,11 +44,13 @@ namespace Game
 		dae::sound_system* m_pSoundSytem;
 
 		std::vector<std::unique_ptr<dae::Animation>> m_pAnimations{};
+		std::map<std::string, std::unique_ptr<dae::Animation>> m_AnimationMap{};
+		dae::AnimatorComponent* m_pAnimator;
 
 		bool m_isPlayer1{ true };
 
 		float m_MoveSpeed{ 100.0f };
-		float m_JumpForce{ 200.f };
+		float m_JumpForce{ 250.f };
 
 		glm::vec3 m_InputDir{};
 	};

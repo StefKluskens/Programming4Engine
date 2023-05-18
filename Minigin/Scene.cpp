@@ -37,7 +37,7 @@ void Scene::Add(GameObject* object)
 	}
 }
 
-void Scene::Remove([[maybe_unused]]std::shared_ptr<GameObject> object)
+void Scene::Remove(std::shared_ptr<GameObject> /*object*/)
 {
 	//m_objects.erase(std::remove(m_objects.begin(), m_objects.end(), object), m_objects.end());
 }

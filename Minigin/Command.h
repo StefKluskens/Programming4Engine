@@ -2,6 +2,8 @@
 
 namespace dae
 {
+	class Scene;
+
 	class Command : public Singleton<Command>
 	{
 	public:
@@ -13,9 +15,14 @@ namespace dae
 			None
 		};
 
-		explicit Command() {};
+		explicit Command(Scene* pScene) : m_pScene(pScene) {};
 		virtual ~Command() {};
 		virtual void Execute(float deltaTime) = 0;
 		virtual ButtonState GetButtonState() = 0;
+
+		Scene* GetScene() const { return m_pScene; };
+
+	private:
+		Scene* m_pScene{};
 	};
 }

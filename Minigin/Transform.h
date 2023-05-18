@@ -14,8 +14,8 @@ namespace dae
 		Transform& operator=(Transform&& other) = delete;
 
 		void Render() const override {};
-		void Update([[maybe_unused]]float deltaTime) override {};
-		void FixedUpdate([[maybe_unused]]float deltaTime) override {};
+		void Update(float /*deltaTime*/) override {};
+		void FixedUpdate(float /*deltaTime*/) override {};
 
 		const glm::vec3 GetLocalPosition() const { return m_LocalPosition; }
 		const glm::vec3& GetWorldPosition();

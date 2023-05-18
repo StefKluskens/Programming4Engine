@@ -21,8 +21,8 @@ namespace Game
 		ScoreComponent& operator=(ScoreComponent&& other) = delete;
 
 		void Render() const override {};
-		void Update([[maybe_unused]] float deltaTime) override {};
-		void FixedUpdate([[maybe_unused]] float deltaTime) override {};
+		void Update(float /*deltaTime*/) override {};
+		void FixedUpdate(float /*deltaTime*/) override {};
 
 		void AddObserver(dae::Observer* pObserver);
 		void RemoveObserver(dae::Observer* pObserver);

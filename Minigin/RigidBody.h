@@ -17,8 +17,8 @@ namespace dae
 		RigidBody& operator=(const RigidBody& other) = delete;
 		RigidBody& operator=(RigidBody&& other) = delete;
 
-		void Render() const override {};
-		void Update([[maybe_unused]] float deltaTime) override {};
+		void Render() const override;
+		void Update(float /*deltaTime*/) override {};
 		void FixedUpdate(float deltaTime) override;
 
 		void SetDirection(glm::vec3 direction);

@@ -20,7 +20,7 @@ namespace dae
 		ColliderComponent& operator=(ColliderComponent&& other) = delete;
 
 		void Render() const override;
-		void Update([[maybe_unused]] float deltaTime) override {};
+		void Update(float /*deltaTime*/) override {};
 		void FixedUpdate(float deltaTime) override;
 
 		std::vector<GameObject*> CollisionCheck();
@@ -33,6 +33,7 @@ namespace dae
 		bool NeedsToCheckGroundCollision() const;
 
 		SDL_Rect GetRect() const;
+		void SetRect(SDL_Rect rect);
 
 		void SetRigidbody(dae::RigidBody* pRigidbody);
 

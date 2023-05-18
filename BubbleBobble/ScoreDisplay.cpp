@@ -16,7 +16,7 @@ void Game::ScoreDisplay::Render() const
 {
 }
 
-void Game::ScoreDisplay::Update([[maybe_unused]] float deltaTime)
+void Game::ScoreDisplay::Update(float /*deltaTime*/)
 {
 }
 

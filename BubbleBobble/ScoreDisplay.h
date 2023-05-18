@@ -23,7 +23,7 @@ namespace Game
 
 		void Render() const override;
 		void Update(float deltaTime) override;
-		void FixedUpdate([[maybe_unused]] float deltaTime) override {};
+		void FixedUpdate(float /*deltaTime*/) override {};
 
 		void Notify(dae::Event event) override;
 

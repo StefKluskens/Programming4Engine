@@ -3,31 +3,72 @@
 #include "ColliderComponent.h"
 #include "GameObject.h"
 
-Game::TileComponent::TileComponent(dae::GameObject* pObject, bool isSmallTile)
+Game::TileComponent::TileComponent(dae::GameObject* pObject, bool isSmallTile, int sceneNr)
 	: Component(pObject)
 {
 	auto pTextureComp = std::make_unique<dae::TextureComponent>(pObject);
 
-	if (isSmallTile)
+	if (sceneNr == 0)
 	{
-		pTextureComp->SetTexture("Resources/Tiles/Small.png");
+		if (isSmallTile)
+		{
+			pTextureComp->SetTexture("Resources/Tiles/0Small.png");
+		}
+		else
+		{
+			pTextureComp->SetTexture("Resources/Tiles/0Big.png");
+		}
 	}
-	else
+	else if (sceneNr == 1)
 	{
-		pTextureComp->SetTexture("Resources/Tiles/Big.png");
+		if (isSmallTile)
+		{
+			pTextureComp->SetTexture("Resources/Tiles/1Small.png");
+		}
+		else
+		{
+			pTextureComp->SetTexture("Resources/Tiles/1Big.png");
+		}
 	}
-	
+	else if (sceneNr == 2)
+	{
+		if (isSmallTile)
+		{
+			pTextureComp->SetTexture("Resources/Tiles/2Small.png");
+		}
+		else
+		{
+			pTextureComp->SetTexture("Resources/Tiles/2Big.png");
+		}
+	}	
 
-	auto pTexture = pTextureComp.get();
+	m_pTexture = pTextureComp.get();
 
 	GetOwner()->AddComponent(std::move(pTextureComp));
+}
 
+void Game::TileComponent::SetColliderRow(int nrOfTiles)
+{
 	auto pos = GetOwner()->GetTransform()->GetWorldPosition();
 	SDL_Rect rect;
 	rect.x = static_cast<int>(pos.x);
 	rect.y = static_cast<int>(pos.y);
-	rect.h = static_cast<int>(pTexture->GetSize().y);
-	rect.w = static_cast<int>(pTexture->GetSize().x);
-	auto collider = std::make_unique<dae::ColliderComponent>(pObject, rect);
+	rect.h = static_cast<int>(m_pTexture->GetSize().y);
+	rect.w = static_cast<int>(m_pTexture->GetSize().x * nrOfTiles);
+	auto collider = std::make_unique<dae::ColliderComponent>(GetOwner(), rect);
+	m_pCollider = collider.get();
+	GetOwner()->AddComponent(std::move(collider));
+}
+
+void Game::TileComponent::SetColliderColumn(int nrOfTiles)
+{
+	auto pos = GetOwner()->GetTransform()->GetWorldPosition();
+	SDL_Rect rect;
+	rect.x = static_cast<int>(pos.x);
+	rect.y = static_cast<int>(pos.y);
+	rect.h = static_cast<int>(m_pTexture->GetSize().y * nrOfTiles);
+	rect.w = static_cast<int>(m_pTexture->GetSize().x);
+	auto collider = std::make_unique<dae::ColliderComponent>(GetOwner(), rect);
+	m_pCollider = collider.get();
 	GetOwner()->AddComponent(std::move(collider));
 }

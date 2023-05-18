@@ -11,6 +11,10 @@ dae::RigidBody::RigidBody(GameObject* pObject, ColliderComponent* pCollider)
 	m_pCollider = pCollider;
 }
 
+void dae::RigidBody::Render() const
+{
+}
+
 void dae::RigidBody::FixedUpdate(float deltaTime)
 {
 	auto pos = m_pTransform->GetLocalPosition();
@@ -66,14 +70,12 @@ void dae::RigidBody::CheckCollision()
 		}
 	}
 
-	//Bottom Collision
+	//Floor Collision
 	if (m_Velocity.y > 0.f)
 	{
-		//Point 1 (centre of object)
 		int x1 = m_Rect.x + (m_Rect.w / 2);
 		int y1 = m_Rect.y + (m_Rect.h / 2);
 
-		//Point 2 (1 px below object)
 		int x2 = x1;
 		int y2 = m_Rect.y + m_Rect.h + 3;
 
@@ -101,4 +103,47 @@ void dae::RigidBody::CheckCollision()
 	{
 		m_Grounded = false;
 	}
+
+	//Left col
+	int x1 = int(m_Rect.x + m_Rect.w * 0.5f);
+	int y1 = int(m_Rect.y + m_Rect.h * 0.5f);
+	int x2 = int(m_Rect.x);
+	int y2 = y1;
+
+	float offset = pos.x - float(x2);
+
+	for (size_t i = 0; i < colliders.size(); ++i)
+	{
+		SDL_Rect rect = colliders[i]->GetRect();
+		if (SDL_IntersectRectAndLine(&rect, &x1, &y1, &x2, &y2))
+		{
+			pos.x = x1 + offset;
+			m_Velocity.x = 0.0f;
+
+			break;
+		}
+	}
+
+	//Right col
+	x1 = int(m_Rect.x + m_Rect.w * 0.5f);
+	y1 = int(m_Rect.y + m_Rect.h * 0.5f);
+	x2 = int(m_Rect.x + m_Rect.w + 1);
+	y2 = y1;
+
+	offset = pos.x - (float)x2 + 1.f;
+
+	for (size_t i = 0; i < colliders.size(); ++i)
+	{
+		SDL_Rect rect = colliders[i]->GetRect();
+		if (SDL_IntersectRectAndLine(&rect, &x1, &y1, &x2, &y2))
+		{
+			pos.x = x1 + offset;
+			m_Velocity.x = 0.0f;
+
+			break;
+		}
+	}
+
+
+	GetOwner()->SetPosition(pos);
 }

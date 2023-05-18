@@ -6,8 +6,6 @@
 
 namespace dae
 {
-	class TextureComponent;
-
 	class AnimatorComponent : public Component
 	{
 	public:
@@ -22,7 +20,7 @@ namespace dae
 		void Update(float deltaTime) override;
 		void FixedUpdate(float /*deltaTime*/) override {};
 
-		Animation* CreateAnimation(std::string animName, int frameWidth, int frameHeight, int numFrames, float frameTime);
+		Animation* CreateAnimation(std::string animName, TextureComponent* pTexture, int frameWidth, int frameHeight, int numFrames, float frameTime);
 		void SetAnimation(Animation* pAnimation);
 
 	private:

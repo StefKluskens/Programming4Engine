@@ -1,7 +1,7 @@
 //Window size x:768 y:672
 
 Player 52 576 true true true
-Player 350 350 false true true
+//Player 350 350 false true true
 
 BigCol 0 48 13
 BigCol 720 48 13
@@ -10,19 +10,19 @@ BigCol 720 48 13
 BigRow 48 624 14
 
 //Floor + 1
-SmallRow 96 526 7
-SmallRow 312 526 6
-SmallRow 504 526 7
+SmallRow 48 526 2
+SmallRow 168 526 18
+SmallRow 672 526 2
 
 //Floor + 2
+SmallRow 48 406 2
 SmallRow 168 406 18
+SmallRow 672 406 2
 
 //Floor + 3
-SmallRow 240 286 5
-SmallRow 408 286 5
-
-//Floor + 4
-SmallRow 312 166 6
+SmallRow 48 286 2
+SmallRow 168 286 18
+SmallRow 672 286 2
 
 //Top
 SmallRow 48 48 28

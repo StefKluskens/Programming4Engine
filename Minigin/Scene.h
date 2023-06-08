@@ -18,6 +18,8 @@ namespace dae
 		void FixedUpdate(float deltaTime);
 		void Render() const;
 
+		void OnSceneExit();
+
 		~Scene();
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;

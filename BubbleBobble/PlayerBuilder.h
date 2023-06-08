@@ -18,7 +18,7 @@ namespace Game
 	class PlayerBuilder : public dae::Singleton<PlayerBuilder>
 	{
 	public:
-		void BuildPlayer(std::string levelFile, dae::Scene* pScene, int controllerIndex1, int controllerIndex2);
+		void BuildPlayer(std::string levelFile, dae::Scene* pScene, int controllerIndex1, int controllerIndex2, int gameMode);
 
 	private:
 		void BuildPlayerComponent(std::string line, int controllerIndex1, int controllerIndex2);
@@ -35,5 +35,8 @@ namespace Game
 		std::vector<dae::GameObject*> m_pPlayers;
 
 		PlayerComponent* m_pPlayerComponent;
+
+		int m_MaxNrOfPlayers{ 2 };
+		int m_NrOfPlayers{};
 	};
 }

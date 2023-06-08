@@ -8,12 +8,17 @@
 #include "Animation.h"
 #include <sstream>
 
-void Game::PlayerBuilder::BuildPlayer(std::string levelFile, dae::Scene* pScene, int controllerIndex1, int controllerIndex2)
+void Game::PlayerBuilder::BuildPlayer(std::string levelFile, dae::Scene* pScene, int controllerIndex1, int controllerIndex2, int gameMode)
 {
 	m_pFile = dae::ResourceManager::GetInstance().LoadTextFile(levelFile);
 	std::string line;
 
 	m_pScene = pScene;
+
+	if (gameMode == 0)
+	{
+		m_MaxNrOfPlayers = 1;
+	}
 
 	if (m_pFile->is_open())
 	{
@@ -21,7 +26,7 @@ void Game::PlayerBuilder::BuildPlayer(std::string levelFile, dae::Scene* pScene,
 		{
 			std::getline(*m_pFile, line);
 
-			if (line.rfind("Player ", 0) == 0)
+			if (m_NrOfPlayers < m_MaxNrOfPlayers && line.rfind("Player ", 0) == 0)
 			{
 				BuildPlayerComponent(line, controllerIndex1, controllerIndex2);
 			}
@@ -65,6 +70,8 @@ void Game::PlayerBuilder::BuildPlayerComponent(std::string line, int controllerI
 	m_pPlayerComponent->SetAnimator();
 
 	m_pScene->Add(m_pPlayerObject);
+
+	++m_NrOfPlayers;
 }
 
 void Game::PlayerBuilder::BuildAnimations(std::string line)

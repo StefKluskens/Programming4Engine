@@ -2,6 +2,8 @@
 //#include "Command.h"
 #include <glm/glm.hpp>
 
+class BubbleBobble;
+
 namespace dae
 {
 	class Transform;
@@ -67,5 +69,22 @@ namespace Game
 		dae::GameObject* m_pObject;
 		dae::Command::ButtonState m_Action;
 		ShootComponent* m_pShootComponent;
+	};
+
+	class LoadSceneCommand : public dae::Command
+	{
+	public:
+		LoadSceneCommand(dae::Scene* pScene, dae::GameObject* pObject, int gameMode, dae::Command::ButtonState action, BubbleBobble& bubbleBobble, int controllerIndex1, int controllerIndex2);
+		void Execute(float deltaTime) override;
+		dae::Command::ButtonState GetButtonState() override { return m_Action; };
+
+	private:
+		dae::GameObject* m_pObject;
+		dae::Command::ButtonState m_Action;
+		int m_GameMode{};
+		BubbleBobble& m_BubbleBobble;
+
+		int m_Controller1{};
+		int m_Controller2{};
 	};
 }

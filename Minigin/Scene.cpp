@@ -85,3 +85,8 @@ void Scene::Render() const
 	m_pRoot->Render();
 }
 
+void dae::Scene::OnSceneExit()
+{
+
+}
+

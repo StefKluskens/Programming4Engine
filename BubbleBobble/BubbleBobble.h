@@ -1,6 +1,9 @@
 #pragma once
-class BubbleBobble
+#include "Singleton.h"
+
+class BubbleBobble : public dae::Singleton<BubbleBobble>
 {
+public:
 	enum class GameMode
 	{
 		SinglePlayer,
@@ -8,11 +11,12 @@ class BubbleBobble
 		Versus
 	};
 
-public:
 	void Load();
 
 	GameMode GetGameMode() const;
 	void SetGameMode(GameMode gameMode);
+
+	void MainMenuExit(int controllerIndex1, int controllerIndex2);
 
 private:
 	GameMode m_CurrentGameMode{};

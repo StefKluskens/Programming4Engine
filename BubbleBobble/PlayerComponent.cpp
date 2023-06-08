@@ -13,9 +13,6 @@
 #include "Scene.h"
 #include <memory>
 
-#include "Renderer.h"
-#include <SDL.h>
-
 Game::PlayerComponent::PlayerComponent(dae::Scene* pScene, dae::GameObject* pObject, bool isPLayer1, bool hasCollider, bool hasRB, int controllerIndex1, int controllerIndex2)
 	: Component(pObject)
 	, m_isPlayer1(isPLayer1)

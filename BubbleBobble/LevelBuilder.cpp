@@ -6,8 +6,11 @@
 #include "TileComponent.h"
 #include <sstream>
 #include <memory>
+#include "InputManager.h"
+#include "Commands.h"
+#include "BubbleBobble.h"
 
-void Game::LevelBuilder::BuildLevel(dae::Scene* pScene, std::string levelFile, int sceneNr, int /*controllerIndex1*/, int /*controllerIndex2*/)
+void Game::LevelBuilder::BuildLevel(dae::Scene* pScene, std::string levelFile, int sceneNr)
 {
 	m_pFile = dae::ResourceManager::GetInstance().LoadTextFile(levelFile);
 
@@ -20,21 +23,7 @@ void Game::LevelBuilder::BuildLevel(dae::Scene* pScene, std::string levelFile, i
 		{
 			std::getline(*m_pFile.get(), line);
 			
-			/*if (line.rfind("Player ", 0) == 0)
-			{
-				BuildPlayer(pScene, line, controllerIndex1, controllerIndex2);
-			}
-			else if (line.rfind("SmallTile ", 0) == 0)
-			{
-				BuildTile(pScene, line, true);
-				++m_NrTile;
-			}
-			else if (line.rfind("BigTile ", 0) == 0)
-			{
-				BuildTile(pScene, line, false);
-				++m_NrTile;
-			}
-			else */if (line.rfind("BigCol ", 0) == 0)
+			if (line.rfind("BigCol ", 0) == 0)
 			{
 				BuildBigTileColumn(pScene, line);
 			}
@@ -54,54 +43,35 @@ void Game::LevelBuilder::BuildLevel(dae::Scene* pScene, std::string levelFile, i
 	}
 }
 
-void Game::LevelBuilder::BuildPlayer(dae::Scene* pScene, std::string line, int controllerIndex1, int controllerIndex2)
+void Game::LevelBuilder::BuildMainMenu(dae::Scene* pScene, int controllerIndex1, int controllerIndex2)
 {
-	//Player line will be formatted as:
-	//Player xPos yPos isPLayer1 hasCollider hasRB
-	std::stringstream ss(line);
+	auto& input = dae::InputManager::GetInstance();
+	BubbleBobble& bubbleBobble = BubbleBobble::GetInstance();
 
-	std::string player;
-	float xPos, yPos;
-	bool isPlayer1, hasCollider, hasRB;
+	//Command object
+	dae::GameObject* commandGO = new dae::GameObject("CommandsHolder", pScene);
+	pScene->Add(commandGO);
 
-	ss >> player >> xPos >> yPos >> std::boolalpha >> isPlayer1 >> hasCollider >> hasRB;
-	
-	std::string name = "Player 1";
+	//Single player
+	auto pLoadSceneCommand = std::make_unique<LoadSceneCommand>(pScene, commandGO, 0, dae::Command::ButtonState::IsDown, bubbleBobble, controllerIndex1, controllerIndex2);
+	input.AddCommand(pScene->GetName(), SDL_SCANCODE_LEFT, std::move(pLoadSceneCommand));
 
-	if (!isPlayer1)
-	{
-		name = "Player 2";
-	}
-	auto playerGo = new dae::GameObject(name, pScene);
+	pLoadSceneCommand = std::make_unique<LoadSceneCommand>(pScene, commandGO, 0, dae::Command::ButtonState::IsDown, bubbleBobble, controllerIndex1, controllerIndex2);
+	input.AddCommand(pScene->GetName(), dae::XBoxController::ControllerButton::DPadLeft, std::move(pLoadSceneCommand), controllerIndex1);
 
-	playerGo->SetPosition(xPos, yPos);
+	//Coop
+	pLoadSceneCommand = std::make_unique<LoadSceneCommand>(pScene, commandGO, 1, dae::Command::ButtonState::IsDown, bubbleBobble, controllerIndex1, controllerIndex2);
+	input.AddCommand(pScene->GetName(), SDL_SCANCODE_RIGHT, std::move(pLoadSceneCommand));
 
-	auto playerComp = std::make_unique<PlayerComponent>(pScene, playerGo, isPlayer1, hasCollider, hasRB, controllerIndex1, controllerIndex2);
-	playerGo->AddComponent(std::move(playerComp));
+	pLoadSceneCommand = std::make_unique<LoadSceneCommand>(pScene, commandGO, 1, dae::Command::ButtonState::IsDown, bubbleBobble, controllerIndex1, controllerIndex2);
+	input.AddCommand(pScene->GetName(), dae::XBoxController::ControllerButton::DPadRight, std::move(pLoadSceneCommand), controllerIndex1);
 
-	pScene->Add(playerGo);
-}
+	//Versus
+	pLoadSceneCommand = std::make_unique<LoadSceneCommand>(pScene, commandGO, 2, dae::Command::ButtonState::IsDown, bubbleBobble, controllerIndex1, controllerIndex2);
+	input.AddCommand(pScene->GetName(), SDL_SCANCODE_UP, std::move(pLoadSceneCommand));
 
-void Game::LevelBuilder::BuildTile(dae::Scene* pScene, std::string line, bool isSmallTile)
-{
-	//Tile line will be formatted as:
-	//Tile xPos yPos
-	std::stringstream ss(line);
-
-	std::string tile;
-	float xPos, yPos;
-
-	ss >> tile >> xPos >> yPos;
-
-	std::string name = "Tile";
-
-	auto tileGo = new dae::GameObject(name, pScene);
-
-	tileGo->SetPosition(xPos, yPos);
-
-	auto pTile = std::make_unique<TileComponent>(tileGo, isSmallTile, m_SceneNr);
-
-	pScene->Add(tileGo);
+	pLoadSceneCommand = std::make_unique<LoadSceneCommand>(pScene, commandGO, 2, dae::Command::ButtonState::IsDown, bubbleBobble, controllerIndex1, controllerIndex2);
+	input.AddCommand(pScene->GetName(), dae::XBoxController::ControllerButton::DPadUp, std::move(pLoadSceneCommand), controllerIndex1);
 }
 
 void Game::LevelBuilder::BuildBigTileColumn(dae::Scene* pScene, std::string line)

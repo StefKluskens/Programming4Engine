@@ -7,6 +7,8 @@
 #include "RigidBody.h"
 #include "PlayerComponent.h"
 #include "ShootComponent.h"
+#include "BubbleBobble.h"
+#include "SceneManager.h"
 
 Game::MoveCommand::MoveCommand(dae::Scene* pScene, dae::GameObject* pActor, PlayerComponent* pPlayerComponent, glm::vec3 direction, float moveSpeed, dae::Command::ButtonState action)
 	: dae::Command(pScene)
@@ -66,4 +68,43 @@ void Game::ShootCommand::Execute(float /*deltaTime*/)
 {
 	std::cout << "Shoot\n";
 	m_pShootComponent->Shoot();
+}
+
+Game::LoadSceneCommand::LoadSceneCommand(dae::Scene* pScene, dae::GameObject* pObject, int gameMode, dae::Command::ButtonState action, BubbleBobble& bubbleBobble, int controllerIndex1, int controllerIndex2)
+	: dae::Command(pScene)
+	, m_pObject(pObject)
+	, m_Action(action)
+	, m_GameMode(gameMode)
+	, m_BubbleBobble(bubbleBobble)
+	, m_Controller1(controllerIndex1)
+	, m_Controller2(controllerIndex2)
+{
+}
+
+void Game::LoadSceneCommand::Execute(float /*deltaTime*/)
+{
+	BubbleBobble::GameMode gameMode = static_cast<BubbleBobble::GameMode>(m_GameMode);
+	m_BubbleBobble.SetGameMode(gameMode);
+
+	m_BubbleBobble.MainMenuExit(m_Controller1, m_Controller2);
+	auto scenes = dae::SceneManager::GetInstance().GetScenes();
+	scenes;
+
+	std::cout << "load level0\n";
+	switch (gameMode)
+	{
+	case BubbleBobble::GameMode::SinglePlayer:
+		std::cout << "Single player\n";
+		dae::SceneManager::GetInstance().SetActiveScene("Level0");
+		break;
+	case BubbleBobble::GameMode::MultiPlayer:
+		std::cout << "Coop\n";
+		dae::SceneManager::GetInstance().SetActiveScene("Level0");
+		break;
+	case BubbleBobble::GameMode::Versus:
+		std::cout << "Versus\n";
+		break;
+	default:
+		break;
+	}
 }

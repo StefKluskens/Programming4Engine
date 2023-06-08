@@ -3,6 +3,7 @@
 #include <iostream>
 #include "SceneManager.h"
 #include "Scene.h"
+#include "GameObject.h"
 
 bool dae::InputManager::ProcessInput(float deltaTime)
 {
@@ -14,6 +15,8 @@ bool dae::InputManager::ProcessInput(float deltaTime)
 		}
 
 		if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_p) {
+
+			//Load level
 			if (sceneName == "Level0")
 			{
 				SceneManager::GetInstance().SetActiveScene("Level1");
@@ -128,21 +131,6 @@ int dae::InputManager::AddXBoxController()
 	m_LastControllerIndex++;
 	m_pControllers.emplace_back(std::make_unique<XBoxController>(m_LastControllerIndex));
 	return m_LastControllerIndex;
-}
-
-void dae::InputManager::AddCommand(XBoxController::ControllerButton button, std::unique_ptr<Command> command, int controllerIndex)
-{
-	if (static_cast<size_t>(controllerIndex) > m_pControllers.size() || controllerIndex < 0)
-	{
-		std::cout << "Invalid controller index\n";
-		return;
-	}
-
-	//Make pair of controller index and the passed button
-	ControllerKey key = std::make_pair(controllerIndex, button);
-
-	//Add key to commands in pair with the passed command
-	m_ConsoleCommands.insert(std::make_pair(key, std::move(command)));
 }
 
 void dae::InputManager::AddCommand(const std::string& sceneName, XBoxController::ControllerButton button, std::unique_ptr<Command> command, int controllerIndex)

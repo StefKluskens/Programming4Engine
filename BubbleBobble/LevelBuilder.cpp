@@ -7,7 +7,7 @@
 #include <sstream>
 #include <memory>
 
-void Game::LevelBuilder::BuildLevel(dae::Scene* pScene, std::string levelFile, int sceneNr, int controllerIndex1, int controllerIndex2)
+void Game::LevelBuilder::BuildLevel(dae::Scene* pScene, std::string levelFile, int sceneNr, int /*controllerIndex1*/, int /*controllerIndex2*/)
 {
 	m_pFile = dae::ResourceManager::GetInstance().LoadTextFile(levelFile);
 
@@ -20,7 +20,7 @@ void Game::LevelBuilder::BuildLevel(dae::Scene* pScene, std::string levelFile, i
 		{
 			std::getline(*m_pFile.get(), line);
 			
-			if (line.rfind("Player ", 0) == 0)
+			/*if (line.rfind("Player ", 0) == 0)
 			{
 				BuildPlayer(pScene, line, controllerIndex1, controllerIndex2);
 			}
@@ -34,7 +34,7 @@ void Game::LevelBuilder::BuildLevel(dae::Scene* pScene, std::string levelFile, i
 				BuildTile(pScene, line, false);
 				++m_NrTile;
 			}
-			else if (line.rfind("BigCol ", 0) == 0)
+			else */if (line.rfind("BigCol ", 0) == 0)
 			{
 				BuildBigTileColumn(pScene, line);
 			}

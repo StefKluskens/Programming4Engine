@@ -10,10 +10,17 @@ dae::AnimatorComponent::AnimatorComponent(dae::GameObject* pObject, TextureCompo
 	, m_CurrentFrame(0)
 	, m_Timer(0.0f)
 {
-	if (!m_pSpriteSheet)
-	{
-		std::cout << "No sprite sheet\n";
-	}
+}
+
+dae::AnimatorComponent::AnimatorComponent(AnimatorComponent&& other) noexcept
+	: Component(std::move(other))
+{
+	m_pSpriteSheet = std::move(other.m_pSpriteSheet);
+	m_pCurrentAnimation = std::move(other.m_pCurrentAnimation);
+	m_CurrentFrame = std::move(other.m_CurrentFrame);
+	m_Timer = std::move(other.m_Timer);
+	m_SrcRect = std::move(other.m_SrcRect);
+	m_DestRect = std::move(other.m_DestRect);
 }
 
 void dae::AnimatorComponent::Update(float deltaTime)

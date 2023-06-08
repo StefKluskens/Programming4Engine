@@ -128,6 +128,37 @@ std::string dae::GameObject::GetName() const
 	return m_Name;
 }
 
+void dae::GameObject::SetName(const std::string& name)
+{
+	m_Name = name;
+}
+
+GameObject* dae::GameObject::GetChildByName(const std::string& name)
+{
+	for (const auto& child : m_pChildren)
+	{
+		if (child->GetName() == name)
+		{
+			return child.get();
+		}
+	}
+	return nullptr;
+}
+
+std::vector<GameObject*> dae::GameObject::GetChildrenByTag(const std::string& tag)
+{
+	std::vector<GameObject*> children{};
+
+	for (const auto& child : m_pChildren)
+	{
+		if (child->GetTag() == tag)
+		{
+			children.push_back(child.get());
+		}
+	}
+	return children;
+}
+
 Scene* dae::GameObject::GetScene() const
 {
 	return m_pScene;

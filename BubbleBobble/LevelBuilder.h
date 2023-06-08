@@ -27,7 +27,7 @@ namespace Game
 		void BuildSmallTileColumn(dae::Scene* pScene, std::string line);
 		void BuildSmallTileRow(dae::Scene* pScene, std::string line);
 
-		std::unique_ptr< std::ifstream> m_pFile{};
+		std::unique_ptr<std::ifstream> m_pFile{};
 		int m_NrTile{};
 		int m_SceneNr{};
 	};

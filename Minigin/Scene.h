@@ -28,6 +28,8 @@ namespace dae
 
 		std::string GetName() const;
 
+		GameObject* GetRoot() const { return m_pRoot.get(); }
+
 
 	private: 
 		explicit Scene(const std::string& name);

@@ -185,6 +185,7 @@ xcopy "$(SolutionDir)3rdParty\SDL_mixer\lib\$(PlatformTarget)\*.dll" "$(OutputPa
     <ClCompile Include="FPSComponent.cpp" />
     <ClCompile Include="LivesComponent.cpp" />
     <ClCompile Include="LivesDisplayComponent.cpp" />
+    <ClCompile Include="PlayerBuilder.cpp" />
     <ClCompile Include="PlayerComponent.cpp" />
     <ClCompile Include="RotatorComponent.cpp" />
     <ClCompile Include="ScoreComponent.cpp" />
@@ -200,6 +201,7 @@ xcopy "$(SolutionDir)3rdParty\SDL_mixer\lib\$(PlatformTarget)\*.dll" "$(OutputPa
     <ClInclude Include="LevelBuilder.h" />
     <ClInclude Include="LivesComponent.h" />
     <ClInclude Include="LivesDisplayComponent.h" />
+    <ClInclude Include="PlayerBuilder.h" />
     <ClInclude Include="PlayerComponent.h" />
     <ClInclude Include="RotatorComponent.h" />
     <ClInclude Include="ScoreComponent.h" />

@@ -1,6 +1,6 @@
 //Window size x:768 y:672
 
-Player 52 576 true true true
+//Player 52 576 true true true
 //Player 350 350 false true true
 
 BigCol 0 48 13

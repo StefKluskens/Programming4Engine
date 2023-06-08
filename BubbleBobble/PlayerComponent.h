@@ -29,12 +29,19 @@ namespace Game
 		PlayerComponent& operator=(const PlayerComponent& other) = delete;
 		PlayerComponent& operator=(PlayerComponent&& other) = delete;
 
-		void Render() const override {};
+		void Render() const override;
 		void Update(float /*deltaTime*/) override {};
 		void FixedUpdate(float deltaTime) override;
 
 		void SetInputDirection(glm::vec3 direction);
 
+		dae::TextureComponent* GetTexture() const { return m_pCurrentTexture; }
+		dae::TextureComponent* GetTexture(const std::string& name) const;
+
+		void AddAnimation(std::unique_ptr<dae::Animation> animation);
+		void SetAnimator();
+
+		std::map<std::string, std::unique_ptr<dae::Animation>>& GetAnimationMap() { return m_AnimationMap; }
 	private:
 		void HandleMovement(float deltaTime);
 
@@ -43,7 +50,7 @@ namespace Game
 		dae::TextureComponent* m_pCurrentTexture{};
 		dae::sound_system* m_pSoundSytem;
 
-		std::vector<std::unique_ptr<dae::Animation>> m_pAnimations{};
+		//std::vector<std::unique_ptr<dae::Animation>> m_pAnimations{};
 		std::map<std::string, std::unique_ptr<dae::Animation>> m_AnimationMap{};
 		dae::AnimatorComponent* m_pAnimator;
 

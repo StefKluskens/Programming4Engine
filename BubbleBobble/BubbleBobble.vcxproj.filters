@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Builders">
+      <UniqueIdentifier>{f371ba4d-5784-428d-8679-50876cea1db7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -45,9 +48,6 @@
     <ClCompile Include="PlayerComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LevelBuilder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ShootComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -56,6 +56,12 @@
     </ClCompile>
     <ClCompile Include="TileComponent.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelBuilder.cpp">
+      <Filter>Builders</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerBuilder.cpp">
+      <Filter>Builders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -83,12 +89,6 @@
     <ClInclude Include="BubbleBobble.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LevelBuilder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ShootComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -97,6 +97,15 @@
     </ClInclude>
     <ClInclude Include="TileComponent.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelBuilder.h">
+      <Filter>Builders</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerBuilder.h">
+      <Filter>Builders</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

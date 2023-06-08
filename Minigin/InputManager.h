@@ -19,7 +19,6 @@ namespace dae
 		void Update();
 
 		int AddXBoxController();
-		void AddCommand(XBoxController::ControllerButton button, std::unique_ptr<Command> command, int controllerIndex);
 		void AddCommand(const std::string& sceneName, XBoxController::ControllerButton button, std::unique_ptr<Command> command, int controllerIndex);
 		void AddCommand(const std::string& sceneName, SDL_Scancode key, std::unique_ptr<Command> pCommand);
 

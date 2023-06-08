@@ -12,7 +12,7 @@ namespace dae
 		AnimatorComponent(GameObject* pObject, TextureComponent* pTexture);
 		virtual ~AnimatorComponent() = default;
 		AnimatorComponent(const AnimatorComponent& other) = delete;
-		AnimatorComponent(AnimatorComponent&& other) noexcept = delete;
+		AnimatorComponent(AnimatorComponent&& other) noexcept;
 		AnimatorComponent& operator=(const AnimatorComponent& other) = delete;
 		AnimatorComponent& operator=(AnimatorComponent&& other) = delete;
 
@@ -22,6 +22,8 @@ namespace dae
 
 		Animation* CreateAnimation(std::string animName, TextureComponent* pTexture, int frameWidth, int frameHeight, int numFrames, float frameTime);
 		void SetAnimation(Animation* pAnimation);
+
+		SDL_Rect GetSrcRect() const { return m_SrcRect; }
 
 	private:
 		TextureComponent* m_pSpriteSheet{};

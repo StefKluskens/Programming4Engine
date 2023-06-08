@@ -39,19 +39,25 @@ namespace dae
 		GameObject* GetParent() const;
 
 		std::string GetName() const;
+		void SetName(const std::string& name);
+
+		void SetTag(const std::string& tag) { m_Tag = tag; }
+		std::string GetTag() const { return m_Tag; }
 
 		//unique_ptr because I want the game object to have ownership of its children, seems the most logical to me
 		std::vector<std::unique_ptr<GameObject>> m_pChildren{};
+		GameObject* GetChildByName(const std::string& name);
+		std::vector<GameObject*> GetChildrenByTag(const std::string& tag);
 
 		Scene* GetScene() const;
 
 	private:
 		std::string m_Name{ "GameObject" };
+		std::string m_Tag{ "" };
 		std::unique_ptr<Transform> m_Transform{};
 
 		//unique_ptr because the gameobject should own its components. No need for shared ownership
 		std::vector<std::unique_ptr<Component>> m_pComponents{};
-
 
 		GameObject* m_pParent{ nullptr };
 

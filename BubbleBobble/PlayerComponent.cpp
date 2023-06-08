@@ -13,6 +13,9 @@
 #include "Scene.h"
 #include <memory>
 
+#include "Renderer.h"
+#include <SDL.h>
+
 Game::PlayerComponent::PlayerComponent(dae::Scene* pScene, dae::GameObject* pObject, bool isPLayer1, bool hasCollider, bool hasRB, int controllerIndex1, int controllerIndex2)
 	: Component(pObject)
 	, m_isPlayer1(isPLayer1)
@@ -37,39 +40,14 @@ Game::PlayerComponent::PlayerComponent(dae::Scene* pScene, dae::GameObject* pObj
 	GetOwner()->AddComponent(std::move(idleTexture));
 	GetOwner()->AddComponent(std::move(runTexture));
 
-	m_pCurrentTexture = GetOwner()->GetComponent<dae::TextureComponent>("IdleTexture");
-	m_pCurrentTexture->SetIsAnimation(true);
-
-	int frameWidth = 48;
-	int frameHeight = 48;
-	int nrOfFrames = 2;
-	float frameTime = 0.5f;
-
-	auto pAnimator = std::make_unique<dae::AnimatorComponent>(pObject, m_pCurrentTexture);
-	auto anim = std::make_unique<dae::Animation>("Idle", m_pCurrentTexture, frameWidth, frameHeight, nrOfFrames, frameTime);
-	m_AnimationMap.insert(std::make_pair("Idle", std::move(anim)));
-
-	nrOfFrames = 4;
-	frameTime = 0.25f;
-	
-	m_pCurrentTexture = GetOwner()->GetComponent<dae::TextureComponent>("RunTexture");
-	m_pCurrentTexture->SetIsAnimation(true);
-
-	anim = std::make_unique<dae::Animation>("Run", m_pCurrentTexture, frameWidth, frameHeight, nrOfFrames, frameTime);
-	m_AnimationMap.insert(std::make_pair("Run", std::move(anim)));
-
-	pAnimator->SetAnimation(m_AnimationMap["Idle"].get());
-	m_pAnimator = pAnimator.get();
-	GetOwner()->AddComponent(std::move(pAnimator));
-
 	if (hasCollider)
 	{
 		auto pos = GetOwner()->GetTransform()->GetWorldPosition();
 		SDL_Rect rect;
 		rect.x = static_cast<int>(pos.x);
 		rect.y = static_cast<int>(pos.y);
-		rect.h = static_cast<int>(frameHeight);
-		rect.w = static_cast<int>(frameWidth);
+		rect.h = static_cast<int>(48);
+		rect.w = static_cast<int>(48);
 		auto collider = std::make_unique<dae::ColliderComponent>(pObject, rect);
 		GetOwner()->AddComponent(std::move(collider));
 
@@ -158,6 +136,10 @@ Game::PlayerComponent::PlayerComponent(dae::Scene* pScene, dae::GameObject* pObj
 	}
 }
 
+void Game::PlayerComponent::Render() const
+{
+}
+
 void Game::PlayerComponent::FixedUpdate(float deltaTime)
 {
 	HandleMovement(deltaTime);
@@ -166,6 +148,21 @@ void Game::PlayerComponent::FixedUpdate(float deltaTime)
 void Game::PlayerComponent::SetInputDirection(glm::vec3 direction)
 {
 	m_InputDir = direction;
+}
+
+dae::TextureComponent* Game::PlayerComponent::GetTexture(const std::string& name) const
+{
+	return GetOwner()->GetComponent<dae::TextureComponent>(name);
+}
+
+void Game::PlayerComponent::AddAnimation(std::unique_ptr<dae::Animation> animation)
+{
+	m_AnimationMap.insert(std::make_pair(animation->Name, std::move(animation)));
+}
+
+void Game::PlayerComponent::SetAnimator()
+{
+	m_pAnimator = GetOwner()->GetComponent<dae::AnimatorComponent>();
 }
 
 void Game::PlayerComponent::HandleMovement(float deltaTime)

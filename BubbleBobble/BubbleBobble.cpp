@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 #include "Scene.h"
 #include "LevelBuilder.h"
+#include "PlayerBuilder.h"
 #include "InputManager.h"
 
 void BubbleBobble::Load()
@@ -18,6 +19,12 @@ void BubbleBobble::Load()
 
 	auto& level2 = dae::SceneManager::GetInstance().CreateScene("Level2");
 	Game::LevelBuilder::GetInstance().BuildLevel(&level2, "Resources/Levels/Level2.txt", 2, controllerIndexP1, controllerIndexP2);
+
+	auto scenes = dae::SceneManager::GetInstance().GetScenes();
+	for (auto scene : scenes)
+	{
+		Game::PlayerBuilder::GetInstance().BuildPlayer("Resources/Levels/PlayerData.txt", scene.get(), controllerIndexP1, controllerIndexP2);
+	}
 
 	dae::SceneManager::GetInstance().SetActiveScene(level0.GetName());
 }

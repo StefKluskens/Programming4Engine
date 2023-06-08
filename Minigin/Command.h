@@ -21,6 +21,7 @@ namespace dae
 		virtual ButtonState GetButtonState() = 0;
 
 		Scene* GetScene() const { return m_pScene; };
+		void SetScene(Scene* pScene) { m_pScene = pScene; }
 
 	private:
 		Scene* m_pScene{};

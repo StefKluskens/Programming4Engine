@@ -185,6 +185,7 @@ xcopy "$(SolutionDir)3rdParty\SDL_mixer\lib\$(PlatformTarget)\*.dll" "$(OutputPa
     <ClCompile Include="FPSComponent.cpp" />
     <ClCompile Include="LivesComponent.cpp" />
     <ClCompile Include="LivesDisplayComponent.cpp" />
+    <ClCompile Include="MaitaComponent.cpp" />
     <ClCompile Include="PlayerBuilder.cpp" />
     <ClCompile Include="PlayerComponent.cpp" />
     <ClCompile Include="RotatorComponent.cpp" />
@@ -192,6 +193,7 @@ xcopy "$(SolutionDir)3rdParty\SDL_mixer\lib\$(PlatformTarget)\*.dll" "$(OutputPa
     <ClCompile Include="ScoreDisplay.cpp" />
     <ClCompile Include="ShootComponent.cpp" />
     <ClCompile Include="TileComponent.cpp" />
+    <ClCompile Include="ZenChanComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BubbleBobble.h" />
@@ -201,6 +203,7 @@ xcopy "$(SolutionDir)3rdParty\SDL_mixer\lib\$(PlatformTarget)\*.dll" "$(OutputPa
     <ClInclude Include="LevelBuilder.h" />
     <ClInclude Include="LivesComponent.h" />
     <ClInclude Include="LivesDisplayComponent.h" />
+    <ClInclude Include="MaitaComponent.h" />
     <ClInclude Include="PlayerBuilder.h" />
     <ClInclude Include="PlayerComponent.h" />
     <ClInclude Include="RotatorComponent.h" />
@@ -208,6 +211,7 @@ xcopy "$(SolutionDir)3rdParty\SDL_mixer\lib\$(PlatformTarget)\*.dll" "$(OutputPa
     <ClInclude Include="ScoreDisplay.h" />
     <ClInclude Include="ShootComponent.h" />
     <ClInclude Include="TileComponent.h" />
+    <ClInclude Include="ZenChanComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

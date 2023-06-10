@@ -9,6 +9,8 @@
 #include "ShootComponent.h"
 #include "BubbleBobble.h"
 #include "SceneManager.h"
+#include "Scene.h"
+#include "AnimatorComponent.h"
 
 Game::MoveCommand::MoveCommand(dae::Scene* pScene, dae::GameObject* pActor, PlayerComponent* pPlayerComponent, glm::vec3 direction, float moveSpeed, dae::Command::ButtonState action)
 	: dae::Command(pScene)
@@ -86,7 +88,11 @@ void Game::LoadSceneCommand::Execute(float /*deltaTime*/)
 	BubbleBobble::GameMode gameMode = static_cast<BubbleBobble::GameMode>(m_GameMode);
 	m_BubbleBobble.SetGameMode(gameMode);
 
-	m_BubbleBobble.MainMenuExit(m_Controller1, m_Controller2);
+	if (GetScene()->GetName() == "MainMenu")
+	{
+		m_BubbleBobble.MainMenuExit(m_Controller1, m_Controller2);
+	}
+
 	auto scenes = dae::SceneManager::GetInstance().GetScenes();
 	scenes;
 
@@ -94,11 +100,9 @@ void Game::LoadSceneCommand::Execute(float /*deltaTime*/)
 	switch (gameMode)
 	{
 	case BubbleBobble::GameMode::SinglePlayer:
-		std::cout << "Single player\n";
 		dae::SceneManager::GetInstance().SetActiveScene("Level0");
 		break;
 	case BubbleBobble::GameMode::MultiPlayer:
-		std::cout << "Coop\n";
 		dae::SceneManager::GetInstance().SetActiveScene("Level0");
 		break;
 	case BubbleBobble::GameMode::Versus:

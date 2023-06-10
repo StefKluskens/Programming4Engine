@@ -63,6 +63,12 @@
     <ClCompile Include="PlayerBuilder.cpp">
       <Filter>Builders</Filter>
     </ClCompile>
+    <ClCompile Include="ZenChanComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MaitaComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FPSComponent.h">
@@ -106,6 +112,12 @@
     </ClInclude>
     <ClInclude Include="PlayerBuilder.h">
       <Filter>Builders</Filter>
+    </ClInclude>
+    <ClInclude Include="ZenChanComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MaitaComponent.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

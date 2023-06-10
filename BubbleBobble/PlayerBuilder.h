@@ -27,12 +27,13 @@ namespace Game
 		void PlayerAnimator(dae::GameObject* player, std::string line);
 		void SetPlayerAnimation(dae::GameObject* player);
 
+		void AddPlayerToEnemies();
+
 		std::unique_ptr<std::ifstream> m_pFile{};
 
 		dae::Scene* m_pScene;
 
 		dae::GameObject* m_pPlayerObject;
-		std::vector<dae::GameObject*> m_pPlayers;
 
 		PlayerComponent* m_pPlayerComponent;
 

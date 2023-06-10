@@ -19,6 +19,14 @@ namespace dae
 
 namespace Game
 {
+	enum class PlayerState
+	{
+		Idle,
+		Run,
+		Shoot,
+		Die
+	};
+
 	class PlayerComponent : public dae::Component
 	{
 	public:
@@ -30,7 +38,7 @@ namespace Game
 		PlayerComponent& operator=(PlayerComponent&& other) = delete;
 
 		void Render() const override;
-		void Update(float /*deltaTime*/) override {};
+		void Update(float deltaTime) override;
 		void FixedUpdate(float deltaTime) override;
 
 		void SetInputDirection(glm::vec3 direction);
@@ -42,6 +50,9 @@ namespace Game
 		void SetAnimator();
 
 		std::map<std::string, std::unique_ptr<dae::Animation>>& GetAnimationMap() { return m_AnimationMap; }
+
+		void SetState(PlayerState nextState);
+		PlayerState GetState() const { return m_CurrentState; }
 	private:
 		void HandleMovement(float deltaTime);
 
@@ -60,5 +71,8 @@ namespace Game
 		float m_JumpForce{ 250.f };
 
 		glm::vec3 m_InputDir{};
+		glm::vec3 m_Velocity{};
+
+		PlayerState m_CurrentState{};
 	};
 }

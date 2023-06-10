@@ -61,3 +61,8 @@ void dae::AnimatorComponent::SetAnimation(Animation* pAnimation)
 
 	m_pCurrentAnimation->Texture->SetTextureVisibility(true);
 }
+
+void dae::AnimatorComponent::DeleteAnimation()
+{
+	delete m_pCurrentAnimation;
+}

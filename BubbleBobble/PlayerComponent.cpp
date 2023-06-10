@@ -1,4 +1,5 @@
 #include "PlayerComponent.h"
+#include <memory>
 #include "GameObject.h"
 #include "ColliderComponent.h"
 #include "InputManager.h"
@@ -11,7 +12,6 @@
 #include "ShootComponent.h"
 #include "AnimatorComponent.h"
 #include "Scene.h"
-#include <memory>
 
 Game::PlayerComponent::PlayerComponent(dae::Scene* pScene, dae::GameObject* pObject, bool isPLayer1, bool hasCollider, bool hasRB, int controllerIndex1, int controllerIndex2)
 	: Component(pObject)
@@ -66,11 +66,12 @@ Game::PlayerComponent::PlayerComponent(dae::Scene* pScene, dae::GameObject* pObj
 	/*auto pShootComponent = std::make_unique<ShootComponent>(pObject);
 	GetOwner()->AddComponent(std::move(pShootComponent));
 
-	auto shootComponent = GetOwner()->GetComponent<ShootComponent>();*/
-	
+	auto shootComponent = GetOwner()->GetComponent<ShootComponent>();*/	
 
 	m_pSoundSytem = &dae::ServiceLocator::GetSoundSystem();
 	m_pSoundSytem->AddSound(dae::ResourceManager::GetInstance().GetAudioPath("Audio/Jump.wav"));
+
+
 
 	auto& input = dae::InputManager::GetInstance();
 
@@ -137,6 +138,31 @@ void Game::PlayerComponent::Render() const
 {
 }
 
+void Game::PlayerComponent::Update(float /*deltaTime*/)
+{
+	switch (m_CurrentState)
+	{
+	case Game::PlayerState::Idle:
+		if (abs(m_Velocity.x) > 0.f)
+		{
+			SetState(PlayerState::Run);
+		}
+		break;
+	case Game::PlayerState::Run:
+		if (abs(m_Velocity.x) == 0)
+		{
+			SetState(PlayerState::Idle);
+		}
+		break;
+	case Game::PlayerState::Shoot:
+		break;
+	case Game::PlayerState::Die:
+		break;
+	default:
+		break;
+	}
+}
+
 void Game::PlayerComponent::FixedUpdate(float deltaTime)
 {
 	HandleMovement(deltaTime);
@@ -162,26 +188,38 @@ void Game::PlayerComponent::SetAnimator()
 	m_pAnimator = GetOwner()->GetComponent<dae::AnimatorComponent>();
 }
 
+void Game::PlayerComponent::SetState(PlayerState nextState)
+{
+	switch (nextState)
+	{
+	case Game::PlayerState::Idle:
+		m_pAnimator->SetAnimation(m_AnimationMap["Idle"].get());
+		break;
+	case Game::PlayerState::Run:
+		m_pAnimator->SetAnimation(m_AnimationMap["Run"].get());
+		break;
+	case Game::PlayerState::Shoot:
+		break;
+	case Game::PlayerState::Die:
+		break;
+	default:
+		break;
+	}
+
+	m_CurrentState = nextState;
+}
+
 void Game::PlayerComponent::HandleMovement(float deltaTime)
 {
-	glm::vec3 velocity = glm::vec3{ m_InputDir.x * m_MoveSpeed * deltaTime, m_pRigidbody->GetVelocity().y, 0.f };
-	m_pRigidbody->SetVelocity(velocity);
-
-	if (abs(velocity.x) > 0.f)
-	{
-		m_pAnimator->SetAnimation(m_AnimationMap["Run"].get());
-	}
-	else
-	{
-		m_pAnimator->SetAnimation(m_AnimationMap["Idle"].get());
-	}
+	m_Velocity = glm::vec3{ m_InputDir.x * m_MoveSpeed * deltaTime, m_pRigidbody->GetVelocity().y, 0.f };
+	m_pRigidbody->SetVelocity(m_Velocity);
 
 	if (m_pRigidbody->IsGrounded() && m_InputDir.y != 0.f)
 	{
 		m_pSoundSytem->Play(0, 1.0f);
 
-		velocity = glm::vec3{ m_pRigidbody->GetVelocity().x, m_InputDir.y * m_JumpForce * deltaTime, 0.f };
-		m_pRigidbody->SetVelocity(velocity);
+		m_Velocity = glm::vec3{ m_pRigidbody->GetVelocity().x, m_InputDir.y * m_JumpForce * deltaTime, 0.f };
+		m_pRigidbody->SetVelocity(m_Velocity);
 	}
 
 	m_InputDir = glm::vec3{ 0.f,0.f,0.f };

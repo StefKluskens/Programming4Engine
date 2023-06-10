@@ -9,6 +9,11 @@
 #include "InputManager.h"
 #include "Commands.h"
 #include "BubbleBobble.h"
+#include "AnimatorComponent.h"
+#include "Animation.h"
+#include "TextComponent.h"
+#include "ZenChanComponent.h"
+#include "MaitaComponent.h"
 
 void Game::LevelBuilder::BuildLevel(dae::Scene* pScene, std::string levelFile, int sceneNr)
 {
@@ -39,12 +44,48 @@ void Game::LevelBuilder::BuildLevel(dae::Scene* pScene, std::string levelFile, i
 			{
 				BuildSmallTileRow(pScene, line);
 			}
+			else if (line.rfind("ZenChan ", 0) == 0)
+			{
+				BuildZenChan(pScene, line);
+			}
+			else if (line.rfind("Maita ", 0) == 0)
+			{
+				BuildMaita(pScene, line);
+			}
 		}
 	}
 }
 
 void Game::LevelBuilder::BuildMainMenu(dae::Scene* pScene, int controllerIndex1, int controllerIndex2)
 {
+	auto logoObject = new dae::GameObject("Logo", pScene);
+	auto logoTexture = std::make_unique<dae::TextureComponent>(logoObject);
+	logoTexture->SetTexture("Resources/Menu/Logo.png");
+	logoObject->AddComponent(std::move(logoTexture));	
+	logoObject->SetPosition(117.0f, 20.0f);
+
+	pScene->Add(logoObject);
+
+	auto singlePLayerText = new dae::GameObject("Game Mode Text", pScene);
+	auto font = dae::ResourceManager::GetInstance().LoadFont("Fonts/Pixel_NES.otf", 22);
+	auto text = std::make_unique<dae::TextComponent>(singlePLayerText, "<- FOR SINGLE PLAYER", font);
+	
+	text->SetPosition(200, 500);
+	singlePLayerText->AddComponent(std::move(text));
+	pScene->Add(singlePLayerText);
+
+	auto coopText = new dae::GameObject("Game Mode Text", pScene);
+	text = std::make_unique<dae::TextComponent>(coopText, "-> FOR COOP", font);
+	text->SetPosition(200, 530);
+	coopText->AddComponent(std::move(text));
+	pScene->Add(coopText);
+
+	auto versusText = new dae::GameObject("Game Mode Text", pScene);
+	text = std::make_unique<dae::TextComponent>(versusText, "^ FOR VERSUS", font);
+	text->SetPosition(200, 560);
+	versusText->AddComponent(std::move(text));
+	pScene->Add(versusText);
+
 	auto& input = dae::InputManager::GetInstance();
 	BubbleBobble& bubbleBobble = BubbleBobble::GetInstance();
 
@@ -192,4 +233,42 @@ void Game::LevelBuilder::BuildSmallTileRow(dae::Scene* pScene, std::string line)
 
 		pScene->Add(tileGo);
 	}
+}
+
+void Game::LevelBuilder::BuildZenChan(dae::Scene* pScene, std::string line)
+{
+	std::stringstream ss(line);
+
+	std::string zenChan;
+	float xPos, yPos;
+
+	ss >> zenChan >> xPos >> yPos;
+
+	auto zenChanObject = new dae::GameObject("ZenChan", pScene);
+	zenChanObject->SetTag("Enemy");
+	auto zenChangComp = std::make_unique<ZenChanComponent>(zenChanObject);
+	zenChanObject->AddComponent(std::move(zenChangComp));
+
+	zenChanObject->SetPosition(xPos, yPos);
+
+	pScene->Add(zenChanObject);
+}
+
+void Game::LevelBuilder::BuildMaita(dae::Scene* pScene, std::string line)
+{
+	std::stringstream ss(line);
+
+	std::string maita;
+	float xPos, yPos;
+
+	ss >> maita >> xPos >> yPos;
+
+	auto MaitaChanObject = new dae::GameObject("ZenChan", pScene);
+	MaitaChanObject->SetTag("Enemy");
+	auto MaitaComp = std::make_unique<MaitaComponent>(MaitaChanObject);
+	MaitaChanObject->AddComponent(std::move(MaitaComp));
+
+	MaitaChanObject->SetPosition(xPos, yPos);
+
+	pScene->Add(MaitaChanObject);
 }

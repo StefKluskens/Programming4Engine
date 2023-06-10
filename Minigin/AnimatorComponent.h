@@ -25,6 +25,8 @@ namespace dae
 
 		SDL_Rect GetSrcRect() const { return m_SrcRect; }
 
+		void DeleteAnimation();
+
 	private:
 		TextureComponent* m_pSpriteSheet{};
 		Animation* m_pCurrentAnimation{};

@@ -4,6 +4,7 @@
 #include "SceneManager.h"
 #include "Scene.h"
 #include "GameObject.h"
+#include "AnimatorComponent.h"
 
 bool dae::InputManager::ProcessInput(float deltaTime)
 {
@@ -14,7 +15,7 @@ bool dae::InputManager::ProcessInput(float deltaTime)
 			return false;
 		}
 
-		if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_p) {
+		if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_F1) {
 
 			//Load level
 			if (sceneName == "Level0")

@@ -6,6 +6,8 @@
 #include "PlayerComponent.h"
 #include "AnimatorComponent.h"
 #include "Animation.h"
+#include "ZenChanComponent.h"
+#include "MaitaComponent.h"
 #include <sstream>
 
 void Game::PlayerBuilder::BuildPlayer(std::string levelFile, dae::Scene* pScene, int controllerIndex1, int controllerIndex2, int gameMode)
@@ -29,6 +31,7 @@ void Game::PlayerBuilder::BuildPlayer(std::string levelFile, dae::Scene* pScene,
 			if (m_NrOfPlayers < m_MaxNrOfPlayers && line.rfind("Player ", 0) == 0)
 			{
 				BuildPlayerComponent(line, controllerIndex1, controllerIndex2);
+				AddPlayerToEnemies();
 			}
 			else if (line.rfind("Anim ", 0) == 0)
 			{
@@ -36,6 +39,8 @@ void Game::PlayerBuilder::BuildPlayer(std::string levelFile, dae::Scene* pScene,
 			}
 		}
 	}
+
+	m_NrOfPlayers = 0;
 }
 
 void Game::PlayerBuilder::BuildPlayerComponent(std::string line, int controllerIndex1, int controllerIndex2)
@@ -82,13 +87,15 @@ void Game::PlayerBuilder::BuildAnimations(std::string line)
 	if (player1)
 	{
 		PlayerAnimator(player1, line);
-		SetPlayerAnimation(player1);
+		//SetPlayerAnimation(player1);
+		player1->GetComponent<PlayerComponent>()->SetState(PlayerState::Idle);
 	}
 	
 	if (player2)
 	{
 		PlayerAnimator(player2, line);
-		SetPlayerAnimation(player2);
+		//SetPlayerAnimation(player2);
+		player2->GetComponent<PlayerComponent>()->SetState(PlayerState::Idle);
 	}
 }
 
@@ -122,5 +129,24 @@ void Game::PlayerBuilder::SetPlayerAnimation(dae::GameObject* player)
 	{
 		const auto& firstAnimation = playerComp->GetAnimationMap().begin()->second.get();
 		animator->SetAnimation(firstAnimation);
+	}
+}
+
+void Game::PlayerBuilder::AddPlayerToEnemies()
+{
+	auto enemies = m_pScene->GetRoot()->GetChildrenByTag("Enemy");
+
+	for (auto enemy : enemies)
+	{
+		auto zenChan = enemy->GetComponent<ZenChanComponent>();
+		if (zenChan)
+		{
+			zenChan->AddPlayer(m_pPlayerObject);
+		}
+		else 
+		{
+			auto maita = enemy->GetComponent<MaitaComponent>();
+			maita->AddPlayer(m_pPlayerObject);
+		}
 	}
 }

@@ -22,3 +22,8 @@ SmallRow 672 286 2
 //Top
 SmallRow 48 48 28
 
+//Enemies
+ZenChan 350 350
+
+Maita 250 350
+

@@ -14,6 +14,24 @@ Game::MaitaComponent::MaitaComponent(dae::GameObject* pObject)
 	runTexture->SetTexture("Resources/Maita/Run_Anim.png");
 	runTexture->SetIsAnimation(true);
 
+	auto bubbleTexture = std::make_unique<dae::TextureComponent>(pObject);
+	bubbleTexture->SetTag("BubbleTexture");
+	bubbleTexture->SetTexture("Resources/Maita/Bubble_Anim.png");
+	bubbleTexture->SetIsAnimation(true);
+	bubbleTexture->SetTextureVisibility(false);
+
+	auto dieTexture = std::make_unique<dae::TextureComponent>(pObject);
+	dieTexture->SetTag("DieTexture");
+	dieTexture->SetTexture("Resources/Maita/Death_Anim.png");
+	dieTexture->SetIsAnimation(true);
+	dieTexture->SetTextureVisibility(false);
+
+	auto attackTexture = std::make_unique<dae::TextureComponent>(pObject);
+	attackTexture->SetTag("DieTexture");
+	attackTexture->SetTexture("Resources/Maita/Attack_Anim.png");
+	attackTexture->SetIsAnimation(true);
+	attackTexture->SetTextureVisibility(false);
+
 	auto pAnimator = std::make_unique<dae::AnimatorComponent>(pObject, runTexture.get());
 	pObject->AddComponent(std::move(pAnimator));
 	SetAnimator();
@@ -21,7 +39,19 @@ Game::MaitaComponent::MaitaComponent(dae::GameObject* pObject)
 	auto animation = std::make_unique<dae::Animation>("Run", runTexture.get(), 48, 48, 4, 0.25f);
 	AddAnimation(std::move(animation));
 
+	animation = std::make_unique<dae::Animation>("Bubble", bubbleTexture.get(), 48, 48, 3, 0.33f);
+	AddAnimation(std::move(animation));
+
+	animation = std::make_unique<dae::Animation>("Die", bubbleTexture.get(), 48, 48, 4, 0.25f);
+	AddAnimation(std::move(animation));
+
+	animation = std::make_unique<dae::Animation>("Attack", bubbleTexture.get(), 90, 48, 6, 0.16f);
+	AddAnimation(std::move(animation));
+
 	GetOwner()->AddComponent(std::move(runTexture));
+	GetOwner()->AddComponent(std::move(bubbleTexture));
+	GetOwner()->AddComponent(std::move(dieTexture));
+	GetOwner()->AddComponent(std::move(attackTexture));
 
 	//Collider
 	auto pos = GetOwner()->GetTransform()->GetWorldPosition();
@@ -32,6 +62,7 @@ Game::MaitaComponent::MaitaComponent(dae::GameObject* pObject)
 	rect.w = static_cast<int>(48);
 	auto collider = std::make_unique<dae::ColliderComponent>(pObject, rect);
 	m_pCollider = collider.get();
+	m_pCollider->AddIgnoreTag("Roof");
 	GetOwner()->AddComponent(std::move(collider));
 
 	//RigidBody
@@ -87,10 +118,13 @@ void Game::MaitaComponent::SetState(MaitaState nextState)
 		m_pAnimator->SetAnimation(m_AnimationMap["Run"].get());
 		break;
 	case Game::MaitaState::Die:
+		m_pAnimator->SetAnimation(m_AnimationMap["Die"].get());
 		break;
 	case Game::MaitaState::Bubble:
+		m_pAnimator->SetAnimation(m_AnimationMap["Bubble"].get());
 		break;
 	case Game::MaitaState::Attack:
+		m_pAnimator->SetAnimation(m_AnimationMap["Attack"].get());
 		break;
 	default:
 		break;

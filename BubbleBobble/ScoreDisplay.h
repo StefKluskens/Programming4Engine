@@ -14,7 +14,7 @@ namespace Game
 	class ScoreDisplay : public dae::Component, public dae::Observer
 	{
 	public:
-		ScoreDisplay(dae::GameObject* pObject, ScoreComponent* pScoreComponent);
+		ScoreDisplay(dae::GameObject* pObject, ScoreComponent* pScoreComponent, dae::TextComponent* pTextComponent);
 		virtual ~ScoreDisplay() = default;
 		ScoreDisplay(const ScoreDisplay& other) = delete;
 		ScoreDisplay(ScoreDisplay&& other) noexcept = delete;

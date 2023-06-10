@@ -57,6 +57,11 @@ bool dae::RigidBody::IsGrounded() const
 
 void dae::RigidBody::CheckCollision()
 {
+	if (!m_pCollider->GetEnabled())
+	{
+		return;
+	}
+
 	auto pos = m_pTransform->GetLocalPosition();
 
 	m_Rect = m_pCollider->GetRect();
@@ -83,6 +88,13 @@ void dae::RigidBody::CheckCollision()
 
 		for (size_t i = 0; i < colliders.size(); ++i)
 		{
+			auto ignoreTags = m_pCollider->GetIgnoreTags();
+			auto it = std::find(ignoreTags.begin(), ignoreTags.end(), colliders[i]->GetOwner()->GetTag());
+			if (it != ignoreTags.end())
+			{
+				continue;
+			}
+
 			SDL_Rect rect = colliders[i]->GetRect();
 			if (SDL_IntersectRectAndLine(&rect, &x1, &y1, &x2, &y2))
 			{

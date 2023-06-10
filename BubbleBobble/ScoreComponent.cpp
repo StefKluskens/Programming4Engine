@@ -29,5 +29,5 @@ void Game::ScoreComponent::AddScore(int score)
 {
 	m_Score += score;
 
-	m_pScoreSubject->Notify(dae::Event::PickUpFound);
+	m_pScoreSubject->Notify(dae::Event::Scored);
 }

@@ -18,6 +18,7 @@ namespace Game
 	public:
 		void BuildLevel(dae::Scene* pScene, std::string levelFile, int sceneNr);
 		void BuildMainMenu(dae::Scene* pScene, int controllerIndex1, int controllerIndex2);
+		void CreateObservers(dae::Scene* pScene);
 
 	private:
 		void BuildBigTileColumn(dae::Scene* pScene, std::string line);

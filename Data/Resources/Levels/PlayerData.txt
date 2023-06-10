@@ -4,3 +4,4 @@ Player 350 350 false true true
 //Anim data (name, width, height, nrOfFrames, framTime)
 Anim Idle 48 48 2 0.5
 Anim Run 48 48 4 0.25
+Anim Die 48 93 11 0.09

@@ -14,6 +14,8 @@
 #include "TextComponent.h"
 #include "ZenChanComponent.h"
 #include "MaitaComponent.h"
+#include "LivesDisplayComponent.h"
+#include "LivesComponent.h"
 
 void Game::LevelBuilder::BuildLevel(dae::Scene* pScene, std::string levelFile, int sceneNr)
 {
@@ -213,8 +215,9 @@ void Game::LevelBuilder::BuildSmallTileRow(dae::Scene* pScene, std::string line)
 	std::string tile;
 	float xPos, yPos;
 	int nrOfTiles{};
+	bool top{};
 
-	ss >> tile >> xPos >> yPos >> nrOfTiles;
+	ss >> tile >> xPos >> yPos >> nrOfTiles >> std::boolalpha >> top;
 
 	for (int i{}; i < nrOfTiles; ++i)
 	{
@@ -229,6 +232,11 @@ void Game::LevelBuilder::BuildSmallTileRow(dae::Scene* pScene, std::string line)
 		if (i == 0)
 		{
 			pTile->SetColliderRow(nrOfTiles);
+		}
+
+		if (top)
+		{
+			tileGo->SetTag("Roof");
 		}
 
 		pScene->Add(tileGo);
@@ -263,7 +271,7 @@ void Game::LevelBuilder::BuildMaita(dae::Scene* pScene, std::string line)
 
 	ss >> maita >> xPos >> yPos;
 
-	auto MaitaChanObject = new dae::GameObject("ZenChan", pScene);
+	auto MaitaChanObject = new dae::GameObject("Maita", pScene);
 	MaitaChanObject->SetTag("Enemy");
 	auto MaitaComp = std::make_unique<MaitaComponent>(MaitaChanObject);
 	MaitaChanObject->AddComponent(std::move(MaitaComp));
@@ -271,4 +279,23 @@ void Game::LevelBuilder::BuildMaita(dae::Scene* pScene, std::string line)
 	MaitaChanObject->SetPosition(xPos, yPos);
 
 	pScene->Add(MaitaChanObject);
+}
+
+void Game::LevelBuilder::CreateObservers(dae::Scene* pScene)
+{
+	auto livesTextObject = new dae::GameObject("Lives Text", pScene);
+	auto font = dae::ResourceManager::GetInstance().LoadFont("Fonts/Pang.ttf", 22);
+	auto text = std::make_unique<dae::TextComponent>(livesTextObject, "Lives", font);
+
+	auto players = pScene->GetRoot()->GetChildrenByTag("Player");
+	for (auto player : players)
+	{
+		auto livesDisplay = std::make_unique<LivesDisplayComponent>(livesTextObject, player->GetComponent<LivesComponent>(), text.get());
+		player->AddComponent(std::move(livesDisplay));
+
+		player->GetComponent<LivesComponent>()->AddObserver(player->GetComponent<LivesDisplayComponent>());
+	}
+
+	livesTextObject->AddComponent(std::move(text));
+	pScene->Add(livesTextObject);
 }

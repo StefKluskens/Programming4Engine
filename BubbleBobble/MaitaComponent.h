@@ -9,7 +9,6 @@ namespace dae
 {
 	class Texture2D;
 	class RigidBodyComponent;
-	class AnimSpriteComponent;
 	class GameObject;
 	class Scene;
 	class ColliderComponent;

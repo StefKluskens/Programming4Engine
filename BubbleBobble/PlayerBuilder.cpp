@@ -70,6 +70,8 @@ void Game::PlayerBuilder::BuildPlayerComponent(std::string line, int controllerI
 	m_pPlayerComponent = playerComp.get();
 	m_pPlayerObject->AddComponent(std::move(playerComp));
 
+	m_pPlayerComponent->SetInitialPosition(glm::vec3(xPos, yPos, 0.0f));
+
 	auto pAnimator = std::make_unique<dae::AnimatorComponent>(m_pPlayerObject, m_pPlayerComponent->GetTexture());
 	m_pPlayerObject->AddComponent(std::move(pAnimator));
 	m_pPlayerComponent->SetAnimator();

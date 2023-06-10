@@ -19,6 +19,12 @@ namespace dae
 
 namespace Game
 {
+	class ScoreCommand;
+	class MaitaComponent;
+	class ZenChanComponent;
+	class LivesComponent;
+	class ScoreComponent;
+
 	enum class PlayerState
 	{
 		Idle,
@@ -53,8 +59,19 @@ namespace Game
 
 		void SetState(PlayerState nextState);
 		PlayerState GetState() const { return m_CurrentState; }
+
+		void SetInitialPosition(const glm::vec3& pos) { m_InitialPosition = pos; }
+
+		void ShootBubble();
+
 	private:
 		void HandleMovement(float deltaTime);
+		void Invincible(float deltaTime);
+
+		void OnCollideMaita(MaitaComponent* pOther);
+		void OnCollideZenChan(ZenChanComponent* pOther);
+
+		dae::Scene* m_pScene{};
 
 		dae::ColliderComponent* m_pCollider{};
 		dae::RigidBody* m_pRigidbody{};
@@ -74,5 +91,26 @@ namespace Game
 		glm::vec3 m_Velocity{};
 
 		PlayerState m_CurrentState{};
+
+		std::unique_ptr<ScoreCommand> m_pScoreCommand{};
+
+		std::vector<dae::ColliderComponent*> m_pEnemies{};
+
+		LivesComponent* m_pLivesComponent{};
+		ScoreComponent* m_pScoreComponent{};
+
+		glm::vec3 m_InitialPosition{};
+
+		bool m_IsDead{ false };
+
+		bool m_Invincible{ false };
+		float m_MaxInvincibleTimer{ 3.0f };
+		float m_InvincibleTimer{ 0.0f };
+
+		std::unique_ptr<dae::TextureComponent> m_pBubbleTexture{};
+
+		float m_ShootCoolTimer{};
+		float m_ShootCoolTimerMax{ 3.0f };
+
 	};
 }

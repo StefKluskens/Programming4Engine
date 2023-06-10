@@ -177,6 +177,7 @@ xcopy "$(SolutionDir)3rdParty\SDL_mixer\lib\$(PlatformTarget)\*.dll" "$(OutputPa
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bubble.cpp" />
     <ClCompile Include="BubbleBobble.cpp" />
     <ClCompile Include="BulletComponent.cpp" />
     <ClCompile Include="LevelBuilder.cpp" />
@@ -196,6 +197,7 @@ xcopy "$(SolutionDir)3rdParty\SDL_mixer\lib\$(PlatformTarget)\*.dll" "$(OutputPa
     <ClCompile Include="ZenChanComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bubble.h" />
     <ClInclude Include="BubbleBobble.h" />
     <ClInclude Include="BulletComponent.h" />
     <ClInclude Include="Commands.h" />

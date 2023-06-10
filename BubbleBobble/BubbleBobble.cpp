@@ -45,5 +45,6 @@ void BubbleBobble::MainMenuExit(int controllerIndex1, int controllerIndex2)
 			continue;
 		}
 		Game::PlayerBuilder::GetInstance().BuildPlayer("Resources/Levels/PlayerData.txt", scene.get(), controllerIndex1, controllerIndex2, static_cast<int>(m_CurrentGameMode));
+		Game::LevelBuilder::GetInstance().CreateObservers(scene.get());
 	}
 }

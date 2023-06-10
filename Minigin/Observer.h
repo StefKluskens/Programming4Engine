@@ -7,7 +7,7 @@ namespace dae
 	{
 		PlayerDied,
 		EnemyDied,
-		PickUpFound
+		Scored
 	};
 
 	class Observer

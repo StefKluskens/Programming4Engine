@@ -46,30 +46,43 @@ void Game::DieCommand::Execute(float /*deltaTime*/)
 	m_pObject->GetComponent<Game::LivesComponent>()->Die();
 }
 
-Game::ScoreCommand::ScoreCommand(dae::Scene* pScene, dae::GameObject* pObject, dae::Command::ButtonState action)
+Game::ScoreCommand::ScoreCommand(dae::Scene* pScene, dae::GameObject* pObject)
 	: dae::Command(pScene)
 	, m_pObject(pObject)
-	, m_Action(action)
 {
 }
 
 void Game::ScoreCommand::Execute(float /*deltaTime*/)
 {
-	m_pObject->GetComponent<Game::ScoreComponent>()->AddScore(100);
+	m_pObject->GetComponent<Game::ScoreComponent>()->AddScore(m_ScoreAmount);
 }
 
-Game::ShootCommand::ShootCommand(dae::Scene* pScene, dae::GameObject* pObject, ShootComponent* pShootComponent, dae::Command::ButtonState action)
+void Game::ScoreCommand::SetScoreType(bool isWaterMelon)
+{
+	if (isWaterMelon)
+	{
+		m_ScoreAmount = 100;
+	}
+	else
+	{
+		m_ScoreAmount = 200;
+	}
+}
+
+Game::ShootCommand::ShootCommand(dae::Scene* pScene, dae::GameObject* pObject, PlayerComponent* pPlayerComponent, dae::Command::ButtonState action)
 	: dae::Command(pScene)
 	, m_pObject(pObject)
 	, m_Action(action)
-	, m_pShootComponent(pShootComponent)
+	, m_pPlayer(pPlayerComponent)
 {
 }
 
 void Game::ShootCommand::Execute(float /*deltaTime*/)
 {
-	std::cout << "Shoot\n";
-	m_pShootComponent->Shoot();
+	if (m_pPlayer->GetState() != PlayerState::Shoot)
+	{
+		m_pPlayer->SetState(PlayerState::Shoot);
+	}
 }
 
 Game::LoadSceneCommand::LoadSceneCommand(dae::Scene* pScene, dae::GameObject* pObject, int gameMode, dae::Command::ButtonState action, BubbleBobble& bubbleBobble, int controllerIndex1, int controllerIndex2)

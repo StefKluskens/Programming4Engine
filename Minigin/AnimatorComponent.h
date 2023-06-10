@@ -27,6 +27,9 @@ namespace dae
 
 		void DeleteAnimation();
 
+		bool IsAnimationFinished() const { return m_IsAnimationFinished; }
+		void ResetAnimationFinished() { m_IsAnimationFinished = false; }
+
 	private:
 		TextureComponent* m_pSpriteSheet{};
 		Animation* m_pCurrentAnimation{};
@@ -34,5 +37,7 @@ namespace dae
 		float m_Timer;
 		SDL_Rect m_SrcRect;
 		SDL_Rect m_DestRect;
+
+		bool m_IsAnimationFinished{false};
 	};
 }

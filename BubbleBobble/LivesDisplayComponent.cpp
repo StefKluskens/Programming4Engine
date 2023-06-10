@@ -2,9 +2,9 @@
 #include "TextComponent.h"
 #include "LivesComponent.h"
 
-Game::LivesDisplayComponent::LivesDisplayComponent(dae::GameObject* pObject, LivesComponent* pLivesComponent)
+Game::LivesDisplayComponent::LivesDisplayComponent(dae::GameObject* pObject, LivesComponent* pLivesComponent, dae::TextComponent* pTextComponent)
 	: Component (pObject)
-	, m_pTextComponent(pObject->GetComponent<dae::TextComponent>())
+	, m_pTextComponent(pTextComponent)
 	, m_pLivesComponent(pLivesComponent)
 {
 	std::string text = std::to_string(m_pLivesComponent->GetLives()) + " lives";

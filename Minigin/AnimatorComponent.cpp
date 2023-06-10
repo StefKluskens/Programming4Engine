@@ -25,6 +25,11 @@ dae::AnimatorComponent::AnimatorComponent(AnimatorComponent&& other) noexcept
 
 void dae::AnimatorComponent::Update(float deltaTime)
 {
+	if (!m_pCurrentAnimation)
+	{
+		return;
+	}
+
 	m_Timer += deltaTime;
 
 	if (m_Timer >= m_pCurrentAnimation->FrameTime)
@@ -32,6 +37,11 @@ void dae::AnimatorComponent::Update(float deltaTime)
 		m_Timer -= m_pCurrentAnimation->FrameTime;
 		m_CurrentFrame = (m_CurrentFrame + 1) % m_pCurrentAnimation->NumberOfFrames;
 		m_SrcRect.x = m_CurrentFrame * m_pCurrentAnimation->FrameWidth;
+
+		if (m_CurrentFrame == m_pCurrentAnimation->NumberOfFrames - 1)
+		{
+			m_IsAnimationFinished = true;
+		}
 	}
 
 	m_pCurrentAnimation->Texture->SetSourceRect(m_SrcRect);

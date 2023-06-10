@@ -14,7 +14,7 @@ namespace Game
 	class LivesDisplayComponent : public dae::Component, public dae::Observer
 	{
 	public:
-		LivesDisplayComponent(dae::GameObject* pObject, LivesComponent* pLivesComponent);
+		LivesDisplayComponent(dae::GameObject* pObject, LivesComponent* pLivesComponent, dae::TextComponent* pTextComponent);
 		virtual ~LivesDisplayComponent() = default;
 		LivesDisplayComponent(const LivesDisplayComponent& other) = delete;
 		LivesDisplayComponent(LivesDisplayComponent&& other) noexcept = delete;

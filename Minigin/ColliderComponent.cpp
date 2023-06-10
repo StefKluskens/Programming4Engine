@@ -32,7 +32,7 @@ void dae::ColliderComponent::FixedUpdate(float /*deltaTime*/)
 	}
 }
 
-SDL_Rect dae::ColliderComponent::GetRect() const
+SDL_Rect& dae::ColliderComponent::GetRect()
 {
 	return m_Rect;
 }
@@ -132,6 +132,24 @@ void dae::ColliderComponent::DoGroundCheck()
 	}
 }
 
+dae::GameObject* dae::ColliderComponent::CheckCollisionOnVector(std::vector<ColliderComponent*> objects)
+{
+	for (auto object : objects)
+	{
+		if (object == this || !object->m_Enabled)
+		{
+			return nullptr;
+		}
+
+		if (SDL_HasIntersection(&m_Rect, &object->GetRect()))
+		{
+			return object->GetOwner();
+		}
+	}
+
+	return nullptr;
+}
+
 void dae::ColliderComponent::SetMoveable(bool isMoveable)
 {
 	m_IsMoveable = isMoveable;
@@ -160,6 +178,16 @@ bool dae::ColliderComponent::NeedsToCheckGroundCollision() const
 void dae::ColliderComponent::SetRigidbody(dae::RigidBody* pRigidbody)
 {
 	m_pRigidBody = pRigidbody;
+}
+
+void dae::ColliderComponent::AddIgnoreTag(const std::string& tag)
+{
+	m_IgnoreTags.push_back(tag);
+}
+
+void dae::ColliderComponent::RemoveIgnoreTag(const std::string& tag)
+{
+	m_IgnoreTags.erase(std::remove(m_IgnoreTags.begin(), m_IgnoreTags.end(), tag), m_IgnoreTags.end());
 }
 
 bool dae::ColliderComponent::HandleCollision(ColliderComponent* other)

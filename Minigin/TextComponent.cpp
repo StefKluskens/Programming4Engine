@@ -56,7 +56,7 @@ void dae::TextComponent::Update(float /*deltaTime*/)
 	}
 }
 
-void dae::TextComponent::SetText(const std::string& text)
+void dae::TextComponent::SetText(std::string text)
 {
 	m_Text = text;
 	m_NeedsUpdate = true;

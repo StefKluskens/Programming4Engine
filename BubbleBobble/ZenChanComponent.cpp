@@ -14,6 +14,11 @@ Game::ZenChanComponent::ZenChanComponent(dae::GameObject* pObject)
 	runTexture->SetTexture("Resources/ZenChan/Run_Anim.png");
 	runTexture->SetIsAnimation(true);
 
+	auto bubbleTexture = std::make_unique<dae::TextureComponent>(pObject);
+	bubbleTexture->SetTag("BubbleTexture");
+	bubbleTexture->SetTexture("Resources/ZenChan/Bubble_Anim.png");
+	bubbleTexture->SetIsAnimation(true);
+
 	auto pAnimator = std::make_unique<dae::AnimatorComponent>(pObject, runTexture.get());
 	pObject->AddComponent(std::move(pAnimator));
 	SetAnimator();
@@ -21,7 +26,11 @@ Game::ZenChanComponent::ZenChanComponent(dae::GameObject* pObject)
 	auto animation = std::make_unique<dae::Animation>("Run", runTexture.get(), 45, 48, 4, 0.25f);
 	AddAnimation(std::move(animation));
 
+	animation = std::make_unique<dae::Animation>("Bubble", bubbleTexture.get(), 48, 48, 3, 0.33f);
+	AddAnimation(std::move(animation));
+
 	GetOwner()->AddComponent(std::move(runTexture));
+	GetOwner()->AddComponent(std::move(bubbleTexture));
 
 	//Collider
 	auto pos = GetOwner()->GetTransform()->GetWorldPosition();
@@ -32,6 +41,7 @@ Game::ZenChanComponent::ZenChanComponent(dae::GameObject* pObject)
 	rect.w = static_cast<int>(45);
 	auto collider = std::make_unique<dae::ColliderComponent>(pObject, rect);
 	m_pCollider = collider.get();
+	m_pCollider->AddIgnoreTag("Roof");
 	GetOwner()->AddComponent(std::move(collider));
 
 	//RigidBody
@@ -97,6 +107,7 @@ void Game::ZenChanComponent::SetState(ZenChanState nextState)
 		m_pAnimator->SetAnimation(m_AnimationMap["Run"].get());
 		break;
 	case Game::ZenChanState::Die:
+		m_pAnimator->SetAnimation(m_AnimationMap["Bubble"].get());
 		break;
 	case Game::ZenChanState::Bubble:
 		break;

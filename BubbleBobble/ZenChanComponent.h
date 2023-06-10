@@ -7,9 +7,7 @@
 
 namespace dae
 {
-	class Texture2D;
 	class RigidBodyComponent;
-	class AnimSpriteComponent;
 	class GameObject;
 	class Scene;
 	class ColliderComponent;
@@ -54,6 +52,9 @@ namespace Game
 
 		void AddPlayer(dae::GameObject* pPlayer);
 
+		void SetInBubble(bool inBubble) { m_InBubble = inBubble; }
+		bool GetInBubble() const { return m_InBubble; }
+
 	private:
 		void HandleMovement(float deltaTime);
 		void BubbleMovement(float deltaTime);
@@ -79,5 +80,7 @@ namespace Game
 		glm::vec2 m_InputDir{};
 
 		std::vector<dae::GameObject*> m_pPLayers{};
+
+		bool m_InBubble{ false };
 	};
 }

@@ -4,6 +4,7 @@
 #include <string>
 #include <glm/glm.hpp>
 #include "SDL_rect.h"
+#include "SDL_render.h"
 
 namespace dae
 {
@@ -38,6 +39,9 @@ namespace dae
 
 		void SetSourceRect(SDL_Rect srcRect);
 
+		SDL_RendererFlip GetFlip() const { return m_Flip; }
+		void SetFlip(SDL_RendererFlip flip) { m_Flip = flip; }
+
 	private:
 		std::shared_ptr<Texture2D> m_pTexture{};
 		glm::vec3 m_Position{};
@@ -47,5 +51,6 @@ namespace dae
 		bool m_IsVisible{};
 
 		SDL_Rect m_SrcRect{};
+		SDL_RendererFlip m_Flip{ SDL_FLIP_NONE };
 	};
 }

@@ -34,7 +34,7 @@ void dae::TextureComponent::Render() const
 			const float width = static_cast<float>(m_SrcRect.w);
 			const float height = static_cast<float>(m_SrcRect.h);
 
-			Renderer::GetInstance().RenderTexture(*m_pTexture, position.x, position.y, width, height, m_SrcRect);
+			Renderer::GetInstance().RenderTexture(*m_pTexture, position.x, position.y, width, height, m_SrcRect, m_Flip);
 		}
 	}
 }

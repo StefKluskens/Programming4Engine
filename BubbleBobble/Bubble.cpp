@@ -8,7 +8,7 @@
 #include "MaitaComponent.h"
 #include "ZenChanComponent.h"
 
-Game::Bubble::Bubble(dae::GameObject* pObject, std::vector<dae::ColliderComponent*> enemies)
+Game::Bubble::Bubble(dae::GameObject* pObject, std::vector<dae::ColliderComponent*> enemies, bool lookingLeft)
 	: Component(pObject)
 	, m_pEnemies(enemies)
 {
@@ -42,6 +42,11 @@ Game::Bubble::Bubble(dae::GameObject* pObject, std::vector<dae::ColliderComponen
 	auto rb = std::make_unique<dae::RigidBody>(pObject, m_pCollider);
 	m_pRigidbody = rb.get();
 	pObject->AddComponent(std::move(rb));
+
+	if (lookingLeft)
+	{
+		m_MoveSpeed *= -1;
+	}
 }
 
 void Game::Bubble::Render() const

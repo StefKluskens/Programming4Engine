@@ -114,5 +114,6 @@ namespace Game
 		float m_ShootCoolTimer{};
 		float m_ShootCoolTimerMax{ 3.0f };
 
+		bool m_IsLookingLeft{ false };
 	};
 }

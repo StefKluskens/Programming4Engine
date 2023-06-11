@@ -174,6 +174,15 @@ void Game::MaitaComponent::HandleMovement(float /*deltaTime*/)
 		m_pRigidbody->SetVelocity(velocity + glm::vec3(0.0f, m_InputDir.y * m_JumpForce, 0.0f));
 	}
 
+	if (m_InputDir.x > 0.1f)
+	{
+		m_pAnimator->GetTexture()->SetFlip(SDL_FLIP_NONE);
+	}
+	else if (m_InputDir.x < -0.1f)
+	{
+		m_pAnimator->GetTexture()->SetFlip(SDL_FLIP_HORIZONTAL);
+	}
+
 	velocity = m_pRigidbody->GetVelocity();
 	m_pRigidbody->SetVelocity(glm::vec3(m_InputDir.x * m_MoveSpeed, velocity.y, 0.0f));
 }

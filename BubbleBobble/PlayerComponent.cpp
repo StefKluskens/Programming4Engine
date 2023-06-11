@@ -290,6 +290,18 @@ void Game::PlayerComponent::HandleMovement(float deltaTime)
 		m_pRigidbody->SetVelocity(glm::vec3(0.0f, 0.0f, 0.0f));
 	}
 
+	if (m_InputDir.x > 0.1f)
+	{
+		m_pAnimator->GetTexture()->SetFlip(SDL_FLIP_NONE);
+		m_IsLookingLeft = false;
+	}
+	else if (m_InputDir.x < -0.1f)
+	{
+		m_pAnimator->GetTexture()->SetFlip(SDL_FLIP_HORIZONTAL);
+		m_IsLookingLeft = true;
+	}
+	
+
 	m_Velocity = glm::vec3{ m_InputDir.x * m_MoveSpeed * deltaTime, m_pRigidbody->GetVelocity().y, 0.f };
 	m_pRigidbody->SetVelocity(m_Velocity);
 
@@ -322,7 +334,7 @@ void Game::PlayerComponent::Invincible(float deltaTime)
 
 void Game::PlayerComponent::ShootBubble()
 {
-	if (m_CurrentState == PlayerState::Shoot && !m_Invincible)
+	if (m_CurrentState == PlayerState::Shoot)
 	{
 		m_pSoundSytem->Play(1, 1.0f);
 
@@ -330,7 +342,7 @@ void Game::PlayerComponent::ShootBubble()
 		bubbleObject->SetTag("Bubble");
 		bubbleObject->SetPosition(GetOwner()->GetTransform()->GetWorldPosition());
 
-		auto bubble = std::make_unique<Bubble>(bubbleObject, m_pEnemies);
+		auto bubble = std::make_unique<Bubble>(bubbleObject, m_pEnemies, m_IsLookingLeft);
 		bubbleObject->AddComponent(std::move(bubble));
 
 		m_pScene->Add(bubbleObject);

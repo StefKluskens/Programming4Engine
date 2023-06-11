@@ -21,7 +21,7 @@ namespace Game
 	class Bubble : public dae::Component
 	{
 	public:
-		Bubble(dae::GameObject* pObject, std::vector<dae::ColliderComponent*> enemies);
+		Bubble(dae::GameObject* pObject, std::vector<dae::ColliderComponent*> enemies, bool lookingLeft);
 		virtual ~Bubble() = default;
 		Bubble(const Bubble& other) = delete;
 		Bubble(Bubble&& other) noexcept = delete;
@@ -50,7 +50,7 @@ namespace Game
 		bool m_Bursting{ false };
 
 		glm::vec3 m_Movement{};
-		float m_MoveSpeed{ 200.0f };
+		float m_MoveSpeed{ 300.0f };
 		float m_FloatRate{ -50.0f };
 		bool m_MovesLeft{ false };
 		float m_UpperLimit{ 192.0f };

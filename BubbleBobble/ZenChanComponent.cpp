@@ -136,6 +136,15 @@ void Game::ZenChanComponent::HandleMovement(float /*deltaTime*/)
 		m_pRigidbody->SetVelocity(velocity + glm::vec3(velocity.x, m_InputDir.y * m_JumpForce, 0.f));
 	}
 
+	if (m_InputDir.x > 0.1f)
+	{
+		m_pAnimator->GetTexture()->SetFlip(SDL_FLIP_NONE);
+	}
+	else if (m_InputDir.x < -0.1f)
+	{
+		m_pAnimator->GetTexture()->SetFlip(SDL_FLIP_HORIZONTAL);
+	}
+
 	velocity = m_pRigidbody->GetVelocity();
 	m_pRigidbody->SetVelocity(glm::vec3(m_InputDir.x * m_MoveSpeed, velocity.y, 0.0f));
 }
@@ -250,7 +259,8 @@ void Game::ZenChanComponent::HandleAI()
 void Game::ZenChanComponent::Die()
 {
 	auto item = new dae::GameObject("Watermelon", GetOwner()->GetScene());
-	item->SetPosition(GetOwner()->GetTransform()->GetWorldPosition());
+	auto pos = GetOwner()->GetTransform()->GetWorldPosition();
+	item->SetPosition(pos.x + 30, pos.y);
 	auto pItem = std::make_unique<ItemPickUp>(item, false, m_pPLayers);
 	item->AddComponent(std::move(pItem));
 	GetOwner()->GetScene()->Add(item);

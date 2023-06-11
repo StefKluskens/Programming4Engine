@@ -30,6 +30,8 @@ namespace dae
 		bool IsAnimationFinished() const { return m_IsAnimationFinished; }
 		void ResetAnimationFinished() { m_IsAnimationFinished = false; }
 
+		TextureComponent* GetTexture() const { return m_pCurrentAnimation->Texture; }
+
 	private:
 		TextureComponent* m_pSpriteSheet{};
 		Animation* m_pCurrentAnimation{};

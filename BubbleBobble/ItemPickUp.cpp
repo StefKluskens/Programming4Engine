@@ -35,6 +35,7 @@ Game::ItemPickUp::ItemPickUp(dae::GameObject* pObject, bool isFries, std::vector
 	auto collider = std::make_unique<dae::ColliderComponent>(pObject, rect);
 	m_pCollider = collider.get();
 	m_pCollider->AddIgnoreTag("Enemy");
+	m_pCollider->AddIgnoreTag("Bubble");
 	pObject->AddComponent(std::move(collider));
 
 	auto rb = std::make_unique<dae::RigidBody>(pObject, m_pCollider);

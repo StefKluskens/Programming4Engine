@@ -34,7 +34,12 @@ SmallCol 96 166 11
 SmallCol 624 166 11
 
 //Top
-SmallRow 48 48 7
-SmallRow 312 48 6
-SmallRow 552 48 7
+SmallRow 48 48 7 true
+SmallRow 312 48 6 true
+SmallRow 552 48 7 true
 
+//Enemies
+Maita 350 350
+ZenChan 400 400
+Maita 450 350
+ZenChan 450 450

@@ -371,12 +371,15 @@ void Game::PlayerComponent::OnCollideMaita(MaitaComponent* pMaita)
 
 void Game::PlayerComponent::OnCollideZenChan(ZenChanComponent* zenChan)
 {
-	if (zenChan->GetState() == ZenChanState::Bubble)
+	if (zenChan)
 	{
-		zenChan->SetState(ZenChanState::Die);
-	}
-	else if (!m_Invincible)
-	{
-		SetState(PlayerState::Die);
+		if (zenChan->GetState() == ZenChanState::Bubble)
+		{
+			zenChan->SetState(ZenChanState::Die);
+		}
+		else if (!m_Invincible)
+		{
+			SetState(PlayerState::Die);
+		}
 	}
 }

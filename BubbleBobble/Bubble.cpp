@@ -36,6 +36,8 @@ Game::Bubble::Bubble(dae::GameObject* pObject, std::vector<dae::ColliderComponen
 	auto collider = std::make_unique<dae::ColliderComponent>(pObject, rect);
 	m_pCollider = collider.get();
 	m_pCollider->AddIgnoreTag("Player");
+	m_pCollider->AddIgnoreTag("Fries");
+	m_pCollider->AddIgnoreTag("Watermelon");
 	m_pCollider->SetNeedsGroundCheck(false);
 	pObject->AddComponent(std::move(collider));
 

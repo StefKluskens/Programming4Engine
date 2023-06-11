@@ -25,5 +25,10 @@ SmallRow 408 286 5
 SmallRow 312 166 6
 
 //Top
-SmallRow 48 48 28
+SmallRow 48 48 28 true
 
+//Enemies
+Maita 350 350
+ZenChan 400 400
+Maita 450 350
+ZenChan 450 450

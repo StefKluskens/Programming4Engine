@@ -65,6 +65,8 @@ Game::MaitaComponent::MaitaComponent(dae::GameObject* pObject)
 	auto collider = std::make_unique<dae::ColliderComponent>(pObject, rect);
 	m_pCollider = collider.get();
 	m_pCollider->AddIgnoreTag("Roof");
+	m_pCollider->AddIgnoreTag("Fries");
+	m_pCollider->AddIgnoreTag("Watermelon");
 	GetOwner()->AddComponent(std::move(collider));
 
 	//RigidBody
@@ -155,7 +157,7 @@ void Game::MaitaComponent::Die()
 {
 	auto item = new dae::GameObject("Fries", GetOwner()->GetScene());
 	auto pos = GetOwner()->GetTransform()->GetWorldPosition();
-	item->SetPosition(pos.x + 30, pos.y);
+	item->SetPosition(pos.x + 30, pos.y - 50);
 	auto pItem = std::make_unique<ItemPickUp>(item, true, m_pPLayers);
 	item->AddComponent(std::move(pItem));
 	GetOwner()->GetScene()->Add(item);

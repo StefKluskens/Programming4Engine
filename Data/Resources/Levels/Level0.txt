@@ -24,5 +24,7 @@ SmallRow 48 48 28 true
 
 //Enemies
 ZenChan 350 350
-Maita 250 350
+ZenChan 400 400
+ZenChan 450 350
+ZenChan 450 450
 

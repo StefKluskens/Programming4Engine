@@ -192,6 +192,7 @@ void Game::PlayerComponent::Update(float deltaTime)
 		{
 			m_pAnimator->ResetAnimationFinished();
 			SetState(PlayerState::Idle);
+			m_ShootCoolTimer = 0.0f;
 		}
 		break;
 	default:

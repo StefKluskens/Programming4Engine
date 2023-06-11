@@ -81,5 +81,7 @@ namespace Game
 		float m_yDstMax{ 30.0f };
 
 		std::vector<dae::GameObject*> m_pPLayers{};
+
+		int m_WindowHeight{ 672 };
 	};
 }

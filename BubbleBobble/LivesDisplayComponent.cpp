@@ -25,7 +25,7 @@ void Game::LivesDisplayComponent::Notify(dae::Event event)
 	{
 	case dae::Event::PlayerDied:
 	{
-		std::string text = std::to_string(m_pLivesComponent->GetLives()) + " lives";
+		std::string text = std::to_string(m_pLivesComponent->GetLives()) + "lives";
 		m_pTextComponent->SetText(text);
 		break;
 	}		

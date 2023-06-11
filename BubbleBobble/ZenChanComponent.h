@@ -84,5 +84,7 @@ namespace Game
 		std::vector<dae::GameObject*> m_pPLayers{};
 
 		bool m_InBubble{ false };
+
+		int m_WindowHeight{ 672 };
 	};
 }

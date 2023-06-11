@@ -1,5 +1,4 @@
 #pragma once
-#include "Singleton.h"
 #include <string>
 #include <memory>
 #include <vector>
@@ -15,9 +14,10 @@ namespace Game
 {
 	class PlayerComponent;
 
-	class PlayerBuilder : public dae::Singleton<PlayerBuilder>
+	class PlayerBuilder
 	{
 	public:
+		PlayerBuilder() = default;
 		void BuildPlayer(std::string levelFile, dae::Scene* pScene, int controllerIndex1, int controllerIndex2, int gameMode);
 
 	private:

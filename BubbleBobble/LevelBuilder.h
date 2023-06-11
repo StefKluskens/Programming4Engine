@@ -2,7 +2,6 @@
 #include "Component.h"
 #include <string>
 #include <fstream>
-#include "Singleton.h"
 
 namespace dae
 {
@@ -13,9 +12,10 @@ namespace dae
 
 namespace Game
 {
-	class LevelBuilder : public dae::Singleton<LevelBuilder>
+	class LevelBuilder
 	{
 	public:
+		LevelBuilder() = default;
 		void BuildLevel(dae::Scene* pScene, std::string levelFile, int sceneNr);
 		void BuildMainMenu(dae::Scene* pScene, int controllerIndex1, int controllerIndex2);
 		void CreateObservers(dae::Scene* pScene);

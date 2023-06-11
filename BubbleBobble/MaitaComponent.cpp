@@ -7,6 +7,7 @@
 #include "Scene.h"
 #include "ItemPickUp.h"
 #include "PlayerComponent.h"
+#include "BubbleBobble.h"
 
 Game::MaitaComponent::MaitaComponent(dae::GameObject* pObject)
 	: Component(pObject)
@@ -88,6 +89,15 @@ void Game::MaitaComponent::Render() const
 
 void Game::MaitaComponent::Update(float /*deltaTime*/)
 {
+	if (GetOwner()->GetTransform()->GetWorldPosition().y > m_WindowHeight)
+	{
+		GetOwner()->SetPosition(GetOwner()->GetTransform()->GetWorldPosition().x, 0.0f);
+	}
+	else if (GetOwner()->GetTransform()->GetWorldPosition().y < 0.0f)
+	{
+		BubbleBobble::GetInstance().IncreaseKillNr(); 
+		GetOwner()->GetScene()->Remove(GetOwner());
+	}
 }
 
 void Game::MaitaComponent::FixedUpdate(float deltaTime)

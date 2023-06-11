@@ -71,7 +71,7 @@ void Game::LevelBuilder::BuildMainMenu(dae::Scene* pScene, int controllerIndex1,
 	pScene->Add(logoObject);
 
 	auto singlePLayerText = new dae::GameObject("Game Mode Text", pScene);
-	auto font = dae::ResourceManager::GetInstance().LoadFont("Fonts/Pixel_NES.otf", 22);
+	auto font = dae::ResourceManager::GetInstance().LoadFont("Resources/Fonts/Pixel_NES.otf", 22);
 	auto text = std::make_unique<dae::TextComponent>(singlePLayerText, "<- FOR SINGLE PLAYER", font);
 	
 	text->SetPosition(200, 500);
@@ -83,12 +83,6 @@ void Game::LevelBuilder::BuildMainMenu(dae::Scene* pScene, int controllerIndex1,
 	text->SetPosition(200, 530);
 	coopText->AddComponent(std::move(text));
 	pScene->Add(coopText);
-
-	auto versusText = new dae::GameObject("Game Mode Text", pScene);
-	text = std::make_unique<dae::TextComponent>(versusText, "^ FOR VERSUS", font);
-	text->SetPosition(200, 560);
-	versusText->AddComponent(std::move(text));
-	pScene->Add(versusText);
 
 	auto& input = dae::InputManager::GetInstance();
 	BubbleBobble& bubbleBobble = BubbleBobble::GetInstance();
@@ -286,7 +280,7 @@ void Game::LevelBuilder::BuildMaita(dae::Scene* pScene, std::string line)
 void Game::LevelBuilder::CreateObservers(dae::Scene* pScene)
 {
 	auto livesTextObject = new dae::GameObject("Lives Text", pScene);
-	auto font = dae::ResourceManager::GetInstance().LoadFont("Fonts/Pang.ttf", 22);
+	auto font = dae::ResourceManager::GetInstance().LoadFont("Resources/Fonts/Pang.ttf", 22);
 	auto text = std::make_unique<dae::TextComponent>(livesTextObject, "Lives", font);
 
 	auto scoreTextObject = new dae::GameObject("Score Text", pScene);
@@ -296,14 +290,17 @@ void Game::LevelBuilder::CreateObservers(dae::Scene* pScene)
 	auto players = pScene->GetRoot()->GetChildrenByTag("Player");
 	for (auto player : players)
 	{
+		auto livesDisplayObject = new dae::GameObject("Lives Display", pScene);
 		auto livesDisplay = std::make_unique<LivesDisplayComponent>(livesTextObject, player->GetComponent<LivesComponent>(), text.get());
-		player->AddComponent(std::move(livesDisplay));
+		livesDisplayObject->AddComponent(std::move(livesDisplay));
+		player->GetComponent<LivesComponent>()->AddObserver(livesDisplayObject->GetComponent<LivesDisplayComponent>());
+		pScene->Add(livesDisplayObject);
 
-		player->GetComponent<LivesComponent>()->AddObserver(player->GetComponent<LivesDisplayComponent>());
-
+		auto scoreDisplayObject = new dae::GameObject("Score display", pScene);
 		auto scoreDisplay = std::make_unique<ScoreDisplay>(scoreTextObject, player->GetComponent<ScoreComponent>(), scoreText.get());
-		player->AddComponent(std::move(scoreDisplay));
-		player->GetComponent<ScoreComponent>()->AddObserver(player->GetComponent<ScoreDisplay>());
+		scoreDisplayObject->AddComponent(std::move(scoreDisplay));
+		player->GetComponent<ScoreComponent>()->AddObserver(scoreDisplayObject->GetComponent<ScoreDisplay>());
+		pScene->Add(scoreDisplayObject);
 	}
 
 	livesTextObject->AddComponent(std::move(text));

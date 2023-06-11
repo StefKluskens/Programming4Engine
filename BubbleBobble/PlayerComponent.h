@@ -115,5 +115,7 @@ namespace Game
 		float m_ShootCoolTimerMax{ 3.0f };
 
 		bool m_IsLookingLeft{ false };
+
+		int m_WindowHeight{ 672 };
 	};
 }

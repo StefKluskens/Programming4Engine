@@ -49,19 +49,19 @@ void PrintHowToPlay()
 	printf("\nHow to play:\n\n");
 	printf("Player 1 keyboard movement: A/D\n");
 	printf("Player 1 keyboard jumping: W\n");
-	//printf("Player 1 keyboard shooting: J\n");
+	printf("Player 1 keyboard shooting: J\n");
 	printf("Player 1 controller movement: Dpad left/right\n");
 	printf("Player 1 controller jumping: Dpad up\n");
-	//printf("Player 1 controller shooting: B-button\n");
+	printf("Player 1 controller shooting: B-button\n");
 
 	printf("\n");
 
 	printf("Player 2 keyboard movement: left/right arrow\n");
 	printf("Player 2 keyboard jumping: up arrow\n");
-	//printf("Player 2 keyboard shooting: 0\n");
+	printf("Player 2 keyboard shooting: 0\n");
 	printf("Player 2 controller movement: Dpad left/right\n");
 	printf("Player 2 controller jumping: Dpad up\n");
-	//printf("Player 2 controller shooting: B-button\n");
+	printf("Player 2 controller shooting: B-button\n");
 }
 
 dae::Minigin::Minigin(const std::string &dataPath)
@@ -85,7 +85,6 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	{
 		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
 	}
-
 	Renderer::GetInstance().Init(g_window);
 
 	ResourceManager::GetInstance().Init(dataPath);
@@ -104,7 +103,6 @@ dae::Minigin::~Minigin()
 void dae::Minigin::Run(const std::function<void()>& load)
 {
 	load();
-
 	PrintHowToPlay();
 
 	auto& renderer = Renderer::GetInstance();

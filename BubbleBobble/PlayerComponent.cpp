@@ -15,6 +15,7 @@
 #include "ScoreComponent.h"
 #include "LivesComponent.h"
 #include "Bubble.h"
+#include "BubbleBobble.h"
 
 Game::PlayerComponent::PlayerComponent(dae::Scene* pScene, dae::GameObject* pObject, bool isPLayer1, bool hasCollider, bool hasRB, int controllerIndex1, int controllerIndex2)
 	: Component(pObject)
@@ -80,9 +81,9 @@ Game::PlayerComponent::PlayerComponent(dae::Scene* pScene, dae::GameObject* pObj
 	}
 
 	m_pSoundSytem = &dae::ServiceLocator::GetSoundSystem();
-	m_pSoundSytem->AddSound(dae::ResourceManager::GetInstance().GetAudioPath("Audio/Jump.wav"));
-	m_pSoundSytem->AddSound(dae::ResourceManager::GetInstance().GetAudioPath("Audio/Shoot.wav"));
-	m_pSoundSytem->AddSound(dae::ResourceManager::GetInstance().GetAudioPath("Audio/Death.wav"));
+	m_pSoundSytem->AddSound(dae::ResourceManager::GetInstance().GetAudioPath("Resources/Audio/Jump.wav"));
+	m_pSoundSytem->AddSound(dae::ResourceManager::GetInstance().GetAudioPath("Resources/Audio/Shoot.wav"));
+	m_pSoundSytem->AddSound(dae::ResourceManager::GetInstance().GetAudioPath("Resources/Audio/Death.wav"));
 
 	auto& input = dae::InputManager::GetInstance();
 
@@ -127,8 +128,8 @@ Game::PlayerComponent::PlayerComponent(dae::Scene* pScene, dae::GameObject* pObj
 		pMoveCommand = std::make_unique<Game::MoveCommand>(pScene, pObject, this, glm::vec3{ 1.0f, 0.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsPressed);
 		input.AddCommand(pScene->GetName(), SDL_SCANCODE_RIGHT, std::move(pMoveCommand));
 
-		/*auto pShootCommand = std::make_unique<Game::ShootCommand>(pScene, pObject, shootComponent, dae::Command::ButtonState::IsDown);
-		input.AddCommand(pScene->GetName(), SDL_SCANCODE_KP_0, std::move(pShootCommand));*/
+		auto pShootCommand = std::make_unique<Game::ShootCommand>(pScene, pObject, this, dae::Command::ButtonState::IsDown);
+		input.AddCommand(pScene->GetName(), SDL_SCANCODE_KP_0, std::move(pShootCommand));
 
 		//Controller commands
 		pMoveCommand = std::make_unique<Game::MoveCommand>(pScene, pObject, this, glm::vec3{ 0.0f, -1.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsDown);
@@ -140,8 +141,8 @@ Game::PlayerComponent::PlayerComponent(dae::Scene* pScene, dae::GameObject* pObj
 		pMoveCommand = std::make_unique<Game::MoveCommand>(pScene, pObject, this, glm::vec3{ 1.0f, 0.0f, 0.0f }, m_MoveSpeed, dae::Command::ButtonState::IsPressed);
 		input.AddCommand(pScene->GetName(), dae::XBoxController::ControllerButton::DPadRight, std::move(pMoveCommand), controllerIndex2);
 
-		/*pShootCommand = std::make_unique<Game::ShootCommand>(pScene, pObject, shootComponent, dae::Command::ButtonState::IsDown);
-		input.AddCommand(pScene->GetName(), dae::XBoxController::ControllerButton::ButtonB, std::move(pShootCommand), controllerIndex2);*/
+		pShootCommand = std::make_unique<Game::ShootCommand>(pScene, pObject, this, dae::Command::ButtonState::IsDown);
+		input.AddCommand(pScene->GetName(), dae::XBoxController::ControllerButton::ButtonB, std::move(pShootCommand), controllerIndex2);
 	}
 
 	for (auto enemy : pScene->GetRoot()->GetChildrenByTag("Enemy"))
@@ -166,6 +167,11 @@ void Game::PlayerComponent::Render() const
 
 void Game::PlayerComponent::Update(float deltaTime)
 {
+	if (GetOwner()->GetTransform()->GetWorldPosition().y > m_WindowHeight)
+	{
+		GetOwner()->SetPosition(GetOwner()->GetTransform()->GetWorldPosition().x, 0.0f);
+	}
+
 	switch (m_CurrentState)
 	{
 	case Game::PlayerState::Idle:
@@ -217,6 +223,11 @@ void Game::PlayerComponent::Update(float deltaTime)
 	}
 
 	Invincible(deltaTime);
+
+	if (BubbleBobble::GetInstance().ShouldLoadNewLevel())
+	{
+		BubbleBobble::GetInstance().LoadNextScene();
+	}
 }
 
 void Game::PlayerComponent::FixedUpdate(float deltaTime)
@@ -359,13 +370,17 @@ void Game::PlayerComponent::SetScoreType(bool isWatermelon)
 
 void Game::PlayerComponent::OnCollideMaita(MaitaComponent* pMaita)
 {
-	if (pMaita->GetState() == MaitaState::Bubble)
+	if (pMaita)
 	{
-		pMaita->SetState(MaitaState::Die);
-	}
-	else if(!m_Invincible && pMaita->GetState() == MaitaState::Run)
-	{
-		SetState(PlayerState::Die);
+		if (pMaita->GetState() == MaitaState::Bubble)
+		{
+			pMaita->SetState(MaitaState::Die);
+			BubbleBobble::GetInstance().IncreaseKillNr();
+		}
+		else if (!m_Invincible && pMaita->GetState() == MaitaState::Run)
+		{
+			SetState(PlayerState::Die);
+		}
 	}
 }
 
@@ -376,6 +391,7 @@ void Game::PlayerComponent::OnCollideZenChan(ZenChanComponent* zenChan)
 		if (zenChan->GetState() == ZenChanState::Bubble)
 		{
 			zenChan->SetState(ZenChanState::Die);
+			BubbleBobble::GetInstance().IncreaseKillNr();
 		}
 		else if (!m_Invincible)
 		{

@@ -20,6 +20,9 @@ namespace dae
 		void SetActiveScene(const std::string& name);
 
 		std::vector<std::shared_ptr<Scene>>& GetScenes() { return m_scenes; }
+		Scene* GetScene(const std::string& name) const;
+
+		void MoveObjects(const std::string& sourceSceneName, const std::string& targetSceneName, const std::string& tag);
 
 	private:
 		friend class Singleton<SceneManager>;
@@ -27,5 +30,7 @@ namespace dae
 		std::vector<std::shared_ptr<Scene>> m_scenes;
 
 		Scene* m_pActiveScene = nullptr;
+
+		int m_LevelIndex{};
 	};
 }

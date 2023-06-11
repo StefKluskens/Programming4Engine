@@ -15,7 +15,8 @@ bool dae::InputManager::ProcessInput(float deltaTime)
 			return false;
 		}
 
-		if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_F1) {
+		if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_F1) 
+		{
 
 			//Load level
 			if (sceneName == "Level0")

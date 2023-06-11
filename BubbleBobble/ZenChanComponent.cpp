@@ -6,6 +6,7 @@
 #include "AnimatorComponent.h"
 #include "Scene.h"
 #include "ItemPickUp.h"
+#include "BubbleBobble.h"
 
 Game::ZenChanComponent::ZenChanComponent(dae::GameObject* pObject)
 	: dae::Component(pObject)
@@ -67,6 +68,15 @@ void Game::ZenChanComponent::Render() const
 
 void Game::ZenChanComponent::Update(float /*deltaTime*/)
 {
+	if (GetOwner()->GetTransform()->GetWorldPosition().y > m_WindowHeight)
+	{
+		GetOwner()->SetPosition(GetOwner()->GetTransform()->GetWorldPosition().x, 0.0f);
+	}
+	else if (GetOwner()->GetTransform()->GetWorldPosition().y < 0.0f)
+	{
+		BubbleBobble::GetInstance().IncreaseKillNr();
+		GetOwner()->GetScene()->Remove(GetOwner());
+	}
 }
 
 void Game::ZenChanComponent::FixedUpdate(float deltaTime)

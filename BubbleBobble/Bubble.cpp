@@ -5,15 +5,27 @@
 #include "TextureComponent.h"
 #include "AnimatorComponent.h"
 #include "Scene.h"
+#include "MaitaComponent.h"
+#include "ZenChanComponent.h"
 
-Game::Bubble::Bubble(dae::GameObject* pObject, dae::TextureComponent* pTexture, std::vector<dae::ColliderComponent*> enemies)
+Game::Bubble::Bubble(dae::GameObject* pObject, std::vector<dae::ColliderComponent*> enemies)
 	: Component(pObject)
 	, m_pEnemies(enemies)
 {
-	auto texture = std::make_unique<dae::TextureComponent>(pObject);
-	texture->SetTexture("Resources/Bubble/Bubble_Anim.png");
-	//texture->SetIsAnimation(true);
-	pObject->AddComponent(std::move(texture));
+	auto bubbleTexture = std::make_unique<dae::TextureComponent>(pObject);
+	bubbleTexture->SetTag("RunTexture");
+	bubbleTexture->SetTexture("Resources/Bubble/Bubble_Anim.png");
+	bubbleTexture->SetIsAnimation(true);
+
+	auto pAnimator = std::make_unique<dae::AnimatorComponent>(pObject, bubbleTexture.get());
+	m_pAnimator = pAnimator.get();
+	pObject->AddComponent(std::move(pAnimator));
+	SetAnimator();
+
+	auto animation = std::make_unique<dae::Animation>("Bubble", bubbleTexture.get(), 48, 48, 3, 0.33f);
+	AddAnimation(std::move(animation));
+
+	GetOwner()->AddComponent(std::move(bubbleTexture));
 
 	glm::vec3 pos = GetOwner()->GetTransform()->GetWorldPosition();
 	SDL_Rect rect;
@@ -24,20 +36,12 @@ Game::Bubble::Bubble(dae::GameObject* pObject, dae::TextureComponent* pTexture, 
 	auto collider = std::make_unique<dae::ColliderComponent>(pObject, rect);
 	m_pCollider = collider.get();
 	m_pCollider->AddIgnoreTag("Player");
+	m_pCollider->SetNeedsGroundCheck(false);
 	pObject->AddComponent(std::move(collider));
 
 	auto rb = std::make_unique<dae::RigidBody>(pObject, m_pCollider);
 	m_pRigidbody = rb.get();
 	pObject->AddComponent(std::move(rb));
-
-	auto animator = std::make_unique<dae::AnimatorComponent>(pObject, pTexture);
-	pObject->AddComponent(std::move(animator));
-	SetAnimator();
-
-	auto animation = std::make_unique<dae::Animation>("Bubble", pTexture, 48, 48, 3, 0.33f);
-	AddAnimation(std::move(animation));
-
-	m_pAnimator->SetAnimation(nullptr);
 }
 
 void Game::Bubble::Render() const
@@ -46,17 +50,15 @@ void Game::Bubble::Render() const
 
 void Game::Bubble::Update(float deltaTime)
 {
-	auto pos = GetOwner()->GetTransform()->GetWorldPosition();
-	if (abs(m_Movement).x < m_xMaxDistance && pos.y > m_UpperLimit && !m_Bursting)
+	if (m_MoveOnX)
 	{
-		m_Movement.y = m_FloatRate;
-	}
-	else
-	{
-		m_Movement.y = 0.f;
-	}
+		m_MoveXTimer += deltaTime;
 
-	m_pRigidbody->SetVelocity(m_Movement);
+		if (m_MoveXTimer >= m_MoveXTimerMax)
+		{
+			m_MoveOnX = false;
+		}
+	}
 
 	if (!m_Bursting)
 	{
@@ -69,38 +71,54 @@ void Game::Bubble::Update(float deltaTime)
 		{
 			m_pAnimator->SetAnimation(m_AnimationMap["Bubble"].get());
 		}
-	}
 
-	auto enemy = m_pCollider->CheckCollisionOnVector(m_pEnemies);
-	if (enemy)
-	{
-		GetOwner()->GetScene()->Remove(enemy);
+		auto enemy = m_pCollider->CheckCollisionOnVector(m_pEnemies);
+		if (enemy)
+		{
+			auto maita = enemy->GetComponent<MaitaComponent>();
+			if (maita)
+			{
+				if (maita->GetState() != MaitaState::Bubble)
+				{
+					maita->SetState(MaitaState::Bubble);
+				}
+			}
+			else
+			{
+				auto zenChan = enemy->GetComponent<ZenChanComponent>();
+				if (zenChan->GetState() != ZenChanState::Bubble)
+				{
+					zenChan->SetState(ZenChanState::Bubble);
+				}
+			}
+
+			Burst();
+		}
 	}
 }
 
-void Game::Bubble::FixedUpdate(float deltaTime)
+void Game::Bubble::FixedUpdate(float /*deltaTime*/)
 {
-	if (m_MovesLeft)
+	if (m_MoveOnX)
 	{
-		if (m_Movement.x < 0.f)
-		{
-			m_Movement.x += deltaTime * m_SlowDownRate;
-		}
-		else
-		{
-			m_Movement.x = 0.f;
-		}
+		auto velocity = m_pRigidbody->GetVelocity();
+		glm::vec3 newPosition = glm::vec3(m_InputDir.x * m_MoveSpeed, velocity.y, 0.0f);
+
+		m_pRigidbody->SetVelocity(newPosition);
 	}
 	else
 	{
-		if (m_Movement.x > 0.f)
+		auto pos = GetOwner()->GetTransform()->GetWorldPosition();
+		if (pos.y > m_UpperLimit && !m_Bursting)
 		{
-			m_Movement.x -= deltaTime * m_SlowDownRate;
+			m_Movement.y = m_FloatRate;
 		}
 		else
 		{
-			m_Movement.x = 0.f;
+			m_Movement.y = 0.f;
 		}
+
+		m_pRigidbody->SetVelocity(m_Movement);
 	}
 }
 
@@ -118,10 +136,10 @@ void Game::Bubble::Burst()
 {
 	if (!m_Bursting)
 	{
-		//m_pAnimator->SetAnimation(m_AnimationMap["Poof"].get());
-		/*m_pCollider->AddIgnoreTag("Maita");
-		m_pCollider->AddIgnoreTag("Player");*/
+		//m_pCollider->SetEnabled(false);
 		m_Bursting = true;
 		m_Movement = glm::vec3();
+
+		GetOwner()->GetScene()->Remove(GetOwner());
 	}
 }

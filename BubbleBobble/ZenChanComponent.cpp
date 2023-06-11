@@ -5,6 +5,7 @@
 #include "TextureComponent.h"
 #include "AnimatorComponent.h"
 #include "Scene.h"
+#include "ItemPickUp.h"
 
 Game::ZenChanComponent::ZenChanComponent(dae::GameObject* pObject)
 	: dae::Component(pObject)
@@ -18,6 +19,7 @@ Game::ZenChanComponent::ZenChanComponent(dae::GameObject* pObject)
 	bubbleTexture->SetTag("BubbleTexture");
 	bubbleTexture->SetTexture("Resources/ZenChan/Bubble_Anim.png");
 	bubbleTexture->SetIsAnimation(true);
+	bubbleTexture->SetTextureVisibility(false);
 
 	auto pAnimator = std::make_unique<dae::AnimatorComponent>(pObject, runTexture.get());
 	pObject->AddComponent(std::move(pAnimator));
@@ -38,7 +40,7 @@ Game::ZenChanComponent::ZenChanComponent(dae::GameObject* pObject)
 	rect.x = static_cast<int>(pos.x);
 	rect.y = static_cast<int>(pos.y);
 	rect.h = static_cast<int>(48);
-	rect.w = static_cast<int>(45);
+	rect.w = static_cast<int>(48);
 	auto collider = std::make_unique<dae::ColliderComponent>(pObject, rect);
 	m_pCollider = collider.get();
 	m_pCollider->AddIgnoreTag("Roof");
@@ -63,7 +65,6 @@ void Game::ZenChanComponent::Render() const
 
 void Game::ZenChanComponent::Update(float /*deltaTime*/)
 {
-	
 }
 
 void Game::ZenChanComponent::FixedUpdate(float deltaTime)
@@ -74,7 +75,7 @@ void Game::ZenChanComponent::FixedUpdate(float deltaTime)
 		HandleMovement(deltaTime);
 		break;
 	case Game::ZenChanState::Die:
-
+		Die();
 		break;
 	case Game::ZenChanState::Bubble:
 		BubbleMovement(deltaTime);
@@ -82,6 +83,31 @@ void Game::ZenChanComponent::FixedUpdate(float deltaTime)
 	default:
 		break;
 	}
+}
+
+void Game::ZenChanComponent::AddPlayer(dae::GameObject* pPlayer)
+{
+	m_pPLayers.push_back(pPlayer);
+}
+
+void Game::ZenChanComponent::SetState(ZenChanState nextState)
+{
+	switch (nextState)
+	{
+	case Game::ZenChanState::Run:
+		m_pAnimator->SetAnimation(m_AnimationMap["Run"].get());
+		break;
+	case Game::ZenChanState::Die:
+		Die();
+		break;
+	case Game::ZenChanState::Bubble:
+		m_pAnimator->SetAnimation(m_AnimationMap["Bubble"].get());
+		break;
+	default:
+		break;
+	}
+
+	m_CurrentState = nextState;
 }
 
 dae::TextureComponent* Game::ZenChanComponent::GetTexture(const std::string& name) const
@@ -99,28 +125,6 @@ void Game::ZenChanComponent::SetAnimator()
 	m_pAnimator = GetOwner()->GetComponent<dae::AnimatorComponent>();
 }
 
-void Game::ZenChanComponent::SetState(ZenChanState nextState)
-{
-	switch (nextState)
-	{
-	case Game::ZenChanState::Run:
-		m_pAnimator->SetAnimation(m_AnimationMap["Run"].get());
-		break;
-	case Game::ZenChanState::Die:
-		m_pAnimator->SetAnimation(m_AnimationMap["Bubble"].get());
-		break;
-	case Game::ZenChanState::Bubble:
-		break;
-	default:
-		break;
-	}
-}
-
-void Game::ZenChanComponent::AddPlayer(dae::GameObject* pPlayer)
-{
-	m_pPLayers.push_back(pPlayer);
-}
-
 void Game::ZenChanComponent::HandleMovement(float /*deltaTime*/)
 {
 	HandleAI();
@@ -136,9 +140,9 @@ void Game::ZenChanComponent::HandleMovement(float /*deltaTime*/)
 	m_pRigidbody->SetVelocity(glm::vec3(m_InputDir.x * m_MoveSpeed, velocity.y, 0.0f));
 }
 
-void Game::ZenChanComponent::BubbleMovement(float deltaTime)
+void Game::ZenChanComponent::BubbleMovement(float /*deltaTime*/)
 {
-	m_pRigidbody->SetVelocity(glm::vec3(0.f, m_FloatSpeed * deltaTime, 0.f));
+	m_pRigidbody->SetVelocity(glm::vec3(0.f, m_FloatSpeed, 0.f));
 	m_InputDir = glm::vec3();
 }
 
@@ -241,4 +245,15 @@ void Game::ZenChanComponent::HandleAI()
 	{
 		m_InputDir = glm::vec2();
 	}
+}
+
+void Game::ZenChanComponent::Die()
+{
+	auto item = new dae::GameObject("Watermelon", GetOwner()->GetScene());
+	item->SetPosition(GetOwner()->GetTransform()->GetWorldPosition());
+	auto pItem = std::make_unique<ItemPickUp>(item, false, m_pPLayers);
+	item->AddComponent(std::move(pItem));
+	GetOwner()->GetScene()->Add(item);
+
+	GetOwner()->GetScene()->Remove(GetOwner());
 }

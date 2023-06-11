@@ -39,9 +39,7 @@ void Scene::Add(GameObject* object)
 
 void Scene::Remove(GameObject* object)
 {
-	m_objects.erase(std::remove_if(m_objects.begin(), m_objects.end(),
-		[object](const std::unique_ptr<GameObject>& ptr) { return ptr.get() == object; }),
-		m_objects.end());
+	object->SetMarkForDelete(true);
 }
 
 void Scene::RemoveAll()
@@ -51,39 +49,42 @@ void Scene::RemoveAll()
 
 void Scene::Update(float deltaTime)
 {
-	/*for(auto& object : m_objects)
-	{
-		object->Update(deltaTime);
-	}*/
-
 	m_pRoot->Update(deltaTime);
+
+	//Delete collider
+	for (auto it = m_pColliders.begin(); it != m_pColliders.end();)
+	{
+		if ((*it)->GetOwner()->GetMarkForDelete())
+		{
+			it = m_pColliders.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
+	
+	//Delete object
+	for (auto it = m_pRoot->m_pChildren.begin(); it != m_pRoot->m_pChildren.end();)
+	{
+		if ((*it)->GetMarkForDelete())
+		{
+			it = m_pRoot->m_pChildren.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
 }
 
 void dae::Scene::FixedUpdate(float deltaTime)
 {
 	m_pRoot->FixedUpdate(deltaTime);
-
-	/*for (int i{}; i < m_pColliders.size(); ++i)
-	{
-		if (m_pColliders[i]->NeedsToCheckCollision())
-		{
-			m_pColliders[i]->CollisionCheck();
-		}
-
-		if (m_pColliders[i]->NeedsToCheckGroundCollision())
-		{
-			m_pColliders[i]->DoGroundCheck();
-		}
-	}*/
 }
 
 void Scene::Render() const
 {
-	/*for (const auto& object : m_objects)
-	{
-		object->Render();
-	}*/
-
 	m_pRoot->Render();
 }
 

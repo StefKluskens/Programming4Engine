@@ -54,7 +54,7 @@ dae::Animation* dae::AnimatorComponent::CreateAnimation(std::string animName, Te
 
 void dae::AnimatorComponent::SetAnimation(Animation* pAnimation)
 {
-	if (m_pCurrentAnimation == pAnimation)
+	if (m_pCurrentAnimation == pAnimation || pAnimation == nullptr)
 	{
 		return;
 	}

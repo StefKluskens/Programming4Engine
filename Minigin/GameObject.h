@@ -51,6 +51,9 @@ namespace dae
 
 		Scene* GetScene() const;
 
+		void SetMarkForDelete(bool marked) { m_MarkForDelete = marked; }
+		bool GetMarkForDelete() const { return m_MarkForDelete; }
+
 	private:
 		std::string m_Name{ "GameObject" };
 		std::string m_Tag{ "" };
@@ -62,6 +65,8 @@ namespace dae
 		GameObject* m_pParent{ nullptr };
 
 		Scene* m_pScene;
+
+		bool m_MarkForDelete{ false };
 	};
 
 	template<typename T>

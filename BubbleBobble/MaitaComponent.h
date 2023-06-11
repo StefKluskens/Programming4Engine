@@ -54,6 +54,8 @@ namespace Game
 
 		std::map<std::string, std::unique_ptr<dae::Animation>>& GetAnimationMap() { return m_AnimationMap; }
 
+		void Die();
+
 	private:
 		void HandleMovement(float deltaTime);
 		void BubbleMovement(float deltaTime);

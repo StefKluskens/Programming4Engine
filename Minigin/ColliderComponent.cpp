@@ -44,6 +44,11 @@ void dae::ColliderComponent::SetRect(SDL_Rect rect)
 
 std::vector<dae::GameObject*> dae::ColliderComponent::CollisionCheck()
 {
+	if (!m_Enabled)
+	{
+		return std::vector<dae::GameObject*>();
+	}
+
 	//Check if this collider needs to check for collisions
 	if (m_NeedsToCheckCollision)
 	{
@@ -77,6 +82,11 @@ std::vector<dae::GameObject*> dae::ColliderComponent::CollisionCheck()
 
 void dae::ColliderComponent::DoGroundCheck()
 {
+	if (!m_Enabled)
+	{
+		return;
+	}
+
 	if (m_pRigidBody)
 	{
 		//Draw line from center of object towards 1 px beneath object
@@ -134,6 +144,11 @@ void dae::ColliderComponent::DoGroundCheck()
 
 dae::GameObject* dae::ColliderComponent::CheckCollisionOnVector(std::vector<ColliderComponent*> objects)
 {
+	if (!m_Enabled)
+	{
+		return nullptr;
+	}
+
 	for (auto object : objects)
 	{
 		if (object == this || !object->m_Enabled)
@@ -192,6 +207,11 @@ void dae::ColliderComponent::RemoveIgnoreTag(const std::string& tag)
 
 bool dae::ColliderComponent::HandleCollision(ColliderComponent* other)
 {
+	if (!m_Enabled)
+	{
+		return false;
+	}
+
 	if ((m_Rect.x + m_Rect.w) < other->m_Rect.x || (other->m_Rect.x + other->m_Rect.w) < m_Rect.x)
 	{
 		return false;

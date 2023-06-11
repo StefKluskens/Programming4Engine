@@ -5,6 +5,8 @@
 #include "TextureComponent.h"
 #include "AnimatorComponent.h"
 #include "Scene.h"
+#include "ItemPickUp.h"
+#include "PlayerComponent.h"
 
 Game::MaitaComponent::MaitaComponent(dae::GameObject* pObject)
 	: Component(pObject)
@@ -42,10 +44,10 @@ Game::MaitaComponent::MaitaComponent(dae::GameObject* pObject)
 	animation = std::make_unique<dae::Animation>("Bubble", bubbleTexture.get(), 48, 48, 3, 0.33f);
 	AddAnimation(std::move(animation));
 
-	animation = std::make_unique<dae::Animation>("Die", bubbleTexture.get(), 48, 48, 4, 0.25f);
+	animation = std::make_unique<dae::Animation>("Die", dieTexture.get(), 48, 48, 4, 0.25f);
 	AddAnimation(std::move(animation));
 
-	animation = std::make_unique<dae::Animation>("Attack", bubbleTexture.get(), 90, 48, 6, 0.16f);
+	animation = std::make_unique<dae::Animation>("Attack", attackTexture.get(), 90, 48, 6, 0.16f);
 	AddAnimation(std::move(animation));
 
 	GetOwner()->AddComponent(std::move(runTexture));
@@ -94,6 +96,7 @@ void Game::MaitaComponent::FixedUpdate(float deltaTime)
 		HandleMovement(deltaTime);
 		break;
 	case Game::MaitaState::Die:
+		Die();
 		break;
 	case Game::MaitaState::Bubble:
 		BubbleMovement(deltaTime);
@@ -146,6 +149,18 @@ void Game::MaitaComponent::AddAnimation(std::unique_ptr<dae::Animation> animatio
 void Game::MaitaComponent::SetAnimator()
 {
 	m_pAnimator = GetOwner()->GetComponent<dae::AnimatorComponent>();
+}
+
+void Game::MaitaComponent::Die()
+{
+	auto item = new dae::GameObject("Fries", GetOwner()->GetScene());
+	auto pos = GetOwner()->GetTransform()->GetWorldPosition();
+	item->SetPosition(pos.x + 30, pos.y);
+	auto pItem = std::make_unique<ItemPickUp>(item, true, m_pPLayers);
+	item->AddComponent(std::move(pItem));
+	GetOwner()->GetScene()->Add(item);
+
+	GetOwner()->GetScene()->Remove(GetOwner());
 }
 
 void Game::MaitaComponent::HandleMovement(float /*deltaTime*/)

@@ -17,6 +17,11 @@ GameObject::~GameObject() = default;
 
 void GameObject::Update(float deltaTime)
 { 
+	if (m_MarkForDelete)
+	{
+		return;
+	}
+
 	for (auto& component : m_pComponents)
 	{
 		component->Update(deltaTime);
@@ -30,6 +35,11 @@ void GameObject::Update(float deltaTime)
 
 void dae::GameObject::FixedUpdate(float deltaTime)
 {
+	if (m_MarkForDelete)
+	{
+		return;
+	}
+
 	for (auto& component : m_pComponents)
 	{
 		component->FixedUpdate(deltaTime);
@@ -43,6 +53,11 @@ void dae::GameObject::FixedUpdate(float deltaTime)
 
 void GameObject::Render() const
 {
+	if (m_MarkForDelete)
+	{
+		return;
+	}
+
 	for (const auto& component : m_pComponents)
 	{
 		component->Render();

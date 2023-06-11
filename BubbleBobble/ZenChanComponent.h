@@ -61,6 +61,8 @@ namespace Game
 
 		void HandleAI();
 
+		void Die();
+
 		ZenChanState m_CurrentState{};
 
 		dae::ColliderComponent* m_pCollider{};

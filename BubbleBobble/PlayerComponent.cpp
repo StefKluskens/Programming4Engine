@@ -7,9 +7,7 @@
 #include "RigidBody.h"
 #include "TextureComponent.h"
 #include "ServiceLocator.h"
-#include "SDLSoundSystem.h"
 #include "ResourceManager.h"
-#include "ShootComponent.h"
 #include "AnimatorComponent.h"
 #include "Scene.h"
 #include "MaitaComponent.h"
@@ -81,11 +79,10 @@ Game::PlayerComponent::PlayerComponent(dae::Scene* pScene, dae::GameObject* pObj
 		}
 	}
 
-	auto pShootComponent = std::make_unique<ShootComponent>(pObject);
-	GetOwner()->AddComponent(std::move(pShootComponent));
-
 	m_pSoundSytem = &dae::ServiceLocator::GetSoundSystem();
 	m_pSoundSytem->AddSound(dae::ResourceManager::GetInstance().GetAudioPath("Audio/Jump.wav"));
+	m_pSoundSytem->AddSound(dae::ResourceManager::GetInstance().GetAudioPath("Audio/Shoot.wav"));
+	m_pSoundSytem->AddSound(dae::ResourceManager::GetInstance().GetAudioPath("Audio/Death.wav"));
 
 	auto& input = dae::InputManager::GetInstance();
 
@@ -265,6 +262,8 @@ void Game::PlayerComponent::SetState(PlayerState nextState)
 	{
 		if (!m_IsDead && !m_Invincible)
 		{
+			m_pSoundSytem->Play(2, 1.0f);
+
 			m_pAnimator->SetAnimation(m_AnimationMap["Die"].get());
 
 			auto velocity = m_pRigidbody->GetVelocity();
@@ -324,13 +323,13 @@ void Game::PlayerComponent::ShootBubble()
 {
 	if (m_CurrentState == PlayerState::Shoot && !m_Invincible)
 	{
-		std::cout << "Shoot\n";
+		m_pSoundSytem->Play(1, 1.0f);
 
 		auto bubbleObject = new dae::GameObject("Bubble", m_pScene);
 		bubbleObject->SetTag("Bubble");
 		bubbleObject->SetPosition(GetOwner()->GetTransform()->GetWorldPosition());
 
-		auto bubble = std::make_unique<Bubble>(bubbleObject, m_pBubbleTexture.get(), m_pEnemies);
+		auto bubble = std::make_unique<Bubble>(bubbleObject, m_pEnemies);
 		bubbleObject->AddComponent(std::move(bubble));
 
 		m_pScene->Add(bubbleObject);
@@ -339,13 +338,19 @@ void Game::PlayerComponent::ShootBubble()
 	}
 }
 
+void Game::PlayerComponent::SetScoreType(bool isWatermelon)
+{
+	m_pScoreCommand->SetScoreType(isWatermelon);
+	m_pScoreCommand->Execute(0.0f);
+}
+
 void Game::PlayerComponent::OnCollideMaita(MaitaComponent* pMaita)
 {
 	if (pMaita->GetState() == MaitaState::Bubble)
 	{
 		pMaita->SetState(MaitaState::Die);
 	}
-	else if(!m_Invincible)
+	else if(!m_Invincible && pMaita->GetState() == MaitaState::Run)
 	{
 		SetState(PlayerState::Die);
 	}

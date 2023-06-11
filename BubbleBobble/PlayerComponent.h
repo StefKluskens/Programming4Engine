@@ -64,6 +64,8 @@ namespace Game
 
 		void ShootBubble();
 
+		void SetScoreType(bool isWatermelon);
+
 	private:
 		void HandleMovement(float deltaTime);
 		void Invincible(float deltaTime);

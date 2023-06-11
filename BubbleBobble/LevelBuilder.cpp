@@ -16,6 +16,8 @@
 #include "MaitaComponent.h"
 #include "LivesDisplayComponent.h"
 #include "LivesComponent.h"
+#include "ScoreDisplay.h"
+#include "ScoreComponent.h"
 
 void Game::LevelBuilder::BuildLevel(dae::Scene* pScene, std::string levelFile, int sceneNr)
 {
@@ -287,6 +289,10 @@ void Game::LevelBuilder::CreateObservers(dae::Scene* pScene)
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Fonts/Pang.ttf", 22);
 	auto text = std::make_unique<dae::TextComponent>(livesTextObject, "Lives", font);
 
+	auto scoreTextObject = new dae::GameObject("Score Text", pScene);
+	scoreTextObject->SetPosition(300.0f, 0.0f);
+	auto scoreText = std::make_unique<dae::TextComponent>(scoreTextObject, "Score", font);
+
 	auto players = pScene->GetRoot()->GetChildrenByTag("Player");
 	for (auto player : players)
 	{
@@ -294,8 +300,15 @@ void Game::LevelBuilder::CreateObservers(dae::Scene* pScene)
 		player->AddComponent(std::move(livesDisplay));
 
 		player->GetComponent<LivesComponent>()->AddObserver(player->GetComponent<LivesDisplayComponent>());
+
+		auto scoreDisplay = std::make_unique<ScoreDisplay>(scoreTextObject, player->GetComponent<ScoreComponent>(), scoreText.get());
+		player->AddComponent(std::move(scoreDisplay));
+		player->GetComponent<ScoreComponent>()->AddObserver(player->GetComponent<ScoreDisplay>());
 	}
 
 	livesTextObject->AddComponent(std::move(text));
+	scoreTextObject->AddComponent(std::move(scoreText));
+
 	pScene->Add(livesTextObject);
+	pScene->Add(scoreTextObject);
 }
